@@ -1,5 +1,4 @@
 
 public class DaniIstSuper {
-// Dani ist super!!!
-	//Supiiiii
+// Dani ist super ...
 }
