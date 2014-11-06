@@ -13,13 +13,11 @@ import javax.swing.JLabel;
 
 
 import javax.swing.ButtonGroup;
-import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 
 import java.awt.Panel;
-import java.awt.Button;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -67,12 +65,12 @@ public class MainWindow {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		//Panel auf dem alle weiteren Controls liegen können
+		//Panel auf dem alle weiteren Controls liegen k��nnen
 		JPanel mainPanel = new JPanel();
 		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 		mainPanel.setLayout(new CardLayout(0, 0));
 		
-		//TabbedPane für die einzelnen Tabpages
+		//TabbedPane f��r die einzelnen Tabpages
 		JTabbedPane tabPageContainer = new JTabbedPane(JTabbedPane.TOP);
 		tabPageContainer.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		mainPanel.add(tabPageContainer, "name_3337526559634");
@@ -83,7 +81,7 @@ public class MainWindow {
 		JPanel panelZuordnung = new JPanel();
 		JPanel panelErgebnis = new JPanel();
 		
-		//Hinzufügen der einzelnen TabPages
+		//Hinzuf��gen der einzelnen TabPages
 		tabPageContainer.addTab("Parameter", panelParameter);
 		tabPageContainer.addTab("ABCEinteilung", panelEinteilung);
 		tabPageContainer.addTab("ABCZuordnung", panelZuordnung);
@@ -91,7 +89,7 @@ public class MainWindow {
 		//Setzen eines absoluten Layouts
 		panelParameter.setLayout(null);
 		
-		//Label für Zeitraum
+		//Label f��r Zeitraum
 		JLabel lblZeitraum = new JLabel("Zeitraum");
 		lblZeitraum.setBounds(24, 6, 61, 16);
 		panelParameter.add(lblZeitraum);
@@ -101,7 +99,7 @@ public class MainWindow {
 		rdVom.setBounds(34, 34, 71, 23);
 		panelParameter.add(rdVom);
 		
-		//Textfeld für Von-Datum
+		//Textfeld f��r Von-Datum
 		txtVonDatum = new JTextField();
 		txtVonDatum.setBounds(100, 33, 104, 25);
 		panelParameter.add(txtVonDatum);
@@ -112,7 +110,7 @@ public class MainWindow {
 		rdJahr.setBounds(44, 69, 61, 23);
 		panelParameter.add(rdJahr);
 		
-		//Dropdown-Box für Datumsauswahl
+		//Dropdown-Box f��r Datumsauswahl
 		JComboBox<String> cbJahr = new JComboBox<String>();
 		cbJahr.addItem(new String("2011"));
 		cbJahr.addItem(new String("2012"));
@@ -158,7 +156,7 @@ public class MainWindow {
 	     try 
 	     {  
 	         Class.forName("org.sqlite.JDBC");  
-	         connection = DriverManager.getConnection("jdbc:sqlite:/Users/Daniel/Developer/University/SW/Git/SW/ABCAnalyse/SwDB.db");  
+	         connection = DriverManager.getConnection("jdbc:sqlite:SwDB.db");  
 	         statement = connection.createStatement();  
 	         resultSet = statement  
 	                 .executeQuery("SELECT * FROM Warengruppe");  
