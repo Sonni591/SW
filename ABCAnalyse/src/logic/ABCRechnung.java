@@ -121,7 +121,7 @@ public class ABCRechnung {
 			while (daten.next()) {
 				Absatz a = new Absatz();
 				a.ArtikelNr = daten.getString("ArtikelNr");
-				a.Menge = daten.getInt("Menge");
+				a.Menge = daten.getInt("Gesamt Menge");
 				SumMenge += a.Menge;
 				artikellist.add(a);
 			}			
@@ -166,7 +166,7 @@ public class ABCRechnung {
 				
 				while (daten.next()) {
 					Absatz a = new Absatz();
-					a.Anzahl = daten.getInt("Anzahl");
+					a.Anzahl = daten.getInt("Gesamt Anzahl");
 					a.ArtikelNr = daten.getString("ArtikelNr");
 					SumAnzahl += a.Anzahl;
 					artikellist.add(a);
