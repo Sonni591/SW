@@ -419,6 +419,7 @@ public class PanelEinteilung extends JPanel {
 				return false;
 			}
 		}
+		//Neuer kommentar
 		return false;
 	}
 }
