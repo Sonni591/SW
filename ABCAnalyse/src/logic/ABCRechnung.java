@@ -55,12 +55,13 @@ public class ABCRechnung {
 		return abceinteilung;
 }
 	public void ABCBerechnungUmsatz(){
-		
+		Writer fw = null;
 		artikellist = new ArrayList<Absatz>();
+		ABCEinteilung abcEinteilung;
 		try {
 			ResultSet daten = CrudFunktionen.getResult(DBconnection, CrudBefehle.selectUmsatzGrouped);
-			ABCEinteilung abceinteilung = getABCEinteilung("Umsatz");
-			System.out.println(abceinteilung.Bezeichnung +" " +abceinteilung.AnteilA + " " +abceinteilung.AnteilB +" " +abceinteilung.AnteilC +" \n");
+			abcEinteilung = getABCEinteilung("Umsatz");
+			System.out.println(abcEinteilung.Bezeichnung +" " +abcEinteilung.AnteilA + " " +abcEinteilung.AnteilB +" " +abcEinteilung.AnteilC +" \n");
 			
 			while (daten.next()) {
 				Absatz a = new Absatz();
@@ -79,16 +80,13 @@ public class ABCRechnung {
 				
 				
 			}			
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
+
 		
 		
-		Writer fw = null;
-		try
-		{
 		
-		fw = new FileWriter( "fileWriter.txt" );
+
+		
+		fw = new FileWriter( "fileWriter.csv" );
 		double prevMengeProzent = 0;
 		double prevAnzahlProzent = 0;
 		double prevUmsatzProzent = 0;
@@ -100,24 +98,29 @@ public class ABCRechnung {
 			//a.AnzahlProzent = (double)a.Anzahl/(double)SumAnzahl;
 			//a.AnzahlProzentKum = a.AnzahlProzent + prevAnzahlProzent;
 			//prevAnzahlProzent = a.AnzahlProzentKum;
-			a.UmsatzProzent = (double)a.Umsatz/(double)SumUmsatz;
+			a.UmsatzProzent = (double)(a.Umsatz/(double)SumUmsatz)*100;
 			
 			a.UmsatzProzentKum = a.UmsatzProzent + prevUmsatzProzent;
 			
 			prevUmsatzProzent = a.UmsatzProzentKum;
-			
-			//System.out.println(i + " " + a.ArtikelNr + " " + a.Anzahl+  " " + a.AnzahlProzent + " " + a.AnzahlProzentKum);
-			
-			
+			if(a.UmsatzProzentKum < abcEinteilung.AnteilA){
+				a.UmsatzABCKennzahl = 'A';
+			} else if (a.UmsatzProzentKum <abcEinteilung.AnteilA + abcEinteilung.AnteilB){
+				a.UmsatzABCKennzahl = 'B';
+			} else {
+				a.UmsatzABCKennzahl = 'C';
+			}
 			
 
 
 			  
-			  fw.append("\"" +  i + "\";\"" + a.ArtikelNr + "\";\"" + a.Umsatz + "\";\"" + a.UmsatzProzent + "\";\"" + a.UmsatzProzentKum + "\";");
+			  fw.append("\"" +  i + "\";\"" + a.ArtikelNr + "\";\"" + a.Umsatz + "\";\"" + a.UmsatzProzent + "\";\"" + a.UmsatzProzentKum + "\";\"" + a.UmsatzABCKennzahl + "\";");
 			  fw.append( System.getProperty("line.separator") ); // e.g. "\n"
 
 			i++;
 		}
+		} catch(SQLException e) {
+			e.printStackTrace();
 		}
 		catch ( IOException e ) {
 		  System.err.println( "Konnte Datei nicht erstellen" );
