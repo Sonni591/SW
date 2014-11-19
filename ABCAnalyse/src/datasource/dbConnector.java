@@ -22,7 +22,7 @@ public class dbConnector {
 	     }
 	}
 	
-	public static void closSqLiteConnection()
+	public static void closeSqLiteConnection()
 	{
 		try
 		{
