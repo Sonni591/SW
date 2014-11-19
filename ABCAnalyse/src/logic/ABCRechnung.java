@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 import DBObjects.ABCEinteilung;
 import DBObjects.Absatz;
-import DBObjects.Artikel;
 import datasource.CrudBefehle;
 import datasource.CrudFunktionen;
 
@@ -30,6 +29,9 @@ public class ABCRechnung {
 	
 	public ABCRechnung(Connection _DBconnection){
 		DBconnection = _DBconnection;
+		ABCBerechnungUmsatz();
+		ABCBerechnungAuftragsanzahl();
+		ABCBerechnungMenge();
 	}
 	
 	private ABCEinteilung getABCEinteilung(String kriterium){
