@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 
 
+
+import DBObjects.ABCEinteilung;
 import DBObjects.Absatz;
 import DBObjects.Artikel;
 import datasource.CrudBefehle;
@@ -30,24 +32,49 @@ public class ABCRechnung {
 		DBconnection = _DBconnection;
 	}
 	
-	public void getData(){
+	private ABCEinteilung getABCEinteilung(String kriterium){
+		ABCEinteilung abceinteilung = new ABCEinteilung();
+		try {
+			ResultSet einteilung;
+			if (kriterium == "Umsatz"){
+				einteilung = CrudFunktionen.getResult(DBconnection, CrudBefehle.selectEinteilungUmsatz);
+			}else if (kriterium == "Menge"){
+				einteilung = CrudFunktionen.getResult(DBconnection, CrudBefehle.selectEinteilungMenge);
+			}else {
+				einteilung = CrudFunktionen.getResult(DBconnection, CrudBefehle.selectEinteilungAuftragsanzahl);
+			}
+			while (einteilung.next()) {
+			abceinteilung.Bezeichnung = einteilung.getString("Bezeichnung");
+			abceinteilung.AnteilA = einteilung.getInt("AnteilA");
+			abceinteilung.AnteilB = einteilung.getInt("AnteilB");	
+			abceinteilung.AnteilC = einteilung.getInt("AnteilC");
+			}	
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return abceinteilung;
+}
+	public void ABCBerechnungUmsatz(){
 		
 		artikellist = new ArrayList<Absatz>();
 		try {
-			ResultSet daten = CrudFunktionen.getResult(DBconnection, CrudBefehle.selectAbsatz);
+			ResultSet daten = CrudFunktionen.getResult(DBconnection, CrudBefehle.selectUmsatzGrouped);
+			ABCEinteilung abceinteilung = getABCEinteilung("Umsatz");
+			System.out.println(abceinteilung.Bezeichnung +" " +abceinteilung.AnteilA + " " +abceinteilung.AnteilB +" " +abceinteilung.AnteilC +" \n");
 			
 			while (daten.next()) {
 				Absatz a = new Absatz();
-				a.Anzahl = daten.getInt("Anzahl");
+				//a.Anzahl = daten.getInt("Anzahl");
 				a.ArtikelNr = daten.getString("ArtikelNr");
-				a.Datum = daten.getDate("Datum");
-				a.LagerNr = daten.getInt("LagerNr");
-				a.Menge = daten.getInt("Menge");
-				a.Umsatz = daten.getDouble("Umsatz");
+				//a.Datum = daten.getDate("Datum");
+				//a.LagerNr = daten.getInt("LagerNr");
+				//a.Menge = daten.getInt("Menge");
+				a.Umsatz = daten.getDouble("Gesamt Umsatz");
 				
-				SumAnzahl += a.Anzahl;
-				SumMenge += a.Menge;
+				//SumAnzahl += a.Anzahl;
+				//SumMenge += a.Menge;
 				SumUmsatz += a.Umsatz;
+				
 				artikellist.add(a);
 				
 				
@@ -67,14 +94,16 @@ public class ABCRechnung {
 		double prevUmsatzProzent = 0;
 		int i = 0;
 		for(Absatz a : artikellist){
-			a.MengeProzent = (double)a.Menge/(double)SumMenge;
-			a.MengeProzentKum = a.MengeProzent + prevMengeProzent;
-			prevMengeProzent = a.MengeProzentKum;
-			a.AnzahlProzent = (double)a.Anzahl/(double)SumAnzahl;
-			a.AnzahlProzentKum = a.AnzahlProzent + prevAnzahlProzent;
-			prevAnzahlProzent = a.AnzahlProzentKum;
+			//a.MengeProzent = (double)a.Menge/(double)SumMenge;
+			//a.MengeProzentKum = a.MengeProzent + prevMengeProzent;
+			//prevMengeProzent = a.MengeProzentKum;
+			//a.AnzahlProzent = (double)a.Anzahl/(double)SumAnzahl;
+			//a.AnzahlProzentKum = a.AnzahlProzent + prevAnzahlProzent;
+			//prevAnzahlProzent = a.AnzahlProzentKum;
 			a.UmsatzProzent = (double)a.Umsatz/(double)SumUmsatz;
+			
 			a.UmsatzProzentKum = a.UmsatzProzent + prevUmsatzProzent;
+			
 			prevUmsatzProzent = a.UmsatzProzentKum;
 			
 			//System.out.println(i + " " + a.ArtikelNr + " " + a.Anzahl+  " " + a.AnzahlProzent + " " + a.AnzahlProzentKum);
@@ -84,7 +113,7 @@ public class ABCRechnung {
 
 
 			  
-			  fw.append( i + " " + a.ArtikelNr + " " + a.Anzahl+  " " + a.AnzahlProzent + " " + a.AnzahlProzentKum);
+			  fw.append("\"" +  i + "\";\"" + a.ArtikelNr + "\";\"" + a.Umsatz + "\";\"" + a.UmsatzProzent + "\";\"" + a.UmsatzProzentKum + "\";");
 			  fw.append( System.getProperty("line.separator") ); // e.g. "\n"
 
 			i++;
