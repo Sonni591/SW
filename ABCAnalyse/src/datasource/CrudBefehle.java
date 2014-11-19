@@ -4,6 +4,7 @@ public class CrudBefehle {
 
 	//Bereich für Select-Befehle
 	public static String selectABCEinteilung = "select * from ABCEinteilung order by Bezeichnung asc";
+	public static String selectABCZuordnung = "select * from ABCZuordnung order by Kriterium1,Kriterium2,Kriterium3 asc";
 	public static String selectAbsatz = "select * from Absatz";
 	
 	public static String selectUmsatzGrouped = "SELECT ArtikelNr, Sum(Umsatz) as \"Gesamt Umsatz\"FROM Absatz GROUP BY ArtikelNr Order By \"Gesamt Umsatz\" DESC;";

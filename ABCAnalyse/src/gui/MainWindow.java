@@ -40,7 +40,6 @@ public class MainWindow {
 		//Zuerst zur Datenbank verbinden
 		DBconnection = DBConnector.connectSqLite();
 		ABCRechnung rechnung = new ABCRechnung(DBconnection);
-		rechnung.ABCBerechnungUmsatz();
 		//Initialisieren aller Komponenten
 		initialize();
 	}
@@ -61,7 +60,7 @@ public class MainWindow {
 		//Einzelne Tabpages
 		PanelParameter panelParameter = new PanelParameter();
 		PanelEinteilung panelEinteilung = new PanelEinteilung();
-		JPanel panelZuordnung = new JPanel();
+		PanelZuordnung panelZuordnung = new PanelZuordnung();
 		JPanel panelErgebnis = new JPanel();
 		
 		//Hinzufuegen der einzelnen TabPages
