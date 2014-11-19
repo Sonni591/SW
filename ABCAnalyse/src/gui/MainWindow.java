@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import java.sql.Connection;
+
+import logic.ABCRechnung;
 import datasource.DBConnector;
 
 public class MainWindow {
@@ -28,6 +30,7 @@ public class MainWindow {
 				}
 			}
 		});
+
 	}
 
 	/**
@@ -36,6 +39,8 @@ public class MainWindow {
 	public MainWindow() {
 		//Zuerst zur Datenbank verbinden
 		DBconnection = DBConnector.connectSqLite();
+		ABCRechnung rechnung = new ABCRechnung();
+		rechnung.getData(DBconnection);
 		//Initialisieren aller Komponenten
 		initialize();
 	}
