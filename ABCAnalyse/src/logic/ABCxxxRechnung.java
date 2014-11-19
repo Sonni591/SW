@@ -1,8 +1,8 @@
 package logic;
 
-public class ABCxxxRechnung {
+public class ABCRechnung {
 	
-	private void testtest(){
+	private void getData(){
 		
 	}
 }
