@@ -12,3 +12,6 @@ hs_err_pid*
 
 #DS Store
 *.DS_Store
+
+#HG Dateien
+*.hg
