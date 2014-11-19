@@ -65,40 +65,16 @@ public class ABCRechnung {
 			
 			while (daten.next()) {
 				Absatz a = new Absatz();
-				//a.Anzahl = daten.getInt("Anzahl");
 				a.ArtikelNr = daten.getString("ArtikelNr");
-				//a.Datum = daten.getDate("Datum");
-				//a.LagerNr = daten.getInt("LagerNr");
-				//a.Menge = daten.getInt("Menge");
 				a.Umsatz = daten.getDouble("Gesamt Umsatz");
-				
-				//SumAnzahl += a.Anzahl;
-				//SumMenge += a.Menge;
 				SumUmsatz += a.Umsatz;
-				
 				artikellist.add(a);
-				
-				
 			}			
-
-		
-		
-		
-
-		
-		fw = new FileWriter( "fileWriter.csv" );
-		double prevMengeProzent = 0;
-		double prevAnzahlProzent = 0;
+		fw = new FileWriter( "fileWriterUmsatz.csv" );
 		double prevUmsatzProzent = 0;
 		int i = 0;
 		for(Absatz a : artikellist){
-			//a.MengeProzent = (double)a.Menge/(double)SumMenge;
-			//a.MengeProzentKum = a.MengeProzent + prevMengeProzent;
-			//prevMengeProzent = a.MengeProzentKum;
-			//a.AnzahlProzent = (double)a.Anzahl/(double)SumAnzahl;
-			//a.AnzahlProzentKum = a.AnzahlProzent + prevAnzahlProzent;
-			//prevAnzahlProzent = a.AnzahlProzentKum;
-			a.UmsatzProzent = (double)(a.Umsatz/(double)SumUmsatz)*100;
+			a.UmsatzProzent = ((double)a.Umsatz/(double)SumUmsatz)*100;
 			
 			a.UmsatzProzentKum = a.UmsatzProzent + prevUmsatzProzent;
 			
@@ -110,13 +86,8 @@ public class ABCRechnung {
 			} else {
 				a.UmsatzABCKennzahl = 'C';
 			}
-			
-
-
-			  
 			  fw.append("\"" +  i + "\";\"" + a.ArtikelNr + "\";\"" + a.Umsatz + "\";\"" + a.UmsatzProzent + "\";\"" + a.UmsatzProzentKum + "\";\"" + a.UmsatzABCKennzahl + "\";");
 			  fw.append( System.getProperty("line.separator") ); // e.g. "\n"
-
 			i++;
 		}
 		} catch(SQLException e) {
@@ -134,4 +105,103 @@ public class ABCRechnung {
 			
 	}
 
+	
+	
+	public void ABCBerechnungMenge(){
+		Writer fw = null;
+		artikellist = new ArrayList<Absatz>();
+		ABCEinteilung abcEinteilung;
+		try {
+			ResultSet daten = CrudFunktionen.getResult(DBconnection, CrudBefehle.selectMengeGrouped);
+			abcEinteilung = getABCEinteilung("Menge");
+			System.out.println(abcEinteilung.Bezeichnung +" " +abcEinteilung.AnteilA + " " +abcEinteilung.AnteilB +" " +abcEinteilung.AnteilC +" \n");
+			
+			while (daten.next()) {
+				Absatz a = new Absatz();
+				a.ArtikelNr = daten.getString("ArtikelNr");
+				a.Menge = daten.getInt("Menge");
+				SumMenge += a.Menge;
+				artikellist.add(a);
+			}			
+		fw = new FileWriter( "fileWriterMenge.csv" );
+		double prevMengeProzent = 0;
+		int i = 0;
+		for(Absatz a : artikellist){
+			a.MengeProzent = ((double)a.Menge/(double)SumMenge)*100;
+			a.MengeProzentKum = a.MengeProzent + prevMengeProzent;
+			prevMengeProzent = a.MengeProzentKum;
+			if(a.MengeProzentKum < abcEinteilung.AnteilA){
+				a.MengeABCKennzahl = 'A';
+			} else if (a.MengeProzentKum <abcEinteilung.AnteilA + abcEinteilung.AnteilB){
+				a.MengeABCKennzahl = 'B';
+			} else {
+				a.MengeABCKennzahl = 'C';
+			}
+			  fw.append("\"" +  i + "\";\"" + a.ArtikelNr + "\";\"" + a.Menge + "\";\"" + a.MengeProzent + "\";\"" + a.MengeProzentKum + "\";\"" + a.MengeABCKennzahl + "\";");
+			  fw.append( System.getProperty("line.separator") ); // e.g. "\n"
+			i++;
+		}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		catch ( IOException e ) {
+		  System.err.println( "Konnte Datei nicht erstellen" );
+		}
+		finally {
+		  if ( fw != null )
+		    try { fw.close(); } catch ( IOException e ) { e.printStackTrace(); }
+		}
+	}
+
+		public void ABCBerechnungAuftragsanzahl(){
+			Writer fw = null;
+			artikellist = new ArrayList<Absatz>();
+			ABCEinteilung abcEinteilung;
+			try {
+				ResultSet daten = CrudFunktionen.getResult(DBconnection, CrudBefehle.selectAnzahlGrouped);
+				abcEinteilung = getABCEinteilung("Auftragsanzahl");
+				System.out.println(abcEinteilung.Bezeichnung +" " +abcEinteilung.AnteilA + " " +abcEinteilung.AnteilB +" " +abcEinteilung.AnteilC +" \n");
+				
+				while (daten.next()) {
+					Absatz a = new Absatz();
+					a.Anzahl = daten.getInt("Anzahl");
+					a.ArtikelNr = daten.getString("ArtikelNr");
+					SumAnzahl += a.Anzahl;
+					artikellist.add(a);
+				}			
+			fw = new FileWriter( "fileWriterAnzahl.csv" );
+
+			double prevAnzahlProzent = 0;
+			int i = 0;
+			for(Absatz a : artikellist){
+				a.AnzahlProzent = ((double)a.Anzahl/(double)SumAnzahl)*100;
+				a.AnzahlProzentKum = a.AnzahlProzent + prevAnzahlProzent;
+				prevAnzahlProzent = a.AnzahlProzentKum;
+				if(a.AnzahlProzentKum < abcEinteilung.AnteilA){
+					a.AnzahlABCKennzahl = 'A';
+				} else if (a.AnzahlProzentKum <abcEinteilung.AnteilA + abcEinteilung.AnteilB){
+					a.AnzahlABCKennzahl = 'B';
+				} else {
+					a.AnzahlABCKennzahl = 'C';
+				}
+				  fw.append("\"" +  i + "\";\"" + a.ArtikelNr + "\";\"" + a.Anzahl + "\";\"" + a.AnzahlProzent + "\";\"" + a.AnzahlProzentKum + "\";\"" + a.AnzahlABCKennzahl + "\";");
+				  fw.append( System.getProperty("line.separator") ); // e.g. "\n"
+				i++;
+			}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			catch ( IOException e ) {
+			  System.err.println( "Konnte Datei nicht erstellen" );
+			}
+			finally {
+			  if ( fw != null )
+			    try { fw.close(); } catch ( IOException e ) { e.printStackTrace(); }
+			}
+
+			
+				
+				
+			
+	}
 }
