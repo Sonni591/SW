@@ -1,9 +1,15 @@
 package logic;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+
+
 
 
 
@@ -49,6 +55,13 @@ public class ABCRechnung {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
+		
+		
+		Writer fw = null;
+		try
+		{
+		
+		fw = new FileWriter( "fileWriter.txt" );
 		double prevMengeProzent = 0;
 		double prevAnzahlProzent = 0;
 		double prevUmsatzProzent = 0;
@@ -64,8 +77,25 @@ public class ABCRechnung {
 			a.UmsatzProzentKum = a.UmsatzProzent + prevUmsatzProzent;
 			prevUmsatzProzent = a.UmsatzProzentKum;
 			
-			System.out.println(i + " " + a.ArtikelNr + " " + a.Anzahl+  " " + a.AnzahlProzent + " " + a.AnzahlProzentKum);
+			//System.out.println(i + " " + a.ArtikelNr + " " + a.Anzahl+  " " + a.AnzahlProzent + " " + a.AnzahlProzentKum);
+			
+			
+			
+
+
+			  
+			  fw.append( i + " " + a.ArtikelNr + " " + a.Anzahl+  " " + a.AnzahlProzent + " " + a.AnzahlProzentKum);
+			  fw.append( System.getProperty("line.separator") ); // e.g. "\n"
+
 			i++;
+		}
+		}
+		catch ( IOException e ) {
+		  System.err.println( "Konnte Datei nicht erstellen" );
+		}
+		finally {
+		  if ( fw != null )
+		    try { fw.close(); } catch ( IOException e ) { e.printStackTrace(); }
 		}
 
 		
