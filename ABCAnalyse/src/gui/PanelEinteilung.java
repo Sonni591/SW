@@ -145,7 +145,7 @@ public class PanelEinteilung extends JPanel {
 
 		txtUmsatzC = new JFormattedTextField(percentFormat);
 		txtUmsatzC.setEditable(false);
-		txtUmsatzC.setBackground(Color.LIGHT_GRAY);
+		txtUmsatzC.setBackground(new Color(227,227,227));
 		GridBagConstraints gbc_txtUmsatzC = new GridBagConstraints();
 		gbc_txtUmsatzC.fill = GridBagConstraints.BOTH;
 		gbc_txtUmsatzC.insets = new Insets(0, 0, 5, 0);
@@ -179,7 +179,7 @@ public class PanelEinteilung extends JPanel {
 
 		txtAnzahlC = new JFormattedTextField(percentFormat);
 		txtAnzahlC.setEditable(false);
-		txtAnzahlC.setBackground(Color.LIGHT_GRAY);
+		txtAnzahlC.setBackground(new Color(227,227,227));
 		GridBagConstraints gbc_txtAnzahlC = new GridBagConstraints();
 		gbc_txtAnzahlC.fill = GridBagConstraints.BOTH;
 		gbc_txtAnzahlC.insets = new Insets(0, 0, 5, 0);
@@ -213,7 +213,7 @@ public class PanelEinteilung extends JPanel {
 
 		txtMengeC = new JFormattedTextField(percentFormat);
 		txtMengeC.setEditable(false);
-		txtMengeC.setBackground(Color.LIGHT_GRAY);
+		txtMengeC.setBackground(new Color(227,227,227));
 		GridBagConstraints gbc_txtMengeC = new GridBagConstraints();
 		gbc_txtMengeC.fill = GridBagConstraints.BOTH;
 		gbc_txtMengeC.gridx = 3;
