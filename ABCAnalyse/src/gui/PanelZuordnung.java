@@ -4,11 +4,14 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -18,6 +21,8 @@ import javax.swing.table.DefaultTableModel;
 
 import datasource.CrudBefehle;
 import datasource.CrudFunktionen;
+
+import javax.swing.JButton;
 
 public class PanelZuordnung extends JPanel {
 
@@ -49,6 +54,10 @@ public class PanelZuordnung extends JPanel {
 
 		JPanel panelZuordnungFooter = new JPanel();
 		add(panelZuordnungFooter, BorderLayout.SOUTH);
+		panelZuordnungFooter.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+		
+		JButton btnSpeichern = new JButton("Speichern");
+		panelZuordnungFooter.add(btnSpeichern);
 
 		getTableData();
 
@@ -69,14 +78,17 @@ public class PanelZuordnung extends JPanel {
 	}
 
 	public void getTableData() {
-		DefaultTableModel dtm = new DefaultTableModel();
+		JComboBox<String> cboZuordnung = new JComboBox<String>();
+		cboZuordnung.addItem("A");
+		cboZuordnung.addItem("B");
+		cboZuordnung.addItem("C");
 		ResultSet abcEinteilungResult = null;
 		try {
 			abcEinteilungResult = CrudFunktionen.getResult(
 					MainWindow.DBconnection, CrudBefehle.selectABCZuordnung);
 
 			table.setModel(buildTableModel(abcEinteilungResult));
-			dtm.fireTableDataChanged();
+			table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(cboZuordnung));
 		} catch (Exception e) {
 			System.err.println(e);
 			e.printStackTrace();
