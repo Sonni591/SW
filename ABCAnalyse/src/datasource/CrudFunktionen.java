@@ -36,4 +36,23 @@ public class CrudFunktionen {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void updateABCZuordnung(Connection connection, String updateBefehl, String zuordnung, 
+										  String kriterium1, String kriterium2, String kriterium3)
+	{
+		PreparedStatement updateStatement = null;
+		try {
+			connection.setAutoCommit(false);
+			updateStatement = connection.prepareStatement(updateBefehl);
+			updateStatement.setString(1, zuordnung);
+			updateStatement.setString(2, kriterium1);
+			updateStatement.setString(3, kriterium2);
+			updateStatement.setString(4, kriterium3);
+			updateStatement.executeUpdate();
+	        connection.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

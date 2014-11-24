@@ -4,7 +4,10 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -13,11 +16,13 @@ import java.util.Vector;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import datasource.CrudBefehle;
 import datasource.CrudFunktionen;
@@ -48,24 +53,81 @@ public class PanelZuordnung extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane();
 
-		table = new JTable();
+		table = new JTable() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				if(column == 0 || column == 1 || column == 2)
+				{
+					return false;
+				}
+				return true;
+			}
+		};
+		
+//		table = new JTable();
+
 		scrollPane.setViewportView(table);
 		panelZuordnungContent.add(scrollPane);
 
 		JPanel panelZuordnungFooter = new JPanel();
 		add(panelZuordnungFooter, BorderLayout.SOUTH);
 		panelZuordnungFooter.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-		
+
 		JButton btnSpeichern = new JButton("Speichern");
+		btnSpeichern.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+
+				updateABCZuordnung();
+				JOptionPane.showMessageDialog(null,
+						"Das Speichern der ABC-Zuordnung war erfolgreich.",
+						"Speichern erfolgreich",
+						JOptionPane.INFORMATION_MESSAGE);
+
+			}
+		});
 		panelZuordnungFooter.add(btnSpeichern);
 
 		getTableData();
 
-		DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
-		cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		final DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
+
+		TableCellRenderer cellRenderer = new TableCellRenderer() {
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table,
+					Object value, boolean isSelected, boolean hasFocus,
+					int row, int column) {
+				Component c = DEFAULT_RENDERER.getTableCellRendererComponent(
+						table, value, isSelected, hasFocus, row, column);
+
+				if (column == 0 || column == 1 || column == 2) {
+					c.setBackground(new Color(227,227,227));
+				} else {
+					c.setBackground(Color.WHITE);
+				}
+				// Setzen der Selektions-Farbe
+				if (isSelected) {
+					c.setBackground(table.getSelectionBackground());
+				}
+				return c;
+			}
+
+		};
+		DEFAULT_RENDERER.setHorizontalAlignment(SwingConstants.CENTER);
+
+//		DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
+//		cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) table
 				.getTableHeader().getDefaultRenderer();
 		headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
 		for (int columnIndex = 0; columnIndex < table.getColumnCount(); columnIndex++) {
 			table.getColumnModel().getColumn(columnIndex)
 					.setCellRenderer(cellRenderer);
@@ -88,7 +150,8 @@ public class PanelZuordnung extends JPanel {
 					MainWindow.DBconnection, CrudBefehle.selectABCZuordnung);
 
 			table.setModel(buildTableModel(abcEinteilungResult));
-			table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(cboZuordnung));
+			table.getColumnModel().getColumn(3)
+					.setCellEditor(new DefaultCellEditor(cboZuordnung));
 		} catch (Exception e) {
 			System.err.println(e);
 			e.printStackTrace();
@@ -124,5 +187,17 @@ public class PanelZuordnung extends JPanel {
 		}
 		return new DefaultTableModel(data, columnNames);
 	}
-}
 
+	private void updateABCZuordnung() {
+		for (int row = 0; row < table.getRowCount(); row++) {
+			String zuordnung = table.getModel().getValueAt(row, 3).toString();
+			String kriterium1 = table.getModel().getValueAt(row, 0).toString();
+			String kriterium2 = table.getModel().getValueAt(row, 1).toString();
+			String kriterium3 = table.getModel().getValueAt(row, 2).toString();
+
+			CrudFunktionen.updateABCZuordnung(MainWindow.DBconnection,
+					CrudBefehle.updateABCZuordnung, zuordnung, kriterium1,
+					kriterium2, kriterium3);
+		}
+	}
+}
