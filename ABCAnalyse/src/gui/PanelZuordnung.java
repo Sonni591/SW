@@ -139,6 +139,7 @@ public class PanelZuordnung extends JPanel {
 		table.setGridColor(Color.LIGHT_GRAY);
 	}
 
+	
 	public void getTableData() {
 		JComboBox<String> cboZuordnung = new JComboBox<String>();
 		cboZuordnung.addItem("A");
