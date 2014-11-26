@@ -2,7 +2,6 @@ package gui;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import java.sql.Connection;
@@ -61,7 +60,7 @@ public class MainWindow {
 		PanelParameter panelParameter = new PanelParameter();
 		PanelEinteilung panelEinteilung = new PanelEinteilung();
 		PanelZuordnung panelZuordnung = new PanelZuordnung();
-		JPanel panelErgebnis = new JPanel();
+		PanelErgebnis panelErgebnis = new PanelErgebnis();
 		
 		//Hinzufuegen der einzelnen TabPages
 		tabPageContainer.addTab("Parameter", panelParameter);

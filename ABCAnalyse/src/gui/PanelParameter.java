@@ -13,22 +13,15 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import org.jbundle.thin.base.screen.jcalendarbutton.JCalendarPopup;
-
 import net.sourceforge.jcalendarbutton.JCalendarButton;
 
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+@SuppressWarnings("deprecation")
 public class PanelParameter extends JPanel{
 
 	/**
@@ -77,7 +70,6 @@ public class PanelParameter extends JPanel{
 		panelZeitraumAuswahl.add(txtVonDatum);
 		txtVonDatum.setColumns(10);
 
-		@SuppressWarnings("deprecation")
 		JCalendarButton btnVonDatum = new JCalendarButton();
 		btnVonDatum.addPropertyChangeListener(new PropertyChangeListener() {
 			
@@ -100,8 +92,7 @@ public class PanelParameter extends JPanel{
 		panelZeitraumAuswahl.add(txtBisDatum);
 		txtBisDatum.setEditable(false);
 		txtBisDatum.setColumns(10);
-		
-		@SuppressWarnings("deprecation")
+
 		JCalendarButton btnBisDatum = new JCalendarButton();
 		btnBisDatum.addPropertyChangeListener(new PropertyChangeListener() {
 			
