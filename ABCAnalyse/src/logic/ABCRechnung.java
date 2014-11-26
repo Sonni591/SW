@@ -26,6 +26,7 @@ public class ABCRechnung {
 	
 	public ABCRechnung(Connection _DBconnection){
 		DBconnection = _DBconnection;
+		getAbsatzDaten(Strings.Umsatz);
 		GesamtABCBerechnung();
 	}
 	
@@ -83,8 +84,6 @@ public class ABCRechnung {
 	}
 	
 	public void GesamtABCBerechnung(){
-		
-			getAbsatzDaten(Strings.Umsatz);
 		ABCBerechnungUmsatz();
 		Collections.sort(artikellist,new Comparator<Absatz>() {
 	        @Override
@@ -100,8 +99,10 @@ public class ABCRechnung {
 	            return  Integer.compare(a2.Anzahl, a1.Anzahl);
 	        }});
 		ABCBerechnungAuftragsanzahl();
-		
+		CrudFunktionen.updateABCResult(DBconnection,artikellist);
 	}
+	
+
 	
 	public void ABCBerechnungUmsatz(){
 		ABCEinteilung abcEinteilung;
@@ -109,9 +110,7 @@ public class ABCRechnung {
 		double prevUmsatzProzent = 0;
 		for(Absatz a : artikellist){
 			a.UmsatzProzent = ((double)a.Umsatz/(double)SumUmsatz)*100;
-			
 			a.UmsatzProzentKum = a.UmsatzProzent + prevUmsatzProzent;
-			
 			prevUmsatzProzent = a.UmsatzProzentKum;
 			if(a.UmsatzProzentKum < abcEinteilung.AnteilA){
 				a.UmsatzABCKennzahl = 'A';

@@ -18,4 +18,5 @@ public char AnzahlABCKennzahl;
 public double UmsatzProzent;
 public double UmsatzProzentKum;
 public char UmsatzABCKennzahl;
+public char ABCKennzahl;
 }
