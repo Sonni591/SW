@@ -51,8 +51,6 @@ public class PanelZuordnung extends JPanel {
 		add(panelZuordnungContent, BorderLayout.CENTER);
 		panelZuordnungContent.setLayout(new BorderLayout(0, 0));
 
-		JScrollPane scrollPane = new JScrollPane();
-
 		table = new JTable() {
 			/**
 			 * 
@@ -68,9 +66,8 @@ public class PanelZuordnung extends JPanel {
 				return true;
 			}
 		};
-		
-//		table = new JTable();
 
+		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(table);
 		panelZuordnungContent.add(scrollPane);
 
@@ -120,9 +117,6 @@ public class PanelZuordnung extends JPanel {
 
 		};
 		DEFAULT_RENDERER.setHorizontalAlignment(SwingConstants.CENTER);
-
-//		DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
-//		cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) table
 				.getTableHeader().getDefaultRenderer();
@@ -137,6 +131,8 @@ public class PanelZuordnung extends JPanel {
 		table.setShowHorizontalLines(true);
 		table.setShowVerticalLines(true);
 		table.setGridColor(Color.LIGHT_GRAY);
+		//Deaktiviert das verschieben der Spalten
+		table.getTableHeader().setReorderingAllowed(false);
 	}
 
 	
