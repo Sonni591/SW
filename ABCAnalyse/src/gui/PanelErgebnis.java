@@ -1,14 +1,15 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -35,7 +36,16 @@ import datasource.CrudFunktionen;
 			panelErgebnisContent.setLayout(new BorderLayout(0, 0));
 			
 			resultTable = new JTable();
-			panelErgebnisContent.add(resultTable);
+			JScrollPane scrollPane = new JScrollPane();
+			scrollPane.setViewportView(resultTable);
+			panelErgebnisContent.add(scrollPane);
+			
+			resultTable.setShowGrid(true);
+			resultTable.setShowHorizontalLines(true);
+			resultTable.setShowVerticalLines(true);
+			resultTable.setGridColor(Color.LIGHT_GRAY);
+			//Deaktiviert das verschieben der Spalten
+			resultTable.getTableHeader().setReorderingAllowed(false);
 			
 			getTableData();
 			
@@ -43,10 +53,6 @@ import datasource.CrudFunktionen;
 		
 		
 		public void getTableData() {
-			JComboBox<String> cboZuordnung = new JComboBox<String>();
-			cboZuordnung.addItem("A");
-			cboZuordnung.addItem("B");
-			cboZuordnung.addItem("C");
 			ResultSet abcEinteilungResult = null;
 			try {
 				abcEinteilungResult = CrudFunktionen.getResult(
