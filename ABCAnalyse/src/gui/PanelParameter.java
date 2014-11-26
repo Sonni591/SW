@@ -4,12 +4,28 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import org.jbundle.thin.base.screen.jcalendarbutton.JCalendarPopup;
+
+import net.sourceforge.jcalendarbutton.JCalendarButton;
+
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class PanelParameter extends JPanel{
 
@@ -19,7 +35,7 @@ public class PanelParameter extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	public static JTextField txtVonDatum;
-	public static JTextField txtJahr;
+	public static JComboBox<Integer> cboJahr;
 	public static JTextField txtBisDatum;
 	
 	public PanelParameter()
@@ -58,13 +74,46 @@ public class PanelParameter extends JPanel{
 		txtVonDatum = new JTextField();
 		panelZeitraumAuswahl.add(txtVonDatum);
 		txtVonDatum.setColumns(10);
+
+		@SuppressWarnings("deprecation")
+		JCalendarButton btnVonDatum = new JCalendarButton();
+		btnVonDatum.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if(evt.getNewValue() instanceof Date)
+				{
+					String formattedDate = new SimpleDateFormat("dd.MM.yyyy").format(evt.getNewValue());
+					txtVonDatum.setText(formattedDate);
+				}
+				
+			}
+		});
+		panelZeitraumAuswahl.add(btnVonDatum);
 		
 		JLabel lblBis = new JLabel("bis:");
 		panelZeitraumAuswahl.add(lblBis);
 		
 		txtBisDatum = new JTextField();
 		panelZeitraumAuswahl.add(txtBisDatum);
+		txtBisDatum.setEditable(false);
 		txtBisDatum.setColumns(10);
+		
+		@SuppressWarnings("deprecation")
+		JCalendarButton btnBisDatum = new JCalendarButton();
+		btnBisDatum.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if(evt.getNewValue() instanceof Date)
+				{
+					String formattedDate = new SimpleDateFormat("dd.MM.yyyy").format(evt.getNewValue());
+					txtBisDatum.setText(formattedDate);
+				}
+				
+			}
+		});
+		panelZeitraumAuswahl.add(btnBisDatum);
 		
 		JPanel panelJahresAuswahl = new JPanel();
 		panelParameterContent.add(panelJahresAuswahl, BorderLayout.WEST);
@@ -72,8 +121,19 @@ public class PanelParameter extends JPanel{
 		JRadioButton rdbtnJahr = new JRadioButton("Jahr:");
 		panelJahresAuswahl.add(rdbtnJahr);
 		
-		txtJahr = new JTextField();
-		panelJahresAuswahl.add(txtJahr);
-		txtJahr.setColumns(10);
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(rdbtnVon);
+		buttonGroup.add(rdbtnJahr);
+		rdbtnVon.setSelected(true);
+		
+		//Dropdown-Box für die Jahresauswahl
+		cboJahr = new JComboBox<Integer>();
+		panelJahresAuswahl.add(cboJahr);
+		
+		for(int year=2000; year <= 2015; year++)
+		{
+			cboJahr.addItem(year);
+		}
+		cboJahr.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
 	}
 }

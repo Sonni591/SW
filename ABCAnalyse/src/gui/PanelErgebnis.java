@@ -28,6 +28,8 @@ import datasource.CrudBefehle;
 import datasource.CrudFunktionen;
 
 	public class PanelErgebnis extends JPanel {
+		public PanelErgebnis() {
+		}
 
 
 	}

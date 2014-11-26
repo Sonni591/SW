@@ -7,15 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-
-
-
-
-
-
-
-
+import java.util.Collections;
 import java.util.Comparator;
 
 import objects.ABCEinteilung;
@@ -94,14 +86,14 @@ public class ABCRechnung {
 		
 			getAbsatzDaten(Strings.Umsatz);
 		ABCBerechnungUmsatz();
-		artikellist.sort(new Comparator<Absatz>() {
+		Collections.sort(artikellist,new Comparator<Absatz>() {
 	        @Override
 	        public int compare(Absatz  a1, Absatz  a2)
 	        {
 	            return  Integer.compare(a2.Menge, a1.Menge);
 	        }});
 		ABCBerechnungMenge();
-		artikellist.sort(new Comparator<Absatz>() {
+		Collections.sort(artikellist, new Comparator<Absatz>() {
 	        @Override
 	        public int compare(Absatz  a1, Absatz  a2)
 	        {
