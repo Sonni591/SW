@@ -2,12 +2,15 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -50,6 +53,14 @@ public class PanelParameter extends JPanel{
 		panelParameterFoot.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
 		JButton btnBerichte = new JButton("Berichte");
+		btnBerichte.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+
+				ChartTest chart = new ChartTest();
+				chart.createchart();
+			}
+		});
 		panelParameterFoot.add(btnBerichte);
 		
 		JButton btnBerechnen = new JButton("Berechnen");
