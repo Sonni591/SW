@@ -68,6 +68,7 @@ public class PanelParameter extends JPanel{
 		
 		txtVonDatum = new JTextField();
 		panelZeitraumAuswahl.add(txtVonDatum);
+		txtVonDatum.setEditable(false);
 		txtVonDatum.setColumns(10);
 
 		JCalendarButton btnVonDatum = new JCalendarButton();
@@ -119,7 +120,7 @@ public class PanelParameter extends JPanel{
 		buttonGroup.add(rdbtnJahr);
 		rdbtnVon.setSelected(true);
 		
-		//Dropdown-Box für die Jahresauswahl
+		//Dropdown-Box f��r die Jahresauswahl
 		cboJahr = new JComboBox<Integer>();
 		panelJahresAuswahl.add(cboJahr);
 		
