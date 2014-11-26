@@ -64,6 +64,7 @@ public class CrudFunktionen {
 PreparedStatement updateStatement = null;
 try {
 connection.setAutoCommit(false);
+connection.prepareStatement("DELETE FROM ABCResult").executeUpdate();
 for(Absatz a : liste){
 updateStatement = connection.prepareStatement(CrudBefehle.insertIntoABCResult);
 updateStatement.setString(1, a.ArtikelNr);

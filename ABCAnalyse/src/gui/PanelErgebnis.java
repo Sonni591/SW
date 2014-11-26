@@ -50,7 +50,7 @@ import datasource.CrudFunktionen;
 			ResultSet abcEinteilungResult = null;
 			try {
 				abcEinteilungResult = CrudFunktionen.getResult(
-						MainWindow.DBconnection, CrudBefehle.selectABCZuordnung);
+						MainWindow.DBconnection, CrudBefehle.selectABCResult);
 
 				resultTable.setModel(buildTableModel(abcEinteilungResult));
 			} catch (Exception e) {
