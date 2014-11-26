@@ -167,7 +167,7 @@ public class PanelZuordnung extends JPanel {
 
 	public static DefaultTableModel buildTableModel(ResultSet rs)
 			throws SQLException {
-
+		// test
 		ResultSetMetaData metaData = rs.getMetaData();
 
 		// names of columns
