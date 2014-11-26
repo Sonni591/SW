@@ -99,6 +99,12 @@ public class ABCRechnung {
 	            return  Integer.compare(a2.Anzahl, a1.Anzahl);
 	        }});
 		ABCBerechnungAuftragsanzahl();
+		
+		//CrudBefehle.selectABCZuordnung
+		for(Absatz a : artikellist){
+
+		}
+		
 		CrudFunktionen.updateABCResult(DBconnection,artikellist);
 	}
 	
