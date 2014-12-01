@@ -1,4 +1,5 @@
 package gui;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -8,6 +9,7 @@ import java.sql.Connection;
 
 import logic.ABCRechnung;
 import datasource.DBConnector;
+
 
 public class MainWindow {
 
@@ -50,6 +52,7 @@ public class MainWindow {
 		//Erstellen des Hauptframes
 		frame = new JFrame();
 		frame.setSize(700, 400);
+		frame.setMinimumSize(new Dimension(700, 400));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//TabbedPane fuer die einzelnen Tabpages

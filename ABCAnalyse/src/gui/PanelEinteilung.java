@@ -74,9 +74,9 @@ public class PanelEinteilung extends JPanel {
 		NumberFormat percentFormat = NumberFormat.getNumberInstance();
 
 		GridBagLayout gbl_panelEinteilungContent = new GridBagLayout();
-		gbl_panelEinteilungContent.columnWidths = new int[] { 100, 100, 100,
+		gbl_panelEinteilungContent.columnWidths = new int[] { 70, 100, 100,
 				100, 0 };
-		gbl_panelEinteilungContent.rowHeights = new int[] { 36, 40, 36, 40, 36,
+		gbl_panelEinteilungContent.rowHeights = new int[] { 36, 5, 36, 40, 36,
 				40, 36, 0 };
 		gbl_panelEinteilungContent.columnWeights = new double[] { 0.0, 0.0,
 				0.0, 0.0, Double.MIN_VALUE };
@@ -235,7 +235,7 @@ public class PanelEinteilung extends JPanel {
 				else
 				{
 					JOptionPane.showMessageDialog(null,
-							"Speichern wegen ungültigen Werten nicht möglich.",
+							"Speichern wegen ung��ltigen Werten nicht m��glich.",
 							"Speichern fehlgeschlagen", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
@@ -254,7 +254,7 @@ public class PanelEinteilung extends JPanel {
 	}
 
 	/**
-	 * Lädt die Schwellwerte aus der Datenbank und zeigt diese in den
+	 * L��dt die Schwellwerte aus der Datenbank und zeigt diese in den
 	 * Textfeldern an
 	 */
 	private static void getABCEinteilung() {
@@ -348,7 +348,7 @@ public class PanelEinteilung extends JPanel {
 				int UmsatzB = Integer.parseInt(txtUmsatzB.getText());
 				if ((UmsatzA + UmsatzB) > 100) {
 					JOptionPane.showMessageDialog(null,
-							"Die Umsatz Schwellwerte übersteigen die 100%",
+							"Die Umsatz Schwellwerte ��bersteigen die 100%",
 							"Schwellwerte zu hoch", JOptionPane.ERROR_MESSAGE);
 					isSaveable = false;
 				} else {
@@ -365,7 +365,7 @@ public class PanelEinteilung extends JPanel {
 				int MengeB = Integer.parseInt(txtMengeB.getText());
 				if ((MengeA + MengeB) > 100) {
 					JOptionPane.showMessageDialog(null,
-							"Die Mengen Schwellwerte übersteigen die 100%",
+							"Die Mengen Schwellwerte ��bersteigen die 100%",
 							"Schwellwerte zu hoch", JOptionPane.ERROR_MESSAGE);
 					isSaveable = false;
 				} else {
@@ -383,7 +383,7 @@ public class PanelEinteilung extends JPanel {
 					JOptionPane
 							.showMessageDialog(
 									null,
-									"Die Auftragsanzahl Schwellwerte übersteigen die 100%",
+									"Die Auftragsanzahl Schwellwerte ��bersteigen die 100%",
 									"Schwellwerte zu hoch",
 									JOptionPane.ERROR_MESSAGE);
 					isSaveable = false;

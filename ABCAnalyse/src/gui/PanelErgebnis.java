@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -15,6 +16,9 @@ import javax.swing.table.DefaultTableModel;
 
 import datasource.CrudBefehle;
 import datasource.CrudFunktionen;
+
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
 
 	public class PanelErgebnis extends JPanel {
 		/**
@@ -44,6 +48,13 @@ import datasource.CrudFunktionen;
 			resultTable.setShowHorizontalLines(true);
 			resultTable.setShowVerticalLines(true);
 			resultTable.setGridColor(Color.LIGHT_GRAY);
+			
+			JPanel panelErgebnisFooter = new JPanel();
+			add(panelErgebnisFooter, BorderLayout.SOUTH);
+			panelErgebnisFooter.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+			
+			JButton btnExportExcel = new JButton("Excel-Export");
+			panelErgebnisFooter.add(btnExportExcel);
 			//Deaktiviert das verschieben der Spalten
 			resultTable.getTableHeader().setReorderingAllowed(false);
 			
