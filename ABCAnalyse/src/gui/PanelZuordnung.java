@@ -138,6 +138,7 @@ public class PanelZuordnung extends JPanel {
 	
 	public void getTableData() {
 		JComboBox<String> cboZuordnung = new JComboBox<String>();
+		cboZuordnung.setAlignmentX(CENTER_ALIGNMENT);
 		cboZuordnung.addItem("A");
 		cboZuordnung.addItem("B");
 		cboZuordnung.addItem("C");
