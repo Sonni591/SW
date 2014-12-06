@@ -3,6 +3,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.Panel;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,6 +30,9 @@ import datasource.CrudFunktionen;
 import javax.swing.JButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JProgressBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -597,31 +602,52 @@ public class PanelErgebnis extends JPanel {
 	}
 
 	private void exportToExcel() {
-		ExcelThread p = new ExcelThread(resultTable);
-		p.start();
+
+		// Create a file chooser
+		final JFileChooser fc = new JFileChooser();
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int returnVal = fc.showOpenDialog(this);
+
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = new File(fc.getSelectedFile() + "/test.xlsx");
+			ExcelThread p = new ExcelThread(resultTable, file);
+			p.start();
+		}
 	}
 
 }
 
 class ExcelThread extends Thread {
 	JTable resultTable;
+	File file;
 
-	ExcelThread(JTable resultTable) {
+	ExcelThread(JTable resultTable, File file) {
 		this.resultTable = resultTable;
+		this.file = file;	
 	}
 
 	public void run() {
 		try {
+			final JDialog dlg = new JDialog();
+			JProgressBar dpb = new JProgressBar(0, 500);
+			dpb.setMaximum(3);
+			dpb.setValue(0);
+			dlg.add(BorderLayout.CENTER, dpb);
+			JLabel lblDpbState = new JLabel("Lade Spaltennamen");
+			dlg.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+			dlg.setSize(300, 125);
+			dlg.setLocationRelativeTo(null);
+			dlg.setVisible(true);
+
 			Workbook fWorkbook = new XSSFWorkbook();
 			Sheet fSheet = fWorkbook.createSheet("newSheet");
 			Font sheetTitleFont = fWorkbook.createFont();
-			File file = new File("/Users/Daniel/Downloads/book.xlsx");
 			CellStyle cellStyle = fWorkbook.createCellStyle();
 
 			sheetTitleFont.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
 			// sheetTitleFont.setColor();
 			TableModel model = resultTable.getModel();
-
+			dlg.add(BorderLayout.NORTH, lblDpbState);
 			// Spaltennamen
 			TableColumnModel tcm = resultTable.getColumnModel();
 			Row fRow = fSheet.createRow(0);
@@ -632,36 +658,33 @@ class ExcelThread extends Thread {
 						.getHeaderValue().toString());
 
 			}
-
+			lblDpbState.setText("Lade Daten");
+			dpb.setValue(1);
 			// Daten der Tabelle
 			for (int i = 0; i < resultTable.getRowCount(); i++) {
-				if (i < 0) {
-					System.out.println("Shit iiiiiiii!");
-				}
-
 				fRow = fSheet.createRow(i + 1);
 				for (int j = 0; j < resultTable.getColumnCount(); j++) {
-					if (j < 0) {
-						System.out.println("Shit jjjjjj");
-					}
 					Cell cell = fRow.createCell(j);
 					cell.setCellValue(model.getValueAt(
 							resultTable.convertRowIndexToModel(i),
 							resultTable.convertColumnIndexToModel(j))
 							.toString());
 					cell.setCellStyle(cellStyle);
-
 				}
-
 			}
+			lblDpbState.setText("Auf Festplatte Schreiben");
+			dpb.setValue(2);
 			FileOutputStream fileOutputStream;
 			fileOutputStream = new FileOutputStream(file);
 			BufferedOutputStream bos = new BufferedOutputStream(
 					fileOutputStream);
 			fWorkbook.write(bos);
+			dpb.setValue(3);
+			Thread.sleep(100);
 			bos.close();
 			fileOutputStream.close();
 			System.out.println("Finished");
+			 dlg.setVisible(false);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
