@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
@@ -48,6 +49,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class PanelErgebnis extends JPanel {
 	/**
@@ -79,6 +82,12 @@ public class PanelErgebnis extends JPanel {
 
 		txtArtikel = new JTextField();
 		txtArtikel.setColumns(10);
+		txtArtikel.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				setFilter();
+			}
+		});
 
 		JLabel lblVertriebskanal = new JLabel("Vertriebskanal:");
 
@@ -604,12 +613,26 @@ public class PanelErgebnis extends JPanel {
 	private void exportToExcel() {
 
 		// Create a file chooser
-		final JFileChooser fc = new JFileChooser();
-		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		int returnVal = fc.showOpenDialog(this);
+		final JFileChooser fc;
+		
+        String path = System.getProperty("user.home"); 
+        File file = new File(path.trim()); 
+
+        fc = new JFileChooser(path); 
+        fc.setSelectedFile(new File("ABCExport.xlsx"));;
+        fc.setDialogType(JFileChooser.SAVE_DIALOG);  
+        fc.setDialogTitle("Speichern unter..."); 
+
+		//fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int returnVal = fc.showSaveDialog(this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File file = new File(fc.getSelectedFile() + "/test.xlsx");
+			path = fc.getSelectedFile().toString();
+			if(!path.endsWith(".xlsx"))
+			{
+				path = path + ".xlsx";
+			}
+			file = new File(path);
 			ExcelThread p = new ExcelThread(resultTable, file);
 			p.start();
 		}
