@@ -43,6 +43,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
+import logic.ABCRechnung;
 import datasource.CrudBefehle;
 import datasource.CrudFunktionen;
 
@@ -182,6 +183,11 @@ public class PanelParameter extends JPanel{
 		panelParameterFoot.add(btnBerichte);
 		
 		JButton btnBerechnen = new JButton("Berechnen");
+		btnBerechnen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ABCRechnung rechnung = new ABCRechnung(MainWindow.DBconnection);
+			}
+		});
 		panelParameterFoot.add(btnBerechnen);
 		
 		JPanel panelParameterVertriebskanal = new JPanel();

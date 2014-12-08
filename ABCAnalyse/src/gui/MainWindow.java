@@ -40,7 +40,6 @@ public class MainWindow {
 	public MainWindow() {
 		//Zuerst zur Datenbank verbinden
 		DBconnection = DBConnector.connectSqLite();
-		ABCRechnung rechnung = new ABCRechnung(DBconnection);
 		//Initialisieren aller Komponenten
 		initialize();
 	}
