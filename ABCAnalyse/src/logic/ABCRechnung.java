@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import objects.ABCEinteilung;
+import objects.ABCZuordnung;
 import objects.Absatz;
 import objects.Strings;
 import datasource.CrudBefehle;
@@ -20,12 +22,16 @@ import datasource.CrudFunktionen;
 public class ABCRechnung {
 	private static Connection DBconnection = null;
 	private ArrayList<Absatz> artikellist;
+	private ArrayList<ABCZuordnung> zuordnungen;
 	private int SumAnzahl = 0;
 	private int SumMenge = 0;
 	private double SumUmsatz = 0;
 	
 	public ABCRechnung(Connection _DBconnection){
 		DBconnection = _DBconnection;
+	}
+	
+	public void start(/* Parameter für Auswahl*/){
 		getAbsatzDaten(Strings.Umsatz);
 		GesamtABCBerechnung();
 	}
@@ -54,6 +60,39 @@ public class ABCRechnung {
 		}
 		return abceinteilung;
 }
+	
+	private void setABCZuordnung(){
+		int count = 0;
+		zuordnungen = new ArrayList<ABCZuordnung>();
+		try {
+			ResultSet resultZuordnung = null;
+			resultZuordnung = CrudFunktionen.getResult(DBconnection, CrudBefehle.selectABCZuordnung);
+			while(resultZuordnung.next()){
+				ABCZuordnung abcZuordnung = new ABCZuordnung();
+				abcZuordnung.Kriterium1 = resultZuordnung.getString("Kriterium1");
+				abcZuordnung.Kriterium2 = resultZuordnung.getString("Kriterium2");
+				abcZuordnung.Kriterium3 = resultZuordnung.getString("Kriterium3");
+				abcZuordnung.Zuordnung = resultZuordnung.getString("Zuordnung");
+				zuordnungen.add(abcZuordnung);
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		for(Absatz a : artikellist){
+			count++;
+			for(ABCZuordnung z : zuordnungen){
+				if(z.Kriterium1.compareTo(a.UmsatzABCKennzahl) == 0  ){
+					if(z.Kriterium2.compareTo(a.AnzahlABCKennzahl) == 0 ){
+						if(z.Kriterium3.compareTo(a.MengeABCKennzahl) == 0 ){
+							a.ABCKennzahl = z.Zuordnung;
+							break;
+						}
+					}
+				}	
+			}
+		}
+	}
 	
 	private void getAbsatzDaten(String orderBy){
 		artikellist = new ArrayList<Absatz>();
@@ -99,6 +138,7 @@ public class ABCRechnung {
 	            return  Integer.compare(a2.Anzahl, a1.Anzahl);
 	        }});
 		ABCBerechnungAuftragsanzahl();
+		setABCZuordnung();
 		CrudFunktionen.updateABCResult(DBconnection,artikellist);
 	}
 	
@@ -113,11 +153,11 @@ public class ABCRechnung {
 			a.UmsatzProzentKum = a.UmsatzProzent + prevUmsatzProzent;
 			prevUmsatzProzent = a.UmsatzProzentKum;
 			if(a.UmsatzProzentKum < abcEinteilung.AnteilA){
-				a.UmsatzABCKennzahl = 'A';
+				a.UmsatzABCKennzahl = "A";
 			} else if (a.UmsatzProzentKum <abcEinteilung.AnteilA + abcEinteilung.AnteilB){
-				a.UmsatzABCKennzahl = 'B';
+				a.UmsatzABCKennzahl = "B";
 			} else {
-				a.UmsatzABCKennzahl = 'C';
+				a.UmsatzABCKennzahl = "C";
 			}
 		}
 	}
@@ -133,11 +173,11 @@ public class ABCRechnung {
 			a.MengeProzentKum = a.MengeProzent + prevMengeProzent;
 			prevMengeProzent = a.MengeProzentKum;
 			if(a.MengeProzentKum < abcEinteilung.AnteilA){
-				a.MengeABCKennzahl = 'A';
+				a.MengeABCKennzahl = "A";
 			} else if (a.MengeProzentKum <abcEinteilung.AnteilA + abcEinteilung.AnteilB){
-				a.MengeABCKennzahl = 'B';
+				a.MengeABCKennzahl = "B";
 			} else {
-				a.MengeABCKennzahl = 'C';
+				a.MengeABCKennzahl = "C";
 			}
 		}
 
@@ -152,11 +192,11 @@ public class ABCRechnung {
 				a.AnzahlProzentKum = a.AnzahlProzent + prevAnzahlProzent;
 				prevAnzahlProzent = a.AnzahlProzentKum;
 				if(a.AnzahlProzentKum < abcEinteilung.AnteilA){
-					a.AnzahlABCKennzahl = 'A';
+					a.AnzahlABCKennzahl = "A";
 				} else if (a.AnzahlProzentKum <abcEinteilung.AnteilA + abcEinteilung.AnteilB){
-					a.AnzahlABCKennzahl = 'B';
+					a.AnzahlABCKennzahl = "B";
 				} else {
-					a.AnzahlABCKennzahl = 'C';
+					a.AnzahlABCKennzahl = "C";
 				}
 			}
 	}

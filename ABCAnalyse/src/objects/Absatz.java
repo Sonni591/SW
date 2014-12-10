@@ -11,12 +11,12 @@ public int Anzahl;
 public double Umsatz;
 public double MengeProzent;
 public double MengeProzentKum;
-public char MengeABCKennzahl;
+public String MengeABCKennzahl;
 public double AnzahlProzent;
 public double AnzahlProzentKum;
-public char AnzahlABCKennzahl;
+public String AnzahlABCKennzahl;
 public double UmsatzProzent;
 public double UmsatzProzentKum;
-public char UmsatzABCKennzahl;
-public char ABCKennzahl;
+public String UmsatzABCKennzahl;
+public String ABCKennzahl;
 }

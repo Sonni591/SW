@@ -65,6 +65,7 @@ PreparedStatement updateStatement = null;
 try {
 connection.setAutoCommit(false);
 connection.prepareStatement("DELETE FROM ABCResult").executeUpdate();
+int i = 0;
 for(Absatz a : liste){
 updateStatement = connection.prepareStatement(CrudBefehle.insertIntoABCResult);
 updateStatement.setString(1, a.ArtikelNr);
@@ -80,6 +81,7 @@ updateStatement.setString(10, String.valueOf( a.AnzahlProzent));
 updateStatement.setString(11, String.valueOf(a.AnzahlProzentKum));
 updateStatement.setString(12, String.valueOf(a.ABCKennzahl));
 updateStatement.executeUpdate();
+System.out.println(i++);
 }
 connection.commit();
 } catch (SQLException e) {

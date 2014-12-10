@@ -5,6 +5,7 @@ public class CrudBefehle {
 	//Bereich f��r Select-Befehle
 	public static String selectABCEinteilung = "select * from ABCEinteilung order by Bezeichnung asc";
 	public static String selectABCZuordnung = "select * from ABCZuordnung order by Kriterium1,Kriterium2,Kriterium3 asc";
+	public static String selectArtikelABCZuordnung = "select Zuordnung from ABCZuordnung where Kriterium1 = ? AND Kriterium2 = ? AND Kriterium3 = ?";
 	public static String selectAbsatz = "select * from Absatz";
 	public static String selectABCResult = "select * from ABCResult";
 	public static String selectVertriebskanaele = "select Bezeichnung from Lager order by Bezeichnung asc";

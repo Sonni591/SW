@@ -141,6 +141,7 @@ public class PanelParameter extends JPanel{
 						
 						//Dropdown-Box f��r die Jahresauswahl
 						cboJahr = new JComboBox<Integer>();
+						
 						for(int year=2000; year <= 2015; year++)
 						{
 							cboJahr.addItem(year);
@@ -186,6 +187,7 @@ public class PanelParameter extends JPanel{
 		btnBerechnen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ABCRechnung rechnung = new ABCRechnung(MainWindow.DBconnection);
+				rechnung.start(/*TODO*/);
 			}
 		});
 		panelParameterFoot.add(btnBerechnen);
