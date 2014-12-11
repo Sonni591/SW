@@ -33,6 +33,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
@@ -159,240 +160,100 @@ public class PanelErgebnis extends JPanel {
 				exportToExcel();
 			}
 		});
+		
+		JButton btnBerichte = new JButton("Berichte");
+		btnBerichte.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FrameBerichteParameter BerichteDialog = new FrameBerichteParameter();
+				BerichteDialog.initialize();
+			}
+		});
 
 		GroupLayout gl_panelErgebnisHeader = new GroupLayout(
 				panelErgebnisHeader);
-		gl_panelErgebnisHeader
-				.setHorizontalGroup(gl_panelErgebnisHeader
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_panelErgebnisHeader
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_panelErgebnisHeader
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addGroup(
-																gl_panelErgebnisHeader
-																		.createSequentialGroup()
-																		.addGroup(
-																				gl_panelErgebnisHeader
-																						.createParallelGroup(
-																								Alignment.LEADING)
-																						.addGroup(
-																								gl_panelErgebnisHeader
-																										.createSequentialGroup()
-																										.addComponent(
-																												lblArtikel)
-																										.addPreferredGap(
-																												ComponentPlacement.RELATED)
-																										.addComponent(
-																												txtArtikel,
-																												GroupLayout.DEFAULT_SIZE,
-																												111,
-																												Short.MAX_VALUE))
-																						.addGroup(
-																								gl_panelErgebnisHeader
-																										.createSequentialGroup()
-																										.addComponent(
-																												lblVertriebskanal,
-																												GroupLayout.PREFERRED_SIZE,
-																												94,
-																												GroupLayout.PREFERRED_SIZE)
-																										.addPreferredGap(
-																												ComponentPlacement.RELATED)
-																										.addGroup(
-																												gl_panelErgebnisHeader
-																														.createParallelGroup(
-																																Alignment.LEADING)
-																														.addComponent(
-																																cboWarengruppe,
-																																0,
-																																63,
-																																Short.MAX_VALUE)
-																														.addComponent(
-																																cboVertriebskanal,
-																																0,
-																																63,
-																																Short.MAX_VALUE))))
-																		.addGap(18))
-														.addGroup(
-																gl_panelErgebnisHeader
-																		.createSequentialGroup()
-																		.addComponent(
-																				lblWarengruppe)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)))
-										.addGroup(
-												gl_panelErgebnisHeader
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addComponent(lblGesamt)
-														.addComponent(lblUmsatz)
-														.addComponent(lblAnzahl)
-														.addComponent(lblMenge))
-										.addGroup(
-												gl_panelErgebnisHeader
-														.createParallelGroup(
-																Alignment.TRAILING)
-														.addGroup(
-																gl_panelErgebnisHeader
-																		.createSequentialGroup()
-																		.addGap(20)
-																		.addGroup(
-																				gl_panelErgebnisHeader
-																						.createParallelGroup(
-																								Alignment.LEADING)
-																						.addComponent(
-																								cboABCGesamt,
-																								0,
-																								0,
-																								Short.MAX_VALUE)
-																						.addComponent(
-																								cboABCMenge,
-																								0,
-																								GroupLayout.DEFAULT_SIZE,
-																								Short.MAX_VALUE)
-																						.addComponent(
-																								cboABCAnzahl,
-																								0,
-																								GroupLayout.DEFAULT_SIZE,
-																								Short.MAX_VALUE)
-																						.addComponent(
-																								cboABCUmsatz,
-																								0,
-																								GroupLayout.DEFAULT_SIZE,
-																								Short.MAX_VALUE)))
-														.addGroup(
-																gl_panelErgebnisHeader
-																		.createSequentialGroup()
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				cboABCGesamt,
-																				0,
-																				0,
-																				Short.MAX_VALUE)))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panelErgebnisHeader
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addComponent(
-																btnResetFilter)
-														.addComponent(
-																btnSetzeFilter,
-																GroupLayout.PREFERRED_SIZE,
-																128,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																btnExportExcel))
-										.addContainerGap()));
-		gl_panelErgebnisHeader
-				.setVerticalGroup(gl_panelErgebnisHeader
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_panelErgebnisHeader
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_panelErgebnisHeader
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(
-																lblArtikel)
-														.addComponent(
-																txtArtikel,
-																GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(lblUmsatz)
-														.addComponent(
-																cboABCUmsatz,
-																GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																btnSetzeFilter))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panelErgebnisHeader
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addGroup(
-																gl_panelErgebnisHeader
-																		.createSequentialGroup()
-																		.addGroup(
-																				gl_panelErgebnisHeader
-																						.createParallelGroup(
-																								Alignment.BASELINE)
-																						.addComponent(
-																								lblAnzahl)
-																						.addComponent(
-																								cboABCAnzahl,
-																								GroupLayout.PREFERRED_SIZE,
-																								GroupLayout.DEFAULT_SIZE,
-																								GroupLayout.PREFERRED_SIZE)
-																						.addComponent(
-																								btnResetFilter))
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addGroup(
-																				gl_panelErgebnisHeader
-																						.createParallelGroup(
-																								Alignment.BASELINE)
-																						.addComponent(
-																								lblMenge)
-																						.addComponent(
-																								cboABCMenge,
-																								GroupLayout.PREFERRED_SIZE,
-																								GroupLayout.DEFAULT_SIZE,
-																								GroupLayout.PREFERRED_SIZE)
-																						.addComponent(
-																								btnExportExcel)))
-														.addGroup(
-																gl_panelErgebnisHeader
-																		.createSequentialGroup()
-																		.addGroup(
-																				gl_panelErgebnisHeader
-																						.createParallelGroup(
-																								Alignment.BASELINE)
-																						.addComponent(
-																								lblVertriebskanal)
-																						.addComponent(
-																								cboVertriebskanal,
-																								GroupLayout.PREFERRED_SIZE,
-																								GroupLayout.DEFAULT_SIZE,
-																								GroupLayout.PREFERRED_SIZE))
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addGroup(
-																				gl_panelErgebnisHeader
-																						.createParallelGroup(
-																								Alignment.BASELINE)
-																						.addComponent(
-																								lblWarengruppe)
-																						.addComponent(
-																								cboWarengruppe,
-																								GroupLayout.PREFERRED_SIZE,
-																								GroupLayout.DEFAULT_SIZE,
-																								GroupLayout.PREFERRED_SIZE))))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addGroup(
-												gl_panelErgebnisHeader
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(lblGesamt)
-														.addComponent(
-																cboABCGesamt,
-																GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE))
-										.addGap(17)));
+		gl_panelErgebnisHeader.setHorizontalGroup(
+			gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
+							.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
+									.addComponent(lblArtikel)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(txtArtikel, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
+								.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
+									.addComponent(lblVertriebskanal, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
+										.addComponent(cboWarengruppe, 0, 63, Short.MAX_VALUE)
+										.addComponent(cboVertriebskanal, 0, 63, Short.MAX_VALUE))))
+							.addGap(18))
+						.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
+							.addComponent(lblWarengruppe)
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblGesamt)
+						.addComponent(lblUmsatz)
+						.addComponent(lblAnzahl)
+						.addComponent(lblMenge))
+					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
+							.addGap(20)
+							.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
+								.addComponent(cboABCGesamt, 0, 0, Short.MAX_VALUE)
+								.addComponent(cboABCMenge, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(cboABCAnzahl, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(cboABCUmsatz, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+						.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(cboABCGesamt, 0, 0, Short.MAX_VALUE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnResetFilter)
+						.addComponent(btnSetzeFilter, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.TRAILING, false)
+							.addComponent(btnBerichte, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnExportExcel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+					.addContainerGap())
+		);
+		gl_panelErgebnisHeader.setVerticalGroup(
+			gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblArtikel)
+						.addComponent(txtArtikel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblUmsatz)
+						.addComponent(cboABCUmsatz, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnSetzeFilter))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
+							.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblAnzahl)
+								.addComponent(cboABCAnzahl, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnResetFilter))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblMenge)
+								.addComponent(cboABCMenge, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnExportExcel)))
+						.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
+							.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblVertriebskanal)
+								.addComponent(cboVertriebskanal, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblWarengruppe)
+								.addComponent(cboWarengruppe, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblGesamt)
+						.addComponent(cboABCGesamt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnBerichte))
+					.addGap(17))
+		);
 		panelErgebnisHeader.setLayout(gl_panelErgebnisHeader);
 
 		JPanel panelErgebnisContent = new JPanel();
@@ -637,7 +498,6 @@ public class PanelErgebnis extends JPanel {
 			p.start();
 		}
 	}
-
 }
 
 class ExcelThread extends Thread {
