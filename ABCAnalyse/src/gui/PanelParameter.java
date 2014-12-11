@@ -58,6 +58,10 @@ public class PanelParameter extends JPanel{
 	public static JTextField txtVonDatum;
 	public static JComboBox<Integer> cboJahr;
 	public static JTextField txtBisDatum;
+	public static JComboBox<String> cboVertriebskanal;
+	public static JRadioButton rdbtnAlleVertriebskanle;
+	public static JRadioButton rdbtnVertriebskanalEinzel;
+	public static JList<String> listWarengruppen;
 	
 	public PanelParameter()
 	{
@@ -198,20 +202,22 @@ public class PanelParameter extends JPanel{
 		
 		JLabel lblVertriebskanalHeader = new JLabel("Vertriebskanal");
 		
+		//Edit Timo: Variablen am Anfang der Klasse initialisiert um sie in anderen Klassen sichtbar zu machen.
 		ButtonGroup buttonGroupVertriebskanal = new ButtonGroup();
-		JRadioButton rdbtnAlleVertriebskanle = new JRadioButton("Alle Vertriebskanäle");
+		rdbtnAlleVertriebskanle = new JRadioButton("Alle Vertriebskanäle");
 		rdbtnAlleVertriebskanle.setSelected(true);
 		buttonGroupVertriebskanal.add(rdbtnAlleVertriebskanle);
-		JRadioButton rdbtnVertriebskanalEinzel = new JRadioButton("Nur folgenden Vertriebskanal");
+		rdbtnVertriebskanalEinzel = new JRadioButton("Nur folgenden Vertriebskanal");
 		buttonGroupVertriebskanal.add(rdbtnVertriebskanalEinzel);
 		
 		// Vertriebskanäle lesen
 		ArrayList<String> vertriebskanaele = getVertriebskanale();
 	
-		JComboBox<String> cboVertriebskanal = new JComboBox<String>();
+		cboVertriebskanal = new JComboBox<String>();
 		for(String s : vertriebskanaele) {
 				cboVertriebskanal.addItem(s);
 		}
+		
 	
 		
 		GroupLayout gl_panelParameterVertriebskanal = new GroupLayout(panelParameterVertriebskanal);
@@ -257,7 +263,7 @@ public class PanelParameter extends JPanel{
 			listModel.addElement(s);
 		}
 		
-		JList<String> listWarengruppen = new JList<String>(listModel);
+		listWarengruppen = new JList<String>(listModel);
 	
 		listWarengruppen.setVisibleRowCount(5);
 		
@@ -298,7 +304,7 @@ public class PanelParameter extends JPanel{
 		panelParameterWarengruppe.setLayout(gl_panelParameterWarengruppe);
 	}
 
-	private ArrayList<String> getVertriebskanale() {
+private ArrayList<String> getVertriebskanale() {
 		
 		ArrayList<String> vkList = new ArrayList<String>();
 		
@@ -335,7 +341,6 @@ public class PanelParameter extends JPanel{
 private ArrayList<String> getWarengruppen() {
 		
 		ArrayList<String> wgList = new ArrayList<String>();
-		
 		ResultSet rsWarengruppen = null;
 		try {
 			rsWarengruppen = CrudFunktionen.getResult(
