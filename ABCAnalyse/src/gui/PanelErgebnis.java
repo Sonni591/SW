@@ -277,14 +277,15 @@ public class PanelErgebnis extends JPanel {
 		// Deaktiviert das verschieben der Spalten
 		resultTable.getTableHeader().setReorderingAllowed(false);
 
-		getTableData();
+		setTableData();
 
 		// Filtern der Tabelle - Test
 		// enableSorting(resultTable);
-
+		
 	}
+	
 
-	public void getTableData() {
+	public void setTableData() {
 		ResultSet abcEinteilungResult = null;
 		try {
 			abcEinteilungResult = CrudFunktionen.getResult(
@@ -341,27 +342,26 @@ public class PanelErgebnis extends JPanel {
 				// einzelne Filter definieren
 				RowFilter<TableModel, Object> rowFilterArtikel = RowFilter
 						.regexFilter(txtArtikel.getText(), 0);
-				// RowFilter<TableModel, Object> rowFilterVertriebskanal =
-				// RowFilter.regexFilter(cboVertriebskanal.getSelectedItem().toString(),1);
-				// RowFilter<TableModel, Object> rowFilterWarengruppe =
-				// RowFilter.regexFilter(cboWarengruppe.getSelectedItem().toString(),999);
+				 RowFilter<TableModel, Object> rowFilterVertriebskanal = RowFilter.regexFilter(cboVertriebskanal.getSelectedItem().toString(), 2);
+				 RowFilter<TableModel, Object> rowFilterWarengruppe =
+				 RowFilter.regexFilter(cboWarengruppe.getSelectedItem().toString(),1);
 				// // TODO
 				RowFilter<TableModel, Object> rowFilterABCUmsatz = RowFilter
 						.regexFilter(cboABCUmsatz.getSelectedItem().toString(),
-								2);
+								7);
 				RowFilter<TableModel, Object> rowFilterABCAnzahl = RowFilter
 						.regexFilter(cboABCAnzahl.getSelectedItem().toString(),
-								5);
+								3);
 				RowFilter<TableModel, Object> rowFilterABCMenge = RowFilter
 						.regexFilter(cboABCMenge.getSelectedItem().toString(),
-								8);
+								5);
 				RowFilter<TableModel, Object> rowFilterABCGesamt = RowFilter
 						.regexFilter(cboABCGesamt.getSelectedItem().toString(),
-								11);
+								9);
 
 				filters.add(rowFilterArtikel);
-				// filters.add(rowFilterVertriebskanal);
-				// filters.add(rowFilterWarengruppe);
+				filters.add(rowFilterVertriebskanal);
+				filters.add(rowFilterWarengruppe);
 				filters.add(rowFilterABCUmsatz);
 				filters.add(rowFilterABCAnzahl);
 				filters.add(rowFilterABCMenge);

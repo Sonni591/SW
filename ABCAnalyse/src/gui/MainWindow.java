@@ -17,6 +17,12 @@ public class MainWindow {
 	
 	public static Connection DBconnection = null;
 
+	//Einzelne Tabpages
+	public static		PanelParameter panelParameter;
+	public static		PanelEinteilung panelEinteilung;
+	public static		PanelZuordnung panelZuordnung;
+	public static		PanelErgebnis panelErgebnis;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -59,10 +65,10 @@ public class MainWindow {
 		frame.getContentPane().add(tabPageContainer);
 		
 		//Einzelne Tabpages
-		PanelParameter panelParameter = new PanelParameter();
-		PanelEinteilung panelEinteilung = new PanelEinteilung();
-		PanelZuordnung panelZuordnung = new PanelZuordnung();
-		PanelErgebnis panelErgebnis = new PanelErgebnis();
+		 panelParameter = new PanelParameter();
+		 panelEinteilung = new PanelEinteilung();
+		 panelZuordnung = new PanelZuordnung();
+		 panelErgebnis = new PanelErgebnis();
 		
 		//Hinzufuegen der einzelnen TabPages
 		tabPageContainer.addTab("Parameter", panelParameter);

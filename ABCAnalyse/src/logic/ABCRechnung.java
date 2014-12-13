@@ -1,6 +1,7 @@
 package logic;
 
 import gui.MainWindow;
+import gui.PanelErgebnis;
 import gui.PanelParameter;
 
 import java.sql.ResultSet;
@@ -155,6 +156,8 @@ public class ABCRechnung {
 		System.out.println("Berechnung erledigt nun nur noch ergebnis in Tabelle einf��gen");
 		insertResultIntoDB();
 		System.out.println("Einf��gen erfolgreich");
+
+		
 	}
 	
 	//Kumulieren

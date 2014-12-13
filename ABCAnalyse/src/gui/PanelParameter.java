@@ -196,7 +196,9 @@ public class PanelParameter extends JPanel{
 				{
 					CrudFunktionen.insertABCInputTable(MainWindow.DBconnection, txtVonDatum.getText(), txtBisDatum.getText());
 					rechnung.CalculateABCResult();
+					MainWindow.panelErgebnis.setTableData();
 				}
+				
 			}
 		});
 		panelParameterFoot.add(btnBerechnen);
