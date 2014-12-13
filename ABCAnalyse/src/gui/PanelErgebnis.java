@@ -102,7 +102,7 @@ public class PanelErgebnis extends JPanel {
 
 		cboVertriebskanal = new JComboBox<String>();
 		// Vertriebskanäle lesen
-		ArrayList<String> vertriebskanaele = getVertriebskanale();
+		ArrayList<String> vertriebskanaele = CrudFunktionen.getVertriebskanale();
 		cboVertriebskanal.addItem(""); // leere Auwahl hinzufügen;
 		for (String s : vertriebskanaele) {
 			cboVertriebskanal.addItem(s);
@@ -110,7 +110,7 @@ public class PanelErgebnis extends JPanel {
 
 		cboWarengruppe = new JComboBox<String>();
 		// Warengruppen lesen
-		ArrayList<String> warengruppen = getWarengruppen();
+		ArrayList<String> warengruppen = CrudFunktionen.getWarengruppen();
 		cboWarengruppe.addItem(""); // leere Auwahl hinzufügen;
 		for (String s : warengruppen) {
 			cboWarengruppe.addItem(s);
@@ -288,7 +288,7 @@ public class PanelErgebnis extends JPanel {
 		ResultSet abcEinteilungResult = null;
 		try {
 			abcEinteilungResult = CrudFunktionen.getResult(
-					MainWindow.DBconnection, CrudBefehle.selectABCResult);
+					MainWindow.DBconnection, CrudBefehle.selectABCResultView);
 
 			resultTable.setModel(buildTableModel(abcEinteilungResult));
 		} catch (Exception e) {
@@ -406,70 +406,70 @@ public class PanelErgebnis extends JPanel {
 		}
 	}
 
-	private ArrayList<String> getVertriebskanale() {
-
-		ArrayList<String> vkList = new ArrayList<String>();
-
-		ResultSet rsVertriebskanale = null;
-		try {
-			rsVertriebskanale = CrudFunktionen
-					.getResult(MainWindow.DBconnection,
-							CrudBefehle.selectVertriebskanaele);
-
-			while (rsVertriebskanale.next()) {
-
-				String bezeichnung = rsVertriebskanale.getString("Bezeichnung");
-				vkList.add(bezeichnung);
-
-			}
-			return vkList;
-
-		} catch (Exception e) {
-			System.err.println(e);
-			e.printStackTrace();
-			return null;
-		} finally {
-			try {
-				rsVertriebskanale.close();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
-
-	private ArrayList<String> getWarengruppen() {
-
-		ArrayList<String> wgList = new ArrayList<String>();
-
-		ResultSet rsWarengruppen = null;
-		try {
-			rsWarengruppen = CrudFunktionen.getResult(MainWindow.DBconnection,
-					CrudBefehle.selectWarengruppen);
-
-			while (rsWarengruppen.next()) {
-
-				String bezeichnung = rsWarengruppen.getString("Bezeichnung");
-				wgList.add(bezeichnung);
-
-			}
-			return wgList;
-
-		} catch (Exception e) {
-			System.err.println(e);
-			e.printStackTrace();
-			return null;
-		} finally {
-			try {
-				rsWarengruppen.close();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
+//	private ArrayList<String> getVertriebskanale() {
+//
+//		ArrayList<String> vkList = new ArrayList<String>();
+//
+//		ResultSet rsVertriebskanale = null;
+//		try {
+//			rsVertriebskanale = CrudFunktionen
+//					.getResult(MainWindow.DBconnection,
+//							CrudBefehle.selectVertriebskanaele);
+//
+//			while (rsVertriebskanale.next()) {
+//
+//				String bezeichnung = rsVertriebskanale.getString("Bezeichnung");
+//				vkList.add(bezeichnung);
+//
+//			}
+//			return vkList;
+//
+//		} catch (Exception e) {
+//			System.err.println(e);
+//			e.printStackTrace();
+//			return null;
+//		} finally {
+//			try {
+//				rsVertriebskanale.close();
+//
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//
+//	}
+//
+//	private ArrayList<String> getWarengruppen() {
+//
+//		ArrayList<String> wgList = new ArrayList<String>();
+//
+//		ResultSet rsWarengruppen = null;
+//		try {
+//			rsWarengruppen = CrudFunktionen.getResult(MainWindow.DBconnection,
+//					CrudBefehle.selectWarengruppen);
+//
+//			while (rsWarengruppen.next()) {
+//
+//				String bezeichnung = rsWarengruppen.getString("Bezeichnung");
+//				wgList.add(bezeichnung);
+//
+//			}
+//			return wgList;
+//
+//		} catch (Exception e) {
+//			System.err.println(e);
+//			e.printStackTrace();
+//			return null;
+//		} finally {
+//			try {
+//				rsWarengruppen.close();
+//
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//
+//	}
 
 	private void exportToExcel() {
 

@@ -3,229 +3,268 @@ package logic;
 import gui.MainWindow;
 import gui.PanelParameter;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Hashtable;
 
 import objects.ABCEinteilung;
-import objects.ABCZuordnung;
-import objects.Absatz;
-import objects.Strings;
+import objects.ABCResult;
+import objects.Vertriebskanal;
+import objects.Warengruppe;
 import datasource.CrudBefehle;
 import datasource.CrudFunktionen;
 
+
 public class ABCRechnung {
-	private static Connection DBconnection = null;
-	private ArrayList<Absatz> artikellist;
-	private ArrayList<ABCZuordnung> zuordnungen;
-	private int SumAnzahl = 0;
-	private int SumMenge = 0;
-	private double SumUmsatz = 0;
 
-	public ABCRechnung(Connection _DBconnection) {
-		DBconnection = _DBconnection;
+	Hashtable<String, ABCResult> abcResultTable = new Hashtable<String, ABCResult>();
+	Hashtable<String, String> abcZurdnungTable = new Hashtable<String, String>();
+	Hashtable<String, ABCEinteilung> abcEinteilungTable = new Hashtable<String, ABCEinteilung>();
+	
+	ArrayList<Vertriebskanal> arrListVertriebskanaele = new ArrayList<Vertriebskanal>();
+	ArrayList<Warengruppe> arrListWarengruppen = new ArrayList<Warengruppe>();
+	
+	public ABCRechnung(){
+		createZuordnungTable();
+		createEinteilungTable();
 	}
 
-	public void start(/* Parameter f¸r Auswahl */) {
-		if (PanelParameter.rdbtnAlleVertriebskanle.isSelected()) {
-			// Funktion wenn alle Kan‰le gw‰hlt wurde
-			System.out.println("Alle Kan‰le");
-		} else {
-			// Funktion wenn nur einer gew‰hlt wurde
-			String VtKanal = (String) PanelParameter.cboVertriebskanal.getSelectedItem();
-			String Warengruppe = (String) PanelParameter.listWarengruppen.getSelectedValue();
-			int lagernr = getVertriebsKanal(VtKanal);
-			int wgnr = getWarenGruppe(Warengruppe);
-			System.out.println(Warengruppe + wgnr);
-			
-
-		}
-
-		// getAbsatzDaten(Strings.Umsatz);
-		// GesamtABCBerechnung();
-	}
-
-	private ABCEinteilung getABCEinteilung(String kriterium) {
-		ABCEinteilung abceinteilung = new ABCEinteilung();
+	private void createZuordnungTable(){
+		ResultSet rs = CrudFunktionen.getResult(MainWindow.DBconnection, CrudBefehle.selectABCZuordnung);
 		try {
-			ResultSet einteilung = null;
-			if (kriterium == Strings.Umsatz) {
-				einteilung = CrudFunktionen.getResult(DBconnection,
-						CrudBefehle.selectEinteilungUmsatz);
-			} else if (kriterium == Strings.Menge) {
-				einteilung = CrudFunktionen.getResult(DBconnection,
-						CrudBefehle.selectEinteilungMenge);
-			} else if (kriterium == Strings.Anzahl) {
-				einteilung = CrudFunktionen.getResult(DBconnection,
-						CrudBefehle.selectEinteilungAuftragsanzahl);
-			} else {
-				// FEHLER
-			}
-			while (einteilung.next()) {
-				abceinteilung.Bezeichnung = einteilung.getString("Bezeichnung");
-				abceinteilung.AnteilA = einteilung.getInt("AnteilA");
-				abceinteilung.AnteilB = einteilung.getInt("AnteilB");
-				abceinteilung.AnteilC = einteilung.getInt("AnteilC");
+			while(rs.next())
+			{
+				String key = rs.getString(1) + rs.getString(2) + rs.getString(3);
+				abcZurdnungTable.put(key, rs.getString(4));
 			}
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return abceinteilung;
 	}
-
-	private void setABCZuordnung() {
-		int count = 0;
-		zuordnungen = new ArrayList<ABCZuordnung>();
+	
+	private void createEinteilungTable(){
+		ResultSet rs = CrudFunktionen.getResult(MainWindow.DBconnection, CrudBefehle.selectABCEinteilung);
 		try {
-			ResultSet resultZuordnung = null;
-			resultZuordnung = CrudFunktionen.getResult(DBconnection,
-					CrudBefehle.selectABCZuordnung);
-			while (resultZuordnung.next()) {
-				ABCZuordnung abcZuordnung = new ABCZuordnung();
-				abcZuordnung.Kriterium1 = resultZuordnung
-						.getString("Kriterium1");
-				abcZuordnung.Kriterium2 = resultZuordnung
-						.getString("Kriterium2");
-				abcZuordnung.Kriterium3 = resultZuordnung
-						.getString("Kriterium3");
-				abcZuordnung.Zuordnung = resultZuordnung.getString("Zuordnung");
-				zuordnungen.add(abcZuordnung);
+			while(rs.next())
+			{
+				String key = rs.getString(2);
+				ABCEinteilung einteilung = new ABCEinteilung();
+				einteilung.AnteilA = rs.getInt(3);
+				einteilung.AnteilB = rs.getInt(4);
+				einteilung.AnteilC = rs.getInt(5);
+				abcEinteilungTable.put(key, einteilung);
 			}
-		} catch (SQLException e1) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
-		for (Absatz a : artikellist) {
-			count++;
-			for (ABCZuordnung z : zuordnungen) {
-				if (z.Kriterium1.compareTo(a.UmsatzABCKennzahl) == 0) {
-					if (z.Kriterium2.compareTo(a.AnzahlABCKennzahl) == 0) {
-						if (z.Kriterium3.compareTo(a.MengeABCKennzahl) == 0) {
-							a.ABCKennzahl = z.Zuordnung;
+	}
+	
+	// TODO
+	//
+	public void getSelectedGUIItems() {
+		if (PanelParameter.rdbtnAlleVertriebskanle.isSelected()) {
+			// Funktion wenn alle Kan‚Ä∞le gw‚Ä∞hlt wurde
+			System.out.println("Alle Kan‚Ä∞le");
+			
+			arrListVertriebskanaele = CrudFunktionen.getVertriebskanaeleObjects();
+			
+			//TODO: extra f√ºr Warengruppen
+			arrListWarengruppen = CrudFunktionen.getWarengruppenObjects();
+			
+		} else {
+			// Funktion wenn nur einer gew‚Ä∞hlt wurde
+			
+			// ausgew√§hlten Vertriebskanal lesen
+			Vertriebskanal vertriebskanal = new Vertriebskanal();
+			vertriebskanal.setBezeichnung((String) PanelParameter.cboVertriebskanal.getSelectedItem());
+			vertriebskanal.setLagerNr(getVertriebsKanal(vertriebskanal.getBezeichnung()));
+			arrListVertriebskanaele.add(vertriebskanal);
+			
+			// ausgew√§hlte Warengruppe lesen
+			Warengruppe warengruppe = new Warengruppe();
+			warengruppe.setBezeichnung((String) PanelParameter.listWarengruppen.getSelectedValue());
+			warengruppe.setWGNr(getWarenGruppe(warengruppe.getBezeichnung()));
+			arrListWarengruppen.add(warengruppe);
+		}
+
+	}
+	
+    //Neue Methode welche die ABC-Result-Tabelle berechnet
+	public void CalculateABCResult()
+	{
+		
+		// Ausgew√§hlte Vertriebskan√§le und Warengruppen lesen
+		getSelectedGUIItems();
+		
+		// Output Test
+		for(Vertriebskanal obj : arrListVertriebskanaele) {
+			System.out.println(obj.getLagerNr() + " " + obj.getBezeichnung());
+		}
+		for(Warengruppe obj : arrListWarengruppen){
+			System.out.println(obj.getWGNr() + " " + obj.getBezeichnung());
+		}
+		
+		//Fuer jedes Lager
+		//for(int lagerNr = 0; lagerNr < 31; lagerNr+=10)
+		for(Vertriebskanal obj : arrListVertriebskanaele)
+		{
+			int lagerNr = obj.getLagerNr();
+			
+			//Fuer jede Warengruppe
+			//for(int wgNr = 1; wgNr <= 9; wgNr++)
+			for(Warengruppe wgObj : arrListWarengruppen)
+			{
+				
+				int wgNr = wgObj.getWGNr();
+				
+				ArrayList<Double> criteriaSumValues = getSumOfEachCriteria(CrudFunktionen.selectSumOfEachCriteria(MainWindow.DBconnection, lagerNr, wgNr));
+				//Fuer jedes Kriterium
+				for(int criteria = 1; criteria <= 3; criteria++)
+				{
+					//entsprich Insgesamt 4*9*3=108 Durchlaeufen
+					try
+					{
+						ResultSet rs = null;
+						switch(criteria){
+						//Umsatz
+						case 1: 
+							rs = CrudFunktionen.selectABCInputByStorehouseAndWaregroup(MainWindow.DBconnection, lagerNr, wgNr, "JahresUmsatz");
+							accumulate(rs, criteriaSumValues, lagerNr, "Umsatz");
+							break;
+						//Menge
+						case 2:
+							rs = CrudFunktionen.selectABCInputByStorehouseAndWaregroup(MainWindow.DBconnection, lagerNr, wgNr, "JahresMenge");
+							accumulate(rs, criteriaSumValues, lagerNr, "Menge");
+							break;
+						//Anzahl
+						case 3:
+							rs = CrudFunktionen.selectABCInputByStorehouseAndWaregroup(MainWindow.DBconnection, lagerNr, wgNr, "JahresAnzahl");
+							accumulate(rs, criteriaSumValues, lagerNr, "Anzahl");
 							break;
 						}
+					}catch(Exception ex)
+					{
+						ex.printStackTrace();
 					}
 				}
 			}
 		}
+		System.out.println("Berechnung erledigt nun nur noch ergebnis in Tabelle einfÔøΩÔøΩgen");
+		insertResultIntoDB();
+		System.out.println("EinfÔøΩÔøΩgen erfolgreich");
 	}
-
-	private void getAbsatzDaten(String orderBy) {
-		artikellist = new ArrayList<Absatz>();
-		ResultSet daten = null;
-		if (orderBy == Strings.Umsatz) {
-			daten = CrudFunktionen.getResult(DBconnection,
-					CrudBefehle.selectAbsatzDatenOrderedByUmsatz);
-		} else if (orderBy == Strings.Anzahl) {
-			//
-		} else if (orderBy == Strings.Menge) {
-			//
-		}
+	
+	//Kumulieren
+	private void accumulate(ResultSet rs, ArrayList<Double> criteriaSumValues, int lagerNr, String description)
+	{
 		try {
-			while (daten.next()) {
-				Absatz a = new Absatz();
-				a.ArtikelNr = daten.getString("ArtikelNr");
-				a.Umsatz = daten.getDouble("Gesamt Umsatz");
-				SumUmsatz += a.Umsatz;
-				a.Anzahl = daten.getInt("Gesamt Anzahl");
-				SumAnzahl += a.Anzahl;
-				a.Menge = daten.getInt("Gesamt Menge");
-				SumMenge += a.Menge;
-				artikellist.add(a);
+			switch(description)
+			{
+				case "Umsatz":
+					double umsatzSum = criteriaSumValues.get(0);
+					double umsatzAccumulated = 0;
+					while(rs.next())
+					{
+						umsatzAccumulated += rs.getDouble(3);
+						ABCResult result = new ABCResult();
+						result.ArtikelNr = rs.getString(1);
+						result.LagerNr = lagerNr;
+						result.ABCK1 = getCriteriaByPercent((umsatzAccumulated/umsatzSum)*100, "Umsatz");
+						String key = rs.getString(1) + lagerNr;
+						abcResultTable.put(key,result);
+					}
+					break;
+				case "Menge":
+					double mengeSum = criteriaSumValues.get(1);
+					double mengeAccumulated = 0;
+					while(rs.next())
+					{
+						mengeAccumulated += rs.getDouble(4);
+						ABCResult result = abcResultTable.get(rs.getString(1)+lagerNr);
+						result.ABCK2 = getCriteriaByPercent((mengeAccumulated/mengeSum)*100, "Menge");
+					}
+					break;
+				case "Anzahl":
+					double anzahlSum = criteriaSumValues.get(2);
+					double anzahlAccumulated = 0;
+					while(rs.next())
+					{
+						anzahlAccumulated += rs.getDouble(5);
+						ABCResult result = abcResultTable.get(rs.getString(1)+lagerNr);
+						result.ABCK3 = getCriteriaByPercent((anzahlAccumulated/anzahlSum)*100, "Auftragsanzahl");
+						result.ABCKZ = getZuordnung(result.ABCK1, result.ABCK2, result.ABCK3);
+					}
+					break;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
-	public void GesamtABCBerechnung() {
-		ABCBerechnungUmsatz();
-		Collections.sort(artikellist, new Comparator<Absatz>() {
-			@Override
-			public int compare(Absatz a1, Absatz a2) {
-				return Integer.compare(a2.Menge, a1.Menge);
+	
+	/**
+	 * Holt die Summen von den drei Kriterien fuer die Prozentbestimmung
+	 * */
+	private ArrayList<Double> getSumOfEachCriteria(ResultSet rs)
+	{
+		ArrayList<Double> criteriaSumValues= new ArrayList<Double>();
+		
+		try {
+			while(rs.next())
+			{
+				criteriaSumValues.add(rs.getDouble(1)); //Umsatz
+				criteriaSumValues.add(rs.getDouble(2)); //Menge
+				criteriaSumValues.add(rs.getDouble(3)); //Anzahl
+				break;
 			}
-		});
-		ABCBerechnungMenge();
-		Collections.sort(artikellist, new Comparator<Absatz>() {
-			@Override
-			public int compare(Absatz a1, Absatz a2) {
-				return Integer.compare(a2.Anzahl, a1.Anzahl);
-			}
-		});
-		ABCBerechnungAuftragsanzahl();
-		setABCZuordnung();
-		CrudFunktionen.updateABCResult(DBconnection, artikellist);
-	}
-
-	public void ABCBerechnungUmsatz() {
-		ABCEinteilung abcEinteilung;
-		abcEinteilung = getABCEinteilung(Strings.Umsatz);
-		double prevUmsatzProzent = 0;
-		for (Absatz a : artikellist) {
-			a.UmsatzProzent = ((double) a.Umsatz / (double) SumUmsatz) * 100;
-			a.UmsatzProzentKum = a.UmsatzProzent + prevUmsatzProzent;
-			prevUmsatzProzent = a.UmsatzProzentKum;
-			if (a.UmsatzProzentKum < abcEinteilung.AnteilA) {
-				a.UmsatzABCKennzahl = "A";
-			} else if (a.UmsatzProzentKum < abcEinteilung.AnteilA
-					+ abcEinteilung.AnteilB) {
-				a.UmsatzABCKennzahl = "B";
-			} else {
-				a.UmsatzABCKennzahl = "C";
-			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		return criteriaSumValues;
 	}
-
-	public void ABCBerechnungMenge() {
-		ABCEinteilung abcEinteilung;
-		abcEinteilung = getABCEinteilung(Strings.Menge);
-		double prevMengeProzent = 0;
-		for (Absatz a : artikellist) {
-			a.MengeProzent = ((double) a.Menge / (double) SumMenge) * 100;
-			a.MengeProzentKum = a.MengeProzent + prevMengeProzent;
-			prevMengeProzent = a.MengeProzentKum;
-			if (a.MengeProzentKum < abcEinteilung.AnteilA) {
-				a.MengeABCKennzahl = "A";
-			} else if (a.MengeProzentKum < abcEinteilung.AnteilA
-					+ abcEinteilung.AnteilB) {
-				a.MengeABCKennzahl = "B";
-			} else {
-				a.MengeABCKennzahl = "C";
-			}
+	
+	//Liefert die Klassifikation anhand der Prozent
+	private String getCriteriaByPercent(double percent, String Description)
+	{
+		String criteria;
+		ABCEinteilung einteilung = abcEinteilungTable.get(Description);
+		if(percent <= einteilung.AnteilA)
+		{
+		 criteria = "A";
 		}
-
-	}
-
-	public void ABCBerechnungAuftragsanzahl() {
-		ABCEinteilung abcEinteilung;
-		abcEinteilung = getABCEinteilung(Strings.Anzahl);
-		double prevAnzahlProzent = 0;
-		for (Absatz a : artikellist) {
-			a.AnzahlProzent = ((double) a.Anzahl / (double) SumAnzahl) * 100;
-			a.AnzahlProzentKum = a.AnzahlProzent + prevAnzahlProzent;
-			prevAnzahlProzent = a.AnzahlProzentKum;
-			if (a.AnzahlProzentKum < abcEinteilung.AnteilA) {
-				a.AnzahlABCKennzahl = "A";
-			} else if (a.AnzahlProzentKum < abcEinteilung.AnteilA
-					+ abcEinteilung.AnteilB) {
-				a.AnzahlABCKennzahl = "B";
-			} else {
-				a.AnzahlABCKennzahl = "C";
-			}
+		else if(percent > einteilung.AnteilA && percent < einteilung.AnteilC)
+		{
+			criteria = "B";
 		}
+		else
+		{
+			criteria = "C";
+		}
+		return criteria;
 	}
-
+	
+	private String getZuordnung(String kriterium1, String kriterium2,String kriterium3)
+	{
+		return abcZurdnungTable.get(kriterium1+kriterium2+kriterium3).toString();
+	}
+	
+	private void insertResultIntoDB()
+	{
+		//Erst aktuellen Tabelleninhalt loeschen
+		CrudFunktionen.deleteABCResultTable(MainWindow.DBconnection);
+		 for(String key: abcResultTable.keySet()){
+			 ABCResult result = abcResultTable.get(key);
+	         CrudFunktionen.insertABCResultTable(MainWindow.DBconnection, result.ArtikelNr, result.LagerNr, result.ABCK1, result.ABCK2, result.ABCK3, result.ABCKZ);
+	        }
+	}
+	
 	public int getVertriebsKanal(String VertriebsKanalString) {
-		if (VertriebsKanalString.equals("L¸beck")) {
+		if (VertriebsKanalString.equals("L√ºbeck")) {
 			return 20;
 		} else if (VertriebsKanalString.equals("Kiel")) {
 			return 30;
@@ -234,9 +273,10 @@ public class ABCRechnung {
 		} else
 			return 0;
 	}
+	
 	public int getWarenGruppe(String Warengruppe){
 		ResultSet daten = null;
-			daten = CrudFunktionen.getResult(DBconnection,CrudBefehle.selectWarengruppen);
+			daten = CrudFunktionen.getResult(MainWindow.DBconnection,CrudBefehle.selectWarengruppen);
 		try {
 			while (daten.next()) {
 				if(daten.getString("Bezeichnung").equals(Warengruppe)){
@@ -250,4 +290,5 @@ public class ABCRechnung {
 		}
 		return 0;
 	}
+
 }

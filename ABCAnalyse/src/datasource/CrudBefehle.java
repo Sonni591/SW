@@ -7,23 +7,46 @@ public class CrudBefehle {
 	public static String selectABCZuordnung = "select * from ABCZuordnung order by Kriterium1,Kriterium2,Kriterium3 asc";
 	public static String selectArtikelABCZuordnung = "select Zuordnung from ABCZuordnung where Kriterium1 = ? AND Kriterium2 = ? AND Kriterium3 = ?";
 	public static String selectAbsatz = "select * from Absatz";
-	public static String selectABCResult = "select * from ABCResult";
-	public static String selectVertriebskanaele = "select Bezeichnung from Lager order by Bezeichnung asc";
+	public static String selectABCResultView = "select abcR.artikelNr, wg.Bezeichnung, l.Bezeichnung, abcR.ABCK3 as 'Auf.Anz.', abcI.JahresAnzahl, abcR.ABCK2 as 'Auf.Mng', abcI.JahresMenge,"
+											 + "abcR.ABCK1 as 'Ums.', abcI.JahresUmsatz, abcR.ABCKZ as 'ABC Zuo.' "
+											 + " from ABCResult abcR"
+											 + " join ABC_Input abcI on abcI.artikelNr = abcR.artikelNr and (abcI.lagerNr = abcR.lagerNr or abcR.lagerNr = 0)"
+											 + " join Warengruppe wg on wg.wgNr = abcI.wgNr"
+											 + " join Lager l on l.lagerNr = abcR.lagerNr;";
+	public static String selectVertriebskanaele = "select * from Lager order by Bezeichnung asc";
 	public static String selectWarengruppen = "select * from Warengruppe order by Bezeichnung asc";
 	
-	public static String selectAbsatzDatenOrderedByUmsatz = "SELECT ArtikelNr, Sum(Umsatz) as \"Gesamt Umsatz\", Sum(Anzahl) as \"Gesamt Anzahl\", Sum(Menge) as \"Gesamt Menge\" FROM Absatz GROUP BY ArtikelNr Order By \"Gesamt Umsatz\" DESC;";
-	//public static String selectUmsatzGrouped = "SELECT ArtikelNr, Sum(Umsatz) as \"Gesamt Umsatz\"FROM Absatz GROUP BY ArtikelNr Order By \"Gesamt Umsatz\" DESC;";
-	//public static String selectAnzahlGrouped = "SELECT ArtikelNr, Sum(Anzahl) as \"Gesamt Anzahl\"FROM Absatz GROUP BY ArtikelNr Order By \"Gesamt Anzahl\" DESC;";
-	//public static String selectMengeGrouped  = "SELECT ArtikelNr, Sum(Menge) as \"Gesamt Menge\"FROM Absatz GROUP BY ArtikelNr Order By \"Gesamt Menge\" DESC;";
+	//ABC-Berechnung Selects
+	public static String selectABCInputValues = " select a.artikelnr,"
+												+ "al.lagernr,"
+												+ "sum(ab.Umsatz) as JahresUmsatz,"
+												+ "sum(ab.Menge) as JahresMenge,"
+												+ "sum(ab.Anzahl) as JahresAnzahl,"
+												+ "sum(al.Bestand) as Bestand,"
+												+ "a.wgnr"
+												+ " from Absatz ab"
+												+ " join Artikel a on a.artikelnr = ab.artikelnr"
+												+ " join artikelLager al on al.artikelnr = a.artikelnr"
+												+ " where ab.datum between ? and ?"
+												+ " group by a.artikelnr, al.lagernr, a.wgnr"
+												+ " order by a.wgnr;";
 	
-	public static String selectEinteilungUmsatz ="SELECT Bezeichnung, AnteilA, AnteilB, AnteilC FROM ABCEinteilung WHERE BEZEICHNUNG = 'Umsatz'";
-	public static String selectEinteilungMenge ="SELECT Bezeichnung, AnteilA, AnteilB, AnteilC FROM ABCEinteilung WHERE BEZEICHNUNG = 'Menge'";
-	public static String selectEinteilungAuftragsanzahl ="SELECT Bezeichnung, AnteilA, AnteilB, AnteilC FROM ABCEinteilung WHERE BEZEICHNUNG = 'Auftragsanzahl'";
-	//Bereich f��r Update-Befehle
+	public static String selectSumOfCriteriaByStorehouseAndWaregroup = "select sum(JahresUmsatz) as SummeUmsatz, sum(JahresMenge) as SummeMenge, sum(JahresAnzahl) as SummeAnzahl from ABC_Input where LagerNr = ? and WGNr = ?";
+	public static String selectSumOfCriteriaByWaregroup = "select sum(JahresUmsatz) as SummeUmsatz, sum(JahresMenge) as SummeMenge, sum(JahresAnzahl) as SummeAnzahl from ABC_Input where WGNr = ?";
+	public static String selectABCInputByStorehouseAndWaregroupOrderCriteria = "select * from ABC_Input where LagerNr in (?) and WGNr = ? order by ";
+	public static String selectABCInputByWaregroupOrderCriteria = "select * from ABC_Input where WGNr = ? order by ";
+	
+	//Bereich Update-Befehle
 	public static String updateEinteilungAnteilA = "update " + "ABCEinteilung set AnteilA = ? where Bezeichnung = ?";
 	public static String updateEinteilungAnteilB = "update " + "ABCEinteilung set AnteilB = ? where Bezeichnung = ?";
 	public static String updateEinteilungAnteilC = "update " + "ABCEinteilung set AnteilC = ? where Bezeichnung = ?";
 	
 	public static String updateABCZuordnung = "update ABCZuordnung set Zuordnung = ? where Kriterium1 = ? and Kriterium2 = ? and Kriterium3 = ?";
-	public static String insertIntoABCResult = "INSERT INTO ABCResult VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	
+	//Bereich Insert-Befehle
+	public static String insertIntoABCResult = "INSERT INTO ABCResult VALUES (?, ?, ?, ?, ?, ?)";
+	
+	//Bereich Delete-Befehle
+	public static String deleteABCInput = "delete from ABC_Input";
+	public static String deleteABCResult = "delete from ABCResult";
 }

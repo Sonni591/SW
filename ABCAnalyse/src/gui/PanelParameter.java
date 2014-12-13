@@ -190,8 +190,13 @@ public class PanelParameter extends JPanel{
 		JButton btnBerechnen = new JButton("Berechnen");
 		btnBerechnen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ABCRechnung rechnung = new ABCRechnung(MainWindow.DBconnection);
-				rechnung.start(/*TODO*/);
+				ABCRechnung rechnung = new ABCRechnung();
+				//rechnung.start(/*TODO*/);
+				if(!txtVonDatum.getText().equals("") && !txtBisDatum.getText().equals(""))
+				{
+					CrudFunktionen.insertABCInputTable(MainWindow.DBconnection, txtVonDatum.getText(), txtBisDatum.getText());
+					rechnung.CalculateABCResult();
+				}
 			}
 		});
 		panelParameterFoot.add(btnBerechnen);
