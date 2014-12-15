@@ -260,7 +260,16 @@ public class PanelErgebnis extends JPanel {
 		add(panelErgebnisContent, BorderLayout.CENTER);
 		panelErgebnisContent.setLayout(new BorderLayout(0, 0));
 
-		resultTable = new JTable();
+		resultTable = new JTable() {
+			private static final long serialVersionUID = 1L;
+	
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					// alle Spalten nicht editierbar setzen
+					return false;
+				}
+		};
+		
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(resultTable);

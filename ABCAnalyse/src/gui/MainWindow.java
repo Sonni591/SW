@@ -13,8 +13,7 @@ import datasource.DBConnector;
 
 public class MainWindow {
 
-	private JFrame frame;
-	
+	public static JFrame frame;
 	public static Connection DBconnection = null;
 
 	//Einzelne Tabpages

@@ -66,7 +66,7 @@ public class ABCRechnung {
 	// TODO
 	//
 	public void getSelectedGUIItems() {
-		if (PanelParameter.rdbtnAlleVertriebskanle.isSelected()) {
+		if (PanelParameter.rdbtnAlleVertriebskanaele.isSelected()) {
 			// Funktion wenn alle Kan‰le gw‰hlt wurde
 			System.out.println("Alle Kan‰le");
 			
@@ -86,7 +86,7 @@ public class ABCRechnung {
 			
 			// ausgewählte Warengruppe lesen
 			Warengruppe warengruppe = new Warengruppe();
-			warengruppe.setBezeichnung((String) PanelParameter.listWarengruppen.getSelectedValue());
+			warengruppe.setBezeichnung((String) PanelParameter.cboWarengruppe.getSelectedItem());
 			warengruppe.setWGNr(getWarenGruppe(warengruppe.getBezeichnung()));
 			arrListWarengruppen.add(warengruppe);
 		}

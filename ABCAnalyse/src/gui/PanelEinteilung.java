@@ -234,7 +234,7 @@ public class PanelEinteilung extends JPanel {
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null,
+					JOptionPane.showMessageDialog(MainWindow.frame,
 							"Speichern wegen ung��ltigen Werten nicht m��glich.",
 							"Speichern fehlgeschlagen", JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -334,7 +334,7 @@ public class PanelEinteilung extends JPanel {
 				CrudBefehle.updateEinteilungAnteilC,
 				Integer.parseInt(txtAnzahlC.getText()), "Auftragsanzahl");
 
-		JOptionPane.showMessageDialog(null,
+		JOptionPane.showMessageDialog(MainWindow.frame,
 				"Die ABC Schwellwerte wurden aktualisiert",
 				"Schwellwerte aktualisiert", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -347,7 +347,7 @@ public class PanelEinteilung extends JPanel {
 				int UmsatzA = Integer.parseInt(txtUmsatzA.getText());
 				int UmsatzB = Integer.parseInt(txtUmsatzB.getText());
 				if ((UmsatzA + UmsatzB) > 100) {
-					JOptionPane.showMessageDialog(null,
+					JOptionPane.showMessageDialog(MainWindow.frame,
 							"Die Umsatz Schwellwerte ��bersteigen die 100%",
 							"Schwellwerte zu hoch", JOptionPane.ERROR_MESSAGE);
 					isSaveable = false;
@@ -382,7 +382,7 @@ public class PanelEinteilung extends JPanel {
 				if ((AnzahlA + AnzahlB) > 100) {
 					JOptionPane
 							.showMessageDialog(
-									null,
+									MainWindow.frame,
 									"Die Auftragsanzahl Schwellwerte ��bersteigen die 100%",
 									"Schwellwerte zu hoch",
 									JOptionPane.ERROR_MESSAGE);
@@ -412,7 +412,7 @@ public class PanelEinteilung extends JPanel {
 			} catch (Exception ex) {
 				JOptionPane
 				.showMessageDialog(
-						null,
+						MainWindow.frame,
 						"Bitte geben Sie eine Zahl ein. Zeichen werden nicht akzeptiert! (" + kriteriumsBezeichnung + ")",
 						"Fehlerhafte Eingabea",
 						JOptionPane.ERROR_MESSAGE);

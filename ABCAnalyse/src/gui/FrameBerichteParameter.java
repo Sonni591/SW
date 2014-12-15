@@ -1,27 +1,45 @@
 package gui;
 
 import java.awt.Dimension;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import java.awt.BorderLayout;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
 import java.awt.FlowLayout;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JDialog;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
+
 import java.awt.Font;
+
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
 import javax.swing.border.MatteBorder;
+
+import datasource.CrudFunktionen;
+
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
 public class FrameBerichteParameter {
 
-	private JFrame frame;
+	private JDialog dialogFrame;
 	private Dimension fixedFrameDimensions;
+	
+	public static JComboBox<String> cboWarengruppen;
+	public static JComboBox<String> cboVertriebskanal1;
+	public static JComboBox<String> cboVertriebskanal2;
+	public static JCheckBox chckbxVertriebskanal;
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -31,16 +49,16 @@ public class FrameBerichteParameter {
 		
 		fixedFrameDimensions = new Dimension(300, 300);
 		
-		frame = new JFrame();
-		frame.setSize(fixedFrameDimensions);
-		frame.setMinimumSize(fixedFrameDimensions);
-		frame.setMaximumSize(fixedFrameDimensions);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		dialogFrame = new JDialog(MainWindow.frame, "Einstellungen der ABC-Berichte", true);
+		dialogFrame.setSize(fixedFrameDimensions);
+		dialogFrame.setMinimumSize(fixedFrameDimensions);
+		dialogFrame.setMaximumSize(fixedFrameDimensions);
+		dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		dialogFrame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.GRAY));
-		frame.getContentPane().add(panelHeader, BorderLayout.NORTH);
+		dialogFrame.getContentPane().add(panelHeader, BorderLayout.NORTH);
 		
 		JLabel lblHeaderTxt = new JLabel("Einstellungen der ABC Berichte");
 		lblHeaderTxt.setFont(new Font("Lucida Grande", Font.BOLD, 13));
@@ -73,19 +91,46 @@ public class FrameBerichteParameter {
 		panelHeader.setLayout(gl_panelHeader);
 		
 		JPanel panelEinstellungen = new JPanel();
-		frame.getContentPane().add(panelEinstellungen, BorderLayout.WEST);
+		dialogFrame.getContentPane().add(panelEinstellungen, BorderLayout.WEST);
 		
 		JLabel lblWarengruppe = new JLabel("Warengruppe:");
 		
-		JComboBox cboWarengruppen = new JComboBox();
+		cboWarengruppen = new JComboBox<String>();
+		ArrayList<String> warengruppenList = CrudFunktionen.getWarengruppen();
+		for(String s : warengruppenList) {
+			cboWarengruppen.addItem(s);
+		}
 		
 		JLabel lblVertriebskanal = new JLabel("Vertriebskanal:");
 		
-		JComboBox cboVertriebskanal1 = new JComboBox();
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Vergleich mit Vertriebskanal:");
+		ArrayList<String> vertriebskanaeleList = CrudFunktionen.getVertriebskanale();
 		
-		JComboBox cboVertriebskanal2 = new JComboBox();
+		cboVertriebskanal1 = new JComboBox<String>();
+		for(String s : vertriebskanaeleList) {
+			cboVertriebskanal1.addItem(s);
+		}
+		
+		chckbxVertriebskanal = new JCheckBox("Vergleich mit Vertriebskanal:");
+		chckbxVertriebskanal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// comboBox Vertriebskanal 2 nur bei aktivierter Checkbox
+				if(chckbxVertriebskanal.isSelected()) {
+					cboVertriebskanal2.setEnabled(true);
+				}
+				else {
+					cboVertriebskanal2.setEnabled(false);
+				}
+			}
+		});
+		
+		cboVertriebskanal2 = new JComboBox<String>();
+		// initial deaktiviert
+		cboVertriebskanal2.setEnabled(false);
+		for(String s : vertriebskanaeleList) {
+			cboVertriebskanal2.addItem(s);
+		}
+		
 		GroupLayout gl_panelEinstellungen = new GroupLayout(panelEinstellungen);
 		gl_panelEinstellungen.setHorizontalGroup(
 			gl_panelEinstellungen.createParallelGroup(Alignment.LEADING)
@@ -109,7 +154,7 @@ public class FrameBerichteParameter {
 										.addComponent(cboVertriebskanal1, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)))
 								.addContainerGap(118, Short.MAX_VALUE))
 							.addGroup(gl_panelEinstellungen.createSequentialGroup()
-								.addComponent(chckbxNewCheckBox)
+								.addComponent(chckbxVertriebskanal)
 								.addContainerGap(123, Short.MAX_VALUE)))))
 		);
 		gl_panelEinstellungen.setVerticalGroup(
@@ -124,7 +169,7 @@ public class FrameBerichteParameter {
 						.addComponent(cboVertriebskanal1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblVertriebskanal))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(chckbxNewCheckBox)
+					.addComponent(chckbxVertriebskanal)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cboVertriebskanal2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(14))
@@ -133,7 +178,7 @@ public class FrameBerichteParameter {
 		
 		JPanel panelFooter = new JPanel();
 		panelFooter.setBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)));
-		frame.getContentPane().add(panelFooter, BorderLayout.SOUTH);
+		dialogFrame.getContentPane().add(panelFooter, BorderLayout.SOUTH);
 		panelFooter.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
 		JButton btnBerichteAnzeigen = new JButton("Anzeigen");
@@ -143,12 +188,12 @@ public class FrameBerichteParameter {
 		btnFrameSchliessen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Fenster schließen
-				frame.setVisible(false);
-				frame.dispose(); // JFrame Objekt zerstören
+				dialogFrame.setVisible(false);
+				dialogFrame.dispose(); // JFrame Objekt zerstören
 			}
 		});
 		panelFooter.add(btnFrameSchliessen);
 		
-		frame.setVisible(true);
+		dialogFrame.setVisible(true);
 	}
 }

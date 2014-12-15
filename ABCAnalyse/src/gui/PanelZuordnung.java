@@ -93,7 +93,7 @@ public class PanelZuordnung extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				updateABCZuordnung();
-				JOptionPane.showMessageDialog(null,
+				JOptionPane.showMessageDialog(MainWindow.frame,
 						"Das Speichern der ABC-Zuordnung war erfolgreich.",
 						"Speichern erfolgreich",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -102,7 +102,9 @@ public class PanelZuordnung extends JPanel {
 		});
 		panelZuordnungFooter.add(btnSpeichern);
 
-		getTableData();
+		
+		setTableData();
+		setTableHeaderText();
 
 		final DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
 
@@ -138,7 +140,7 @@ public class PanelZuordnung extends JPanel {
 			table.getColumnModel().getColumn(columnIndex)
 					.setCellRenderer(cellRenderer);
 		}
-
+		
 		table.setShowGrid(true);
 		table.setShowHorizontalLines(true);
 		table.setShowVerticalLines(true);
@@ -147,8 +149,14 @@ public class PanelZuordnung extends JPanel {
 		table.getTableHeader().setReorderingAllowed(false);
 	}
 
+	public void setTableHeaderText() {
+		table.getColumnModel().getColumn(0).setHeaderValue("Umsatz");
+		table.getColumnModel().getColumn(1).setHeaderValue("Anzahl");
+		table.getColumnModel().getColumn(2).setHeaderValue("Menge");
+		table.getColumnModel().getColumn(3).setHeaderValue("Zuordnung");
+	}
 	
-	public void getTableData() {
+	public void setTableData() {
 		JComboBox<String> cboZuordnung = new JComboBox<String>();
 		cboZuordnung.setAlignmentX(CENTER_ALIGNMENT);
 		cboZuordnung.addItem("A");
@@ -158,7 +166,7 @@ public class PanelZuordnung extends JPanel {
 		try {
 			abcEinteilungResult = CrudFunktionen.getResult(
 					MainWindow.DBconnection, CrudBefehle.selectABCZuordnung);
-
+			
 			table.setModel(buildTableModel(abcEinteilungResult));
 			table.getColumnModel().getColumn(3)
 					.setCellEditor(new DefaultCellEditor(cboZuordnung));
