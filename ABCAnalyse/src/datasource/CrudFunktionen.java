@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import objects.ABCZuordnung;
 import objects.Absatz;
 import objects.Bericht;
 import objects.Vertriebskanal;
@@ -285,9 +286,6 @@ public class CrudFunktionen {
 		}
 	}
 	
-	public static void saveBericht(Bericht b){
-		
-	}
 	
 	public static ArrayList<Bericht> getBerichte(/*TODO*/){
 		ArrayList<Bericht> berichte = new ArrayList<Bericht>();
@@ -322,6 +320,33 @@ public class CrudFunktionen {
 			}
 		}
 		return berichte;
+	}
+	
+	public static ArrayList<ABCZuordnung> getZuordnungen(){
+		ArrayList<ABCZuordnung> zuordnungen = new ArrayList<ABCZuordnung>();
+	ResultSet rs = CrudFunktionen.getResult(MainWindow.DBconnection, CrudBefehle.selectABCZuordnung);
+	try {
+		while(rs.next())
+		{
+			ABCZuordnung zuordnung = new ABCZuordnung();
+			zuordnung.key = rs.getString(1) + rs.getString(2) + rs.getString(3);
+			zuordnung.zuordnung = rs.getString(4);
+			zuordnungen.add(zuordnung);
+		}
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return null;
+	}
+	finally{
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	return zuordnungen;
 	}
 }
 

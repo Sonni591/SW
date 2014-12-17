@@ -1,7 +1,6 @@
 package logic;
 
 import gui.MainWindow;
-import gui.PanelParameter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +9,7 @@ import java.util.Hashtable;
 
 import objects.ABCEinteilung;
 import objects.ABCResult;
+import objects.ABCZuordnung;
 import objects.Vertriebskanal;
 import objects.Warengruppe;
 import datasource.CrudBefehle;
@@ -31,16 +31,11 @@ public class ABCRechnung {
 	}
 
 	private void createZuordnungTable(){
-		ResultSet rs = CrudFunktionen.getResult(MainWindow.DBconnection, CrudBefehle.selectABCZuordnung);
-		try {
-			while(rs.next())
-			{
-				String key = rs.getString(1) + rs.getString(2) + rs.getString(3);
-				abcZurdnungTable.put(key, rs.getString(4));
+		ArrayList<ABCZuordnung> abcZ = CrudFunktionen.getZuordnungen();
+		if(abcZ != null){
+			for(ABCZuordnung z : abcZ){
+				abcZurdnungTable.put(z.key, z.zuordnung);
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
