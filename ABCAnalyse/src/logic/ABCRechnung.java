@@ -240,7 +240,7 @@ public class ABCRechnung {
 		{
 		 criteria = "A";
 		}
-		else if(percent > einteilung.AnteilA && percent < einteilung.AnteilC)
+		else if(percent > einteilung.AnteilA && percent < (einteilung.AnteilA + einteilung.AnteilB))
 		{
 			criteria = "B";
 		}
