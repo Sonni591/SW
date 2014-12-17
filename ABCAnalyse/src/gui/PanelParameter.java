@@ -204,9 +204,7 @@ public class PanelParameter extends JPanel{
 		btnBerichte.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-
-				ChartTest chart = new ChartTest();
-				chart.createchart();
+				CrudFunktionen.generateBericht(MainWindow.DBconnection, 10, 1);
 			}
 		});
 		panelParameterFoot.add(btnBerichte);

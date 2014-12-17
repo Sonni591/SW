@@ -16,6 +16,19 @@ public class CrudBefehle {
 	public static String selectVertriebskanaele = "select * from Lager order by Bezeichnung asc";
 	public static String selectWarengruppen = "select * from Warengruppe order by Bezeichnung asc";
 	
+	public static String selectSumOfCriteriaByStorehouseAndWaregroup = "select sum(JahresUmsatz) as SummeUmsatz, sum(JahresMenge) as SummeMenge, sum(JahresAnzahl) as SummeAnzahl from ABC_Input where LagerNr = ? and WGNr = ?";
+	public static String selectABCInputByStorehouseAndWaregroupOrderCriteria = "select * from ABC_Input where LagerNr in (?) and WGNr = ? order by ";
+	
+	//Bereich Update-Befehle
+	public static String updateEinteilungAnteilA = "update " + "ABCEinteilung set AnteilA = ? where Bezeichnung = ?";
+	public static String updateEinteilungAnteilB = "update " + "ABCEinteilung set AnteilB = ? where Bezeichnung = ?";
+	public static String updateEinteilungAnteilC = "update " + "ABCEinteilung set AnteilC = ? where Bezeichnung = ?";
+	
+	public static String updateABCZuordnung = "update ABCZuordnung set Zuordnung = ? where Kriterium1 = ? and Kriterium2 = ? and Kriterium3 = ?";
+	
+	//Bereich Insert-Befehle
+	public static String insertIntoABCResult = "INSERT INTO ABCResult VALUES (?, ?, ?, ?, ?, ?)";
+	
 	//ABC-Berechnung Selects
 	public static String insertABCInputValues = "insert into ABC_Input "
 											    + "select a.artikelnr,"
@@ -38,20 +51,27 @@ public class CrudBefehle {
 												 + "from ABC_Input "
 												 + "group by ArtikelNr,WgNr";
 	
-	public static String selectSumOfCriteriaByStorehouseAndWaregroup = "select sum(JahresUmsatz) as SummeUmsatz, sum(JahresMenge) as SummeMenge, sum(JahresAnzahl) as SummeAnzahl from ABC_Input where LagerNr = ? and WGNr = ?";
-	public static String selectABCInputByStorehouseAndWaregroupOrderCriteria = "select * from ABC_Input where LagerNr in (?) and WGNr = ? order by ";
-	
-	//Bereich Update-Befehle
-	public static String updateEinteilungAnteilA = "update " + "ABCEinteilung set AnteilA = ? where Bezeichnung = ?";
-	public static String updateEinteilungAnteilB = "update " + "ABCEinteilung set AnteilB = ? where Bezeichnung = ?";
-	public static String updateEinteilungAnteilC = "update " + "ABCEinteilung set AnteilC = ? where Bezeichnung = ?";
-	
-	public static String updateABCZuordnung = "update ABCZuordnung set Zuordnung = ? where Kriterium1 = ? and Kriterium2 = ? and Kriterium3 = ?";
-	
-	//Bereich Insert-Befehle
-	public static String insertIntoABCResult = "INSERT INTO ABCResult VALUES (?, ?, ?, ?, ?, ?)";
+	public static String generateABCBerichte = "INSERT INTO ABCBerichte "
+			 								 + "select abcR.ABCKZ, abcR.LagerNr, abcI.WgNr, sum(abcI.JahresAnzahl), sum(abcI.JahresUmsatz), sum(abcI.JahresMenge), " 
+											 + "sum(abcI.Bestand), sum(abcI.JahresMenge * a.EKPreis), sum(abcI.Bestand * a.EKPreis) "
+											 + "from ABCResult abcR "
+											 + "join ABC_Input abcI on abcI.ArtikelNr = abcR.ArtikelNr and abcI.LagerNr = abcR.LagerNr "
+											 + "join Artikel a on a.ArtikelNr = abcI.ArtikelNr "
+											 + "where abcI.LagerNr = ? "
+											 + "and abcI.WgNr = ? "
+											 + "group by abcR.ABCKZ, abcR.LagerNr, abcI.WgNr "
+											 + "UNION "
+											 + "select 'SUM', abcR.LagerNr, abcI.WgNr, sum(abcI.JahresAnzahl), sum(abcI.JahresUmsatz), sum(abcI.JahresMenge), "
+											 + "sum(abcI.Bestand), sum(abcI.JahresMenge * a.EKPreis), sum(abcI.Bestand * a.EKPreis) "
+											 + "from ABCResult abcR "
+											 + "join ABC_Input abcI on abcI.ArtikelNr = abcR.ArtikelNr and abcI.LagerNr = abcR.LagerNr "
+											 + "join Artikel a on a.ArtikelNr = abcI.ArtikelNr "
+											 + "where abcI.LagerNr = ? "
+											 + "and abcI.WgNr = ? "
+											 + "group by abcR.LagerNr, abcI.WgNr;";
 	
 	//Bereich Delete-Befehle
 	public static String deleteABCInput = "delete from ABC_Input";
 	public static String deleteABCResult = "delete from ABCResult";
+	public static String deleteABCBerichte = "delete from ABCBerichte";
 }

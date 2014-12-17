@@ -60,6 +60,7 @@ public class PanelErgebnis extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTable resultTable;
 	private JTextField txtArtikel;
+	private JLabel lblCountRows;
 
 	private JComboBox<String> cboVertriebskanal;
 
@@ -283,6 +284,9 @@ public class PanelErgebnis extends JPanel {
 		JPanel panelErgebnisFooter = new JPanel();
 		add(panelErgebnisFooter, BorderLayout.SOUTH);
 		panelErgebnisFooter.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+		
+		lblCountRows = new JLabel("Zeilen: ");
+		panelErgebnisFooter.add(lblCountRows);
 		// Deaktiviert das verschieben der Spalten
 		resultTable.getTableHeader().setReorderingAllowed(false);
 
@@ -301,6 +305,7 @@ public class PanelErgebnis extends JPanel {
 					MainWindow.DBconnection, CrudBefehle.selectABCResultView);
 
 			resultTable.setModel(buildTableModel(abcEinteilungResult));
+			lblCountRows.setText("Count: " + resultTable.getRowCount());
 		} catch (Exception e) {
 			System.err.println(e);
 			e.printStackTrace();
@@ -377,6 +382,7 @@ public class PanelErgebnis extends JPanel {
 				filters.add(rowFilterABCGesamt);
 
 				compoundRowFilter = RowFilter.andFilter(filters);
+				
 
 			} catch (java.util.regex.PatternSyntaxException e) {
 				return;
@@ -385,6 +391,8 @@ public class PanelErgebnis extends JPanel {
 			sorter.setModel(model);
 
 			sorter.setRowFilter(compoundRowFilter);
+			
+			lblCountRows.setText("Zeilen: " + resultTable.getRowCount());
 		} else {
 			// DefaultTableModel ist null!
 			return;

@@ -182,6 +182,12 @@ public class FrameBerichteParameter {
 		panelFooter.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
 		JButton btnBerichteAnzeigen = new JButton("Anzeigen");
+		btnBerichteAnzeigen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ChartTest chart = new ChartTest();
+				chart.createchart();
+			}
+		});
 		panelFooter.add(btnBerichteAnzeigen);
 		
 		JButton btnFrameSchliessen = new JButton("Schlie\u00DFen");

@@ -121,6 +121,28 @@ public class CrudFunktionen {
 		}
 	}
 	
+	public static void generateBericht(Connection connection, int lagerNr, int wgNr)
+	{
+		PreparedStatement insertStatement = null;
+		Statement deleteStatement;
+		try {
+			deleteStatement = connection.createStatement();
+			deleteStatement.executeUpdate(CrudBefehle.deleteABCBerichte);
+			connection.setAutoCommit(false);
+			//Jetzt kann die Tabelle neu befuellt werden
+			insertStatement = connection.prepareStatement(CrudBefehle.generateABCBerichte);
+			insertStatement.setInt(1, lagerNr);
+			insertStatement.setInt(2, wgNr);
+			insertStatement.setInt(3, lagerNr);
+			insertStatement.setInt(4, wgNr);
+			insertStatement.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static ResultSet selectABCInputByStorehouseAndWaregroup(Connection connection, int lagerNr, int wgNr, String criteria)
 	{
 		PreparedStatement selectStatement = null;
