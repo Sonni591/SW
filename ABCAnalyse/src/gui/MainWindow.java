@@ -1,20 +1,24 @@
 package gui;
+import interfaces.IABCRepository;
+
 import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
+import sqliteRepository.DBConnector;
+import sqliteRepository.SqliteRepository;
+
 import java.sql.Connection;
 
 import logic.ABCRechnung;
-import datasource.DBConnector;
 
 
 public class MainWindow {
 
 	public static JFrame frame;
-	public static Connection DBconnection = null;
+	private IABCRepository repository;
 
 	//Einzelne Tabpages
 	public static		PanelParameter panelParameter;
@@ -44,7 +48,7 @@ public class MainWindow {
 	 */
 	public MainWindow() {
 		//Zuerst zur Datenbank verbinden
-		DBconnection = DBConnector.connectSqLite();
+		repository = new SqliteRepository();
 		//Initialisieren aller Komponenten
 		initialize();
 	}
@@ -64,10 +68,10 @@ public class MainWindow {
 		frame.getContentPane().add(tabPageContainer);
 		
 		//Einzelne Tabpages
-		 panelParameter = new PanelParameter();
-		 panelEinteilung = new PanelEinteilung();
-		 panelZuordnung = new PanelZuordnung();
-		 panelErgebnis = new PanelErgebnis();
+		 panelParameter = new PanelParameter(repository);
+		 panelEinteilung = new PanelEinteilung(repository);
+		 panelZuordnung = new PanelZuordnung(repository);
+		 panelErgebnis = new PanelErgebnis(repository);
 		
 		//Hinzufuegen der einzelnen TabPages
 		tabPageContainer.addTab("Parameter", panelParameter);

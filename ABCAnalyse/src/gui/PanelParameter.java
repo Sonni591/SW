@@ -1,5 +1,7 @@
 package gui;
 
+import interfaces.IABCRepository;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -46,9 +48,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
+import sqliteRepository.CrudBefehle;
 import logic.ABCRechnung;
-import datasource.CrudBefehle;
-import datasource.CrudFunktionen;
+
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
@@ -72,8 +74,11 @@ public class PanelParameter extends JPanel{
 	public static JRadioButton rdbtnVon;
 	public static JRadioButton rdbtnJahr;
 	
-	public PanelParameter()
+	private IABCRepository repository;
+	
+	public PanelParameter(IABCRepository _repository)
 	{
+		repository = _repository;
 		this.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panelParameterZeitraum = new JPanel();
@@ -204,7 +209,7 @@ public class PanelParameter extends JPanel{
 		btnBerichte.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				CrudFunktionen.generateBericht(MainWindow.DBconnection, 10, 1);
+				repository.generateBericht(10, 1);
 			}
 		});
 		panelParameterFoot.add(btnBerichte);
@@ -234,10 +239,10 @@ public class PanelParameter extends JPanel{
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 				else {
-					ABCRechnung rechnung = new ABCRechnung();
+					ABCRechnung rechnung = new ABCRechnung(repository);
 					if(!vonDatum.equals("") && !bisDatum.equals(""))
 					{
-						CrudFunktionen.insertABCInputTable(MainWindow.DBconnection, vonDatum, bisDatum);
+						repository.insertABCInputTable(vonDatum, bisDatum);
 						rechnung.CalculateABCResult();
 						MainWindow.panelErgebnis.setTableData();
 					}
@@ -262,7 +267,7 @@ public class PanelParameter extends JPanel{
 		buttonGroupVertriebskanal.add(rdbtnVertriebskanalEinzel);
 		
 		// Vertriebskanäle lesen
-		ArrayList<String> vertriebskanaele = CrudFunktionen.getVertriebskanale();
+		ArrayList<String> vertriebskanaele = repository.getVertriebskanale();
 	
 		cboVertriebskanal = new JComboBox<String>();
 		cboVertriebskanal.setEnabled(false);
@@ -334,7 +339,7 @@ public class PanelParameter extends JPanel{
 		cboWarengruppe = new JComboBox<String>();
 		cboWarengruppe.setEnabled(false);
 		
-		ArrayList<String> warengruppenList = CrudFunktionen.getWarengruppen();
+		ArrayList<String> warengruppenList = repository.getWarengruppen();
 		for(String s : warengruppenList) {
 			cboWarengruppe.addItem(s);
 		}
@@ -395,7 +400,7 @@ public class PanelParameter extends JPanel{
 //		
 //		ResultSet rsVertriebskanale = null;
 //		try {
-//			rsVertriebskanale = CrudFunktionen.getResult(
+//			rsVertriebskanale = repository.getResult(
 //					MainWindow.DBconnection, CrudBefehle.selectVertriebskanaele);
 //		
 //			while (rsVertriebskanale.next()) {
@@ -427,7 +432,7 @@ public class PanelParameter extends JPanel{
 //		ArrayList<String> wgList = new ArrayList<String>();
 //		ResultSet rsWarengruppen = null;
 //		try {
-//			rsWarengruppen = CrudFunktionen.getResult(
+//			rsWarengruppen = repository.getResult(
 //					MainWindow.DBconnection, CrudBefehle.selectWarengruppen);
 //		
 //			while (rsWarengruppen.next()) {

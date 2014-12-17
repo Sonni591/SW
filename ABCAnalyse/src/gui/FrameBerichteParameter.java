@@ -1,5 +1,7 @@
 package gui;
 
+import interfaces.IABCRepository;
+
 import java.awt.Dimension;
 
 import javax.swing.ButtonGroup;
@@ -26,7 +28,8 @@ import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
 import javax.swing.border.MatteBorder;
 
-import datasource.CrudFunktionen;
+
+
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -46,6 +49,10 @@ public class FrameBerichteParameter {
 	public static JRadioButton rdbtnChartOption2;
 	public static JRadioButton rdbtnChartOption3;
 
+	private IABCRepository repository;
+	public FrameBerichteParameter(IABCRepository _repository) {
+		repository = _repository;
+	}
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -125,14 +132,14 @@ public class FrameBerichteParameter {
 		JLabel lblWarengruppe = new JLabel("Warengruppe:");
 
 		cboWarengruppen = new JComboBox<String>();
-		ArrayList<String> warengruppenList = CrudFunktionen.getWarengruppen();
+		ArrayList<String> warengruppenList = repository.getWarengruppen();
 		for (String s : warengruppenList) {
 			cboWarengruppen.addItem(s);
 		}
 
 		JLabel lblVertriebskanal = new JLabel("Vertriebskanal:");
 
-		ArrayList<String> vertriebskanaeleList = CrudFunktionen
+		ArrayList<String> vertriebskanaeleList = repository
 				.getVertriebskanale();
 
 		cboVertriebskanal1 = new JComboBox<String>();
@@ -301,7 +308,7 @@ public class FrameBerichteParameter {
 		JButton btnBerichteAnzeigen = new JButton("Anzeigen");
 		btnBerichteAnzeigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ChartTest chart = new ChartTest();
+				ChartTest chart = new ChartTest(repository);
 				chart.createchart();
 			}
 		});
@@ -310,7 +317,7 @@ public class FrameBerichteParameter {
 
 			public void actionPerformed(ActionEvent e) {
 
-				ChartTest chart = new ChartTest();
+				ChartTest chart = new ChartTest(repository);
 				chart.getDataForChart();
 			}
 		});

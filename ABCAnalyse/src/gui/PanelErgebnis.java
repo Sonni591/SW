@@ -1,5 +1,7 @@
 package gui;
 
+import interfaces.IABCRepository;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -24,10 +26,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-
-import datasource.CrudBefehle;
-import datasource.CrudFunktionen;
-
 import javax.swing.JButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -47,7 +45,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
+import sqliteRepository.CrudBefehle;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -73,8 +71,11 @@ public class PanelErgebnis extends JPanel {
 	private JComboBox<String> cboABCGesamt;
 
 	private JComboBox<String> cboWarengruppe;
+	
+	private IABCRepository repository;
 
-	public PanelErgebnis() {
+	public PanelErgebnis(IABCRepository _repository) {
+		repository = _repository;
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelErgebnisHeader = new JPanel();
@@ -103,7 +104,7 @@ public class PanelErgebnis extends JPanel {
 
 		cboVertriebskanal = new JComboBox<String>();
 		// Vertriebskanäle lesen
-		ArrayList<String> vertriebskanaele = CrudFunktionen.getVertriebskanale();
+		ArrayList<String> vertriebskanaele = repository.getVertriebskanale();
 		cboVertriebskanal.addItem(""); // leere Auwahl hinzufügen;
 		for (String s : vertriebskanaele) {
 			cboVertriebskanal.addItem(s);
@@ -111,7 +112,7 @@ public class PanelErgebnis extends JPanel {
 
 		cboWarengruppe = new JComboBox<String>();
 		// Warengruppen lesen
-		ArrayList<String> warengruppen = CrudFunktionen.getWarengruppen();
+		ArrayList<String> warengruppen = repository.getWarengruppen();
 		cboWarengruppe.addItem(""); // leere Auwahl hinzufügen;
 		for (String s : warengruppen) {
 			cboWarengruppe.addItem(s);
@@ -165,7 +166,7 @@ public class PanelErgebnis extends JPanel {
 		JButton btnBerichte = new JButton("Berichte");
 		btnBerichte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				FrameBerichteParameter BerichteDialog = new FrameBerichteParameter();
+				FrameBerichteParameter BerichteDialog = new FrameBerichteParameter(repository);
 				BerichteDialog.initialize();
 			}
 		});
@@ -301,8 +302,7 @@ public class PanelErgebnis extends JPanel {
 	public void setTableData() {
 		ResultSet abcEinteilungResult = null;
 		try {
-			abcEinteilungResult = CrudFunktionen.getResult(
-					MainWindow.DBconnection, CrudBefehle.selectABCResultView);
+			abcEinteilungResult = repository.getResult(CrudBefehle.selectABCResultView);
 
 			resultTable.setModel(buildTableModel(abcEinteilungResult));
 			lblCountRows.setText("Count: " + resultTable.getRowCount());
@@ -429,9 +429,8 @@ public class PanelErgebnis extends JPanel {
 //
 //		ResultSet rsVertriebskanale = null;
 //		try {
-//			rsVertriebskanale = CrudFunktionen
-//					.getResult(MainWindow.DBconnection,
-//							CrudBefehle.selectVertriebskanaele);
+//			rsVertriebskanale = repository
+//					.getResult(CrudBefehle.selectVertriebskanaele);
 //
 //			while (rsVertriebskanale.next()) {
 //
@@ -462,8 +461,7 @@ public class PanelErgebnis extends JPanel {
 //
 //		ResultSet rsWarengruppen = null;
 //		try {
-//			rsWarengruppen = CrudFunktionen.getResult(MainWindow.DBconnection,
-//					CrudBefehle.selectWarengruppen);
+//			rsWarengruppen = repository.getResult(CrudBefehle.selectWarengruppen);
 //
 //			while (rsWarengruppen.next()) {
 //

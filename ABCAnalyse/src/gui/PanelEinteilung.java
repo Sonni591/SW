@@ -1,5 +1,7 @@
 package gui;
 
+import interfaces.IABCRepository;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -21,8 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import datasource.CrudFunktionen;
-import datasource.CrudBefehle;
+import sqliteRepository.CrudBefehle;
 
 public class PanelEinteilung extends JPanel {
 
@@ -41,10 +42,12 @@ public class PanelEinteilung extends JPanel {
 	private static JFormattedTextField txtMengeB;
 	private static JFormattedTextField txtMengeC;
 
+	private IABCRepository repository;
 	/**
 	 * 
 	 */
-	public PanelEinteilung() {
+	public PanelEinteilung(IABCRepository _repository) {
+		repository = _repository;
 		KeyListener keyListener = new KeyListener() {
 		      public void keyPressed(KeyEvent keyEvent) {
 		        
@@ -257,10 +260,9 @@ public class PanelEinteilung extends JPanel {
 	 * L��dt die Schwellwerte aus der Datenbank und zeigt diese in den
 	 * Textfeldern an
 	 */
-	private static void getABCEinteilung() {
+	private void getABCEinteilung() {
 		try {
-			ResultSet abcEinteilungResult = CrudFunktionen.getResult(
-					MainWindow.DBconnection, CrudBefehle.selectABCEinteilung);
+			ResultSet abcEinteilungResult = repository.getResult(CrudBefehle.selectABCEinteilung);
 
 			while (abcEinteilungResult.next()) {
 
@@ -302,36 +304,27 @@ public class PanelEinteilung extends JPanel {
 	/**
 	 * Aktualisiert die Schwellwerte der ABC-Einteilung auf der Datenbank
 	 */
-	private static void updateABCEinteilung() {
+	private void updateABCEinteilung() {
 		// Umsatz
-		CrudFunktionen.updateABCEinteilung(MainWindow.DBconnection,
-				CrudBefehle.updateEinteilungAnteilA,
+		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilA,
 				Integer.parseInt(txtUmsatzA.getText()), "Umsatz");
-		CrudFunktionen.updateABCEinteilung(MainWindow.DBconnection,
-				CrudBefehle.updateEinteilungAnteilB,
+		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilB,
 				Integer.parseInt(txtUmsatzB.getText()), "Umsatz");
-		CrudFunktionen.updateABCEinteilung(MainWindow.DBconnection,
-				CrudBefehle.updateEinteilungAnteilC,
+		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilC,
 				Integer.parseInt(txtUmsatzC.getText()), "Umsatz");
 		// Menge
-		CrudFunktionen.updateABCEinteilung(MainWindow.DBconnection,
-				CrudBefehle.updateEinteilungAnteilA,
+		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilA,
 				Integer.parseInt(txtMengeA.getText()), "Menge");
-		CrudFunktionen.updateABCEinteilung(MainWindow.DBconnection,
-				CrudBefehle.updateEinteilungAnteilB,
+		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilB,
 				Integer.parseInt(txtMengeB.getText()), "Menge");
-		CrudFunktionen.updateABCEinteilung(MainWindow.DBconnection,
-				CrudBefehle.updateEinteilungAnteilC,
+		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilC,
 				Integer.parseInt(txtMengeC.getText()), "Menge");
 		// Auftragsanzahl
-		CrudFunktionen.updateABCEinteilung(MainWindow.DBconnection,
-				CrudBefehle.updateEinteilungAnteilA,
+		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilA,
 				Integer.parseInt(txtAnzahlA.getText()), "Auftragsanzahl");
-		CrudFunktionen.updateABCEinteilung(MainWindow.DBconnection,
-				CrudBefehle.updateEinteilungAnteilB,
+		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilB,
 				Integer.parseInt(txtAnzahlB.getText()), "Auftragsanzahl");
-		CrudFunktionen.updateABCEinteilung(MainWindow.DBconnection,
-				CrudBefehle.updateEinteilungAnteilC,
+		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilC,
 				Integer.parseInt(txtAnzahlC.getText()), "Auftragsanzahl");
 
 		JOptionPane.showMessageDialog(MainWindow.frame,

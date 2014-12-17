@@ -1,6 +1,7 @@
 package logic;
 
 import gui.MainWindow;
+import interfaces.IABCRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,12 +13,11 @@ import objects.ABCResult;
 import objects.ABCZuordnung;
 import objects.Vertriebskanal;
 import objects.Warengruppe;
-import datasource.CrudBefehle;
-import datasource.CrudFunktionen;
+import sqliteRepository.CrudBefehle;
 
 
 public class ABCRechnung {
-
+	IABCRepository repository;
 	Hashtable<String, ABCResult> abcResultTable = new Hashtable<String, ABCResult>();
 	Hashtable<String, String> abcZurdnungTable = new Hashtable<String, String>();
 	Hashtable<String, ABCEinteilung> abcEinteilungTable = new Hashtable<String, ABCEinteilung>();
@@ -25,13 +25,14 @@ public class ABCRechnung {
 	ArrayList<Vertriebskanal> arrListVertriebskanaele = new ArrayList<Vertriebskanal>();
 	ArrayList<Warengruppe> arrListWarengruppen = new ArrayList<Warengruppe>();
 	
-	public ABCRechnung(){
+	public ABCRechnung(IABCRepository _repository){
+		repository = _repository;
 		createZuordnungTable();
 		createEinteilungTable();
 	}
 
 	private void createZuordnungTable(){
-		ArrayList<ABCZuordnung> abcZ = CrudFunktionen.getZuordnungen();
+		ArrayList<ABCZuordnung> abcZ = repository.getZuordnungen();
 		if(abcZ != null){
 			for(ABCZuordnung z : abcZ){
 				abcZurdnungTable.put(z.key, z.zuordnung);
@@ -40,7 +41,7 @@ public class ABCRechnung {
 	}
 	
 	private void createEinteilungTable(){
-		ResultSet rs = CrudFunktionen.getResult(MainWindow.DBconnection, CrudBefehle.selectABCEinteilung);
+		ResultSet rs = repository.getResult(CrudBefehle.selectABCEinteilung);
 		try {
 			while(rs.next())
 			{
@@ -64,9 +65,9 @@ public class ABCRechnung {
 			// Funktion wenn alle Kan‰le gw‰hlt wurde
 			System.out.println("Alle Kan‰le");
 			
-			arrListVertriebskanaele = CrudFunktionen.getVertriebskanaeleObjects();
+			arrListVertriebskanaele = repository.getVertriebskanaeleObjects();
 			
-			arrListWarengruppen = CrudFunktionen.getWarengruppenObjects();
+			arrListWarengruppen = repository.getWarengruppenObjects();
 			
 		} 
 		else {
@@ -90,9 +91,9 @@ public class ABCRechnung {
 	{
 		
 		// Ausgewählte Vertriebskanäle und Warengruppen lesen
-		arrListVertriebskanaele = CrudFunktionen.getVertriebskanaeleObjects();
+		arrListVertriebskanaele = repository.getVertriebskanaeleObjects();
 		
-		arrListWarengruppen = CrudFunktionen.getWarengruppenObjects();
+		arrListWarengruppen = repository.getWarengruppenObjects();
 		//getSelectedGUIItems();
 		
 		// Output Test
@@ -113,7 +114,7 @@ public class ABCRechnung {
 			{
 				int wgNr = wgObj.getWGNr();
 				
-				ArrayList<Double> criteriaSumValues = getSumOfEachCriteria(CrudFunktionen.selectSumOfEachCriteria(MainWindow.DBconnection, lagerNr, wgNr));
+				ArrayList<Double> criteriaSumValues = getSumOfEachCriteria(repository.selectSumOfEachCriteria(lagerNr, wgNr));
 				//Fuer jedes Kriterium
 				for(int criteria = 1; criteria <= 3; criteria++)
 				{
@@ -124,17 +125,17 @@ public class ABCRechnung {
 						switch(criteria){
 						//Umsatz
 						case 1: 
-							rs = CrudFunktionen.selectABCInputByStorehouseAndWaregroup(MainWindow.DBconnection, lagerNr, wgNr, "JahresUmsatz");
+							rs = repository.selectABCInputByStorehouseAndWaregroup(lagerNr, wgNr, "JahresUmsatz");
 							accumulate(rs, criteriaSumValues, lagerNr, "Umsatz");
 							break;
 						//Menge
 						case 2:
-							rs = CrudFunktionen.selectABCInputByStorehouseAndWaregroup(MainWindow.DBconnection, lagerNr, wgNr, "JahresMenge");
+							rs = repository.selectABCInputByStorehouseAndWaregroup(lagerNr, wgNr, "JahresMenge");
 							accumulate(rs, criteriaSumValues, lagerNr, "Menge");
 							break;
 						//Anzahl
 						case 3:
-							rs = CrudFunktionen.selectABCInputByStorehouseAndWaregroup(MainWindow.DBconnection, lagerNr, wgNr, "JahresAnzahl");
+							rs = repository.selectABCInputByStorehouseAndWaregroup(lagerNr, wgNr, "JahresAnzahl");
 							accumulate(rs, criteriaSumValues, lagerNr, "Anzahl");
 							break;
 						}
@@ -251,10 +252,10 @@ public class ABCRechnung {
 	private void insertResultIntoDB()
 	{
 		//Erst aktuellen Tabelleninhalt loeschen
-		CrudFunktionen.deleteABCResultTable(MainWindow.DBconnection);
+		repository.deleteABCResultTable();
 		 for(String key: abcResultTable.keySet()){
 			 ABCResult result = abcResultTable.get(key);
-	         CrudFunktionen.insertABCResultTable(MainWindow.DBconnection, result.ArtikelNr, result.LagerNr, result.ABCK1, result.ABCK2, result.ABCK3, result.ABCKZ);
+	         repository.insertABCResultTable(result.ArtikelNr, result.LagerNr, result.ABCK1, result.ABCK2, result.ABCK3, result.ABCKZ);
 	        }
 	}
 	
@@ -271,7 +272,7 @@ public class ABCRechnung {
 	
 	public int getWarenGruppe(String Warengruppe){
 		ResultSet daten = null;
-			daten = CrudFunktionen.getResult(MainWindow.DBconnection,CrudBefehle.selectWarengruppen);
+			daten = repository.getResult(CrudBefehle.selectWarengruppen);
 		try {
 			while (daten.next()) {
 				if(daten.getString("Bezeichnung").equals(Warengruppe)){

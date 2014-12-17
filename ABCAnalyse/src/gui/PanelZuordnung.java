@@ -1,5 +1,7 @@
 package gui;
 
+import interfaces.IABCRepository;
+
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
@@ -28,10 +30,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-
-import datasource.CrudBefehle;
-import datasource.CrudFunktionen;
-
 import javax.swing.JButton;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -41,6 +39,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import sqliteRepository.CrudBefehle;
+
 public class PanelZuordnung extends JPanel {
 
 	/**
@@ -48,8 +48,11 @@ public class PanelZuordnung extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static JTable table;
+	
+	private IABCRepository repository;
 
-	public PanelZuordnung() {
+	public PanelZuordnung(IABCRepository _repository) {
+		repository = _repository;
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelZuordnungHeader = new JPanel();
@@ -164,8 +167,7 @@ public class PanelZuordnung extends JPanel {
 		cboZuordnung.addItem("C");
 		ResultSet abcEinteilungResult = null;
 		try {
-			abcEinteilungResult = CrudFunktionen.getResult(
-					MainWindow.DBconnection, CrudBefehle.selectABCZuordnung);
+			abcEinteilungResult = repository.getResult(CrudBefehle.selectABCZuordnung);
 			
 			table.setModel(buildTableModel(abcEinteilungResult));
 			table.getColumnModel().getColumn(3)
@@ -213,8 +215,7 @@ public class PanelZuordnung extends JPanel {
 			String kriterium2 = table.getModel().getValueAt(row, 1).toString();
 			String kriterium3 = table.getModel().getValueAt(row, 2).toString();
 
-			CrudFunktionen.updateABCZuordnung(MainWindow.DBconnection,
-					CrudBefehle.updateABCZuordnung, zuordnung, kriterium1,
+			repository.updateABCZuordnung(CrudBefehle.updateABCZuordnung, zuordnung, kriterium1,
 					kriterium2, kriterium3);
 		}
 	}

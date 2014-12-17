@@ -1,4 +1,6 @@
 package gui;
+import interfaces.IABCRepository;
+
 import java.sql.ResultSet;
 
 import org.jfree.chart.ChartFactory;
@@ -7,11 +9,15 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import datasource.CrudBefehle;
-import datasource.CrudFunktionen;
+import sqliteRepository.CrudBefehle;
 
 
 public class ChartTest {
+	private IABCRepository repository;
+
+	public ChartTest(IABCRepository _repository) {
+		repository = _repository;
+	}
 	public void getDataForChart(){
 		if(FrameBerichteParameter.rdbtnChartOption1.isSelected())
 			System.out.println("Option1");
@@ -21,7 +27,7 @@ public class ChartTest {
 			System.out.println("Option3");
 	}
 	public void createchart(){
-		ResultSet rs = CrudFunktionen.getResult(MainWindow.DBconnection, CrudBefehle.selectABCZuordnung);
+		ResultSet rs = repository.getResult(CrudBefehle.selectABCZuordnung);
 		
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
 		data.addValue(80, "C", "Umsatz");
