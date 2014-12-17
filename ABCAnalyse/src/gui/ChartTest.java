@@ -1,15 +1,29 @@
 package gui;
+import java.sql.ResultSet;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import datasource.CrudBefehle;
+import datasource.CrudFunktionen;
+
 
 public class ChartTest {
-	public static void createchart(){
-		DefaultCategoryDataset data = new DefaultCategoryDataset();
+	public void getDataForChart(){
+		if(FrameBerichteParameter.rdbtnChartOption1.isSelected())
+			System.out.println("Option1");
+		else if(FrameBerichteParameter.rdbtnChartOption2.isSelected())
+			System.out.println("Option2");
+		else
+			System.out.println("Option3");
+	}
+	public void createchart(){
+		ResultSet rs = CrudFunktionen.getResult(MainWindow.DBconnection, CrudBefehle.selectABCZuordnung);
 		
+		DefaultCategoryDataset data = new DefaultCategoryDataset();
 		data.addValue(80, "C", "Umsatz");
 		data.addValue(15, "B", "Umsatz");
 		data.addValue(5, "A", "Umsatz");
