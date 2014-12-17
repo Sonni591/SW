@@ -1,7 +1,6 @@
 package logic;
 
 import gui.MainWindow;
-import gui.PanelErgebnis;
 import gui.PanelParameter;
 
 import java.sql.ResultSet;
@@ -65,19 +64,17 @@ public class ABCRechnung {
 	
 	// TODO
 	//
-	public void getSelectedGUIItems() {
+	/*public void getSelectedGUIItems() {
 		if (PanelParameter.rdbtnAlleVertriebskanaele.isSelected()) {
 			// Funktion wenn alle Kan‰le gw‰hlt wurde
 			System.out.println("Alle Kan‰le");
 			
 			arrListVertriebskanaele = CrudFunktionen.getVertriebskanaeleObjects();
 			
-			//TODO: extra für Warengruppen
 			arrListWarengruppen = CrudFunktionen.getWarengruppenObjects();
 			
-		} else {
-			// Funktion wenn nur einer gew‰hlt wurde
-			
+		} 
+		else {
 			// ausgewählten Vertriebskanal lesen
 			Vertriebskanal vertriebskanal = new Vertriebskanal();
 			vertriebskanal.setBezeichnung((String) PanelParameter.cboVertriebskanal.getSelectedItem());
@@ -91,14 +88,17 @@ public class ABCRechnung {
 			arrListWarengruppen.add(warengruppe);
 		}
 
-	}
+	}*/
 	
     //Neue Methode welche die ABC-Result-Tabelle berechnet
 	public void CalculateABCResult()
 	{
 		
 		// Ausgewählte Vertriebskanäle und Warengruppen lesen
-		getSelectedGUIItems();
+		arrListVertriebskanaele = CrudFunktionen.getVertriebskanaeleObjects();
+		
+		arrListWarengruppen = CrudFunktionen.getWarengruppenObjects();
+		//getSelectedGUIItems();
 		
 		// Output Test
 		for(Vertriebskanal obj : arrListVertriebskanaele) {
@@ -109,16 +109,13 @@ public class ABCRechnung {
 		}
 		
 		//Fuer jedes Lager
-		//for(int lagerNr = 0; lagerNr < 31; lagerNr+=10)
 		for(Vertriebskanal obj : arrListVertriebskanaele)
 		{
 			int lagerNr = obj.getLagerNr();
 			
 			//Fuer jede Warengruppe
-			//for(int wgNr = 1; wgNr <= 9; wgNr++)
 			for(Warengruppe wgObj : arrListWarengruppen)
 			{
-				
 				int wgNr = wgObj.getWGNr();
 				
 				ArrayList<Double> criteriaSumValues = getSumOfEachCriteria(CrudFunktionen.selectSumOfEachCriteria(MainWindow.DBconnection, lagerNr, wgNr));
@@ -155,7 +152,7 @@ public class ABCRechnung {
 		}
 		System.out.println("Berechnung erledigt nun nur noch ergebnis in Tabelle einf��gen");
 		insertResultIntoDB();
-		System.out.println("Einf��gen erfolgreich");
+		System.out.println("Einfügen erfolgreich");
 
 		
 	}
@@ -236,7 +233,7 @@ public class ABCRechnung {
 	{
 		String criteria;
 		ABCEinteilung einteilung = abcEinteilungTable.get(Description);
-		if(percent <= einteilung.AnteilA)
+		if(percent < einteilung.AnteilA)
 		{
 		 criteria = "A";
 		}
@@ -266,7 +263,7 @@ public class ABCRechnung {
 	        }
 	}
 	
-	public int getVertriebsKanal(String VertriebsKanalString) {
+	/*public int getVertriebsKanal(String VertriebsKanalString) {
 		if (VertriebsKanalString.equals("Lübeck")) {
 			return 20;
 		} else if (VertriebsKanalString.equals("Kiel")) {
@@ -292,6 +289,6 @@ public class ABCRechnung {
 			e.printStackTrace();
 		}
 		return 0;
-	}
+	}*/
 
 }

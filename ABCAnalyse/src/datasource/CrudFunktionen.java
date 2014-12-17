@@ -63,50 +63,22 @@ public class CrudFunktionen {
 		}
 	}
 	
-//	public static void updateABCResult(Connection connection, ArrayList<Absatz> liste)
-//{
-//PreparedStatement updateStatement = null;
-//try {
-//connection.setAutoCommit(false);
-//connection.prepareStatement("DELETE FROM ABCResult").executeUpdate();
-//int i = 0;
-//for(Absatz a : liste){
-//updateStatement = connection.prepareStatement(CrudBefehle.insertIntoABCResult);
-//updateStatement.setString(1, a.ArtikelNr);
-//updateStatement.setString(2, "");
-//updateStatement.setString(3, String.valueOf(a.UmsatzABCKennzahl));
-//updateStatement.setString(4, String.valueOf(a.UmsatzProzent));
-//updateStatement.setString(5, String.valueOf(a.UmsatzProzentKum));
-//updateStatement.setString(6, String.valueOf(a.MengeABCKennzahl));
-//updateStatement.setString(7, String.valueOf(a.MengeProzent));
-//updateStatement.setString(8, String.valueOf(a.MengeProzentKum));
-//updateStatement.setString(9, String.valueOf(a.AnzahlABCKennzahl));
-//updateStatement.setString(10, String.valueOf( a.AnzahlProzent));
-//updateStatement.setString(11, String.valueOf(a.AnzahlProzentKum));
-//updateStatement.setString(12, String.valueOf(a.ABCKennzahl));
-//updateStatement.executeUpdate();
-//System.out.println(i++);
-//}
-//connection.commit();
-//} catch (SQLException e) {
-//// TODO Auto-generated catch block
-//e.printStackTrace();
-//}
-//}
-	//Neue Methoden von Daniel E.
 	public static void insertABCInputTable(Connection connection, String beginDate, String endDate)
 	{
-			PreparedStatement insertStatement = null;
+			PreparedStatement insertStatement = null, insertStatementWholeC = null;
 			try {
 				connection.setAutoCommit(false);
 				//Erst Tablleninhalt loeschen
 				Statement statement = connection.createStatement();
 				statement.executeUpdate(CrudBefehle.deleteABCInput);
 				//Jetzt kann die Tabelle neu befuellt werden
-				insertStatement = connection.prepareStatement("insert into ABC_Input" + CrudBefehle.selectABCInputValues);
+				insertStatement = connection.prepareStatement(CrudBefehle.insertABCInputValues);
 				insertStatement.setString(1, beginDate);
 				insertStatement.setString(2, endDate);
 				insertStatement.executeUpdate();
+				connection.commit();
+				insertStatementWholeC = connection.prepareStatement(CrudBefehle.insertWholeCompanyInput);
+				insertStatementWholeC.executeUpdate();
 				connection.commit();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -151,18 +123,9 @@ public class CrudFunktionen {
 	{
 		PreparedStatement selectStatement = null;
 		try{
-			if(lagerNr == 0)
-			{
-				selectStatement = connection.prepareStatement(CrudBefehle.selectABCInputByWaregroupOrderCriteria + criteria + " desc");
-				selectStatement.setInt(1, wgNr);
-			}
-			//Gesamtunternehmen
-			else
-			{
-				selectStatement = connection.prepareStatement(CrudBefehle.selectABCInputByStorehouseAndWaregroupOrderCriteria + criteria + " desc");
-				selectStatement.setInt(1, lagerNr);
-				selectStatement.setInt(2, wgNr);
-			}
+			selectStatement = connection.prepareStatement(CrudBefehle.selectABCInputByStorehouseAndWaregroupOrderCriteria + criteria + " desc");
+			selectStatement.setInt(1, lagerNr);
+			selectStatement.setInt(2, wgNr);
 			ResultSet rs = selectStatement.executeQuery();
 			return rs;
 		}catch (SQLException ex){
@@ -175,18 +138,9 @@ public class CrudFunktionen {
 	{
 		PreparedStatement selectStatement = null;
 		try{
-			if(lagerNr != 0)
-			{
-				selectStatement = connection.prepareStatement(CrudBefehle.selectSumOfCriteriaByStorehouseAndWaregroup);
-				selectStatement.setInt(1, lagerNr);
-				selectStatement.setInt(2, wgNr);
-			}
-			//Gesamtunternehmen
-			else
-			{
-				selectStatement = connection.prepareStatement(CrudBefehle.selectSumOfCriteriaByWaregroup);
-				selectStatement.setInt(1, wgNr);
-			}
+			selectStatement = connection.prepareStatement(CrudBefehle.selectSumOfCriteriaByStorehouseAndWaregroup);
+			selectStatement.setInt(1, lagerNr);
+			selectStatement.setInt(2, wgNr);
 			ResultSet rs = selectStatement.executeQuery();
 			return rs;
 		}catch (SQLException ex){

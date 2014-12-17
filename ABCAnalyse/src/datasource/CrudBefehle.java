@@ -10,14 +10,15 @@ public class CrudBefehle {
 	public static String selectABCResultView = "select abcR.artikelNr, wg.Bezeichnung, l.Bezeichnung, abcR.ABCK3 as 'Auf.Anz.', abcI.JahresAnzahl, abcR.ABCK2 as 'Auf.Mng', abcI.JahresMenge,"
 											 + "abcR.ABCK1 as 'Ums.', abcI.JahresUmsatz, abcR.ABCKZ as 'ABC Zuo.' "
 											 + " from ABCResult abcR"
-											 + " join ABC_Input abcI on abcI.artikelNr = abcR.artikelNr and (abcI.lagerNr = abcR.lagerNr or abcR.lagerNr = 0)"
+											 + " join ABC_Input abcI on abcI.artikelNr = abcR.artikelNr and abcI.lagerNr = abcR.lagerNr"
 											 + " join Warengruppe wg on wg.wgNr = abcI.wgNr"
 											 + " join Lager l on l.lagerNr = abcR.lagerNr;";
 	public static String selectVertriebskanaele = "select * from Lager order by Bezeichnung asc";
 	public static String selectWarengruppen = "select * from Warengruppe order by Bezeichnung asc";
 	
 	//ABC-Berechnung Selects
-	public static String selectABCInputValues = " select a.artikelnr,"
+	public static String insertABCInputValues = "insert into ABC_Input "
+											    + "select a.artikelnr,"
 												+ "al.lagernr,"
 												+ "sum(ab.Umsatz) as JahresUmsatz,"
 												+ "sum(ab.Menge) as JahresMenge,"
@@ -31,10 +32,14 @@ public class CrudBefehle {
 												+ " group by a.artikelnr, al.lagernr, a.wgnr"
 												+ " order by a.wgnr;";
 	
+	public static String insertWholeCompanyInput = "INSERT INTO ABC_Input (ArtikelNr, LagerNr, JahresUmsatz, JahresMenge, JahresAnzahl, Bestand, WgNr) "
+												 + "select ArtikelNr, 0, sum(JahresUmsatz), sum(JahresMenge), sum(JahresAnzahl), "
+												 + "sum(Bestand), WgNr "
+												 + "from ABC_Input "
+												 + "group by ArtikelNr,WgNr";
+	
 	public static String selectSumOfCriteriaByStorehouseAndWaregroup = "select sum(JahresUmsatz) as SummeUmsatz, sum(JahresMenge) as SummeMenge, sum(JahresAnzahl) as SummeAnzahl from ABC_Input where LagerNr = ? and WGNr = ?";
-	public static String selectSumOfCriteriaByWaregroup = "select sum(JahresUmsatz) as SummeUmsatz, sum(JahresMenge) as SummeMenge, sum(JahresAnzahl) as SummeAnzahl from ABC_Input where WGNr = ?";
 	public static String selectABCInputByStorehouseAndWaregroupOrderCriteria = "select * from ABC_Input where LagerNr in (?) and WGNr = ? order by ";
-	public static String selectABCInputByWaregroupOrderCriteria = "select * from ABC_Input where WGNr = ? order by ";
 	
 	//Bereich Update-Befehle
 	public static String updateEinteilungAnteilA = "update " + "ABCEinteilung set AnteilA = ? where Bezeichnung = ?";
