@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import objects.Absatz;
+import objects.Bericht;
 import objects.Vertriebskanal;
 import objects.Warengruppe;
 
@@ -248,6 +249,8 @@ public class CrudFunktionen {
 		}
 	}
 	
+	
+	
 	public static ArrayList<Vertriebskanal> getVertriebskanaeleObjects() {
 		
 		ArrayList<Vertriebskanal> vtkList = new ArrayList<Vertriebskanal>();
@@ -282,7 +285,44 @@ public class CrudFunktionen {
 		}
 	}
 	
+	public static void saveBericht(Bericht b){
+		
+	}
 	
+	public static ArrayList<Bericht> getBerichte(/*TODO*/){
+		ArrayList<Bericht> berichte = new ArrayList<Bericht>();
+
+		ResultSet rsBerichte = null;
+		try {
+			/*
+			rsBerichte = CrudFunktionen.getResult(MainWindow.DBconnection,
+					CrudBefehle.selectVertriebskanaele);
+
+			while (rsBerichte.next()) {
+
+				Bericht obj = new Bericht();
+				//obj.setLagerNr(rsVertriebskanaele.getInt("LagerNr"));
+				//obj.setBezeichnung(rsVertriebskanaele.getString("Bezeichnung"));
+			
+				berichte.add(obj);
+
+			}
+			*/
+
+		} catch (Exception e) {
+			System.err.println(e);
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				rsBerichte.close();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return berichte;
+	}
 }
 
 
