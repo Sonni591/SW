@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>SwDB_Test.db</name>
-			<type>1</type>
-			<location>/Users/danielsonnleitner/Documents/Developer/git/WS_2014_15/SW/ABCAnalyse/SwDB_Test.db</location>
-		</link>
-	</linkedResources>
 </projectDescription>
