@@ -81,7 +81,7 @@ public class FrameBerichteParameter {
 
 		ButtonGroup buttonGroupChartOptions = new ButtonGroup();
 
-		// Radio Buttons für Auswahl der Chart Ausprägung
+		// Radio Buttons fÃ¼r Auswahl der Chart AusprÃ¤gung
 		rdbtnChartOption1 = new JRadioButton(
 				"Verteilung von Bestand und Umsatz");
 		rdbtnChartOption2 = new JRadioButton(

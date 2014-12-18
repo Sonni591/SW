@@ -2,7 +2,7 @@ package sqliteRepository;
 
 public class CrudBefehle {
 
-	//Bereich f��r Select-Befehle
+	//Bereich für Select-Befehle
 	public static String selectABCEinteilung = "select * from ABCEinteilung order by Bezeichnung asc";
 	public static String selectABCZuordnung = "select * from ABCZuordnung order by Kriterium1,Kriterium2,Kriterium3 asc";
 	public static String selectArtikelABCZuordnung = "select Zuordnung from ABCZuordnung where Kriterium1 = ? AND Kriterium2 = ? AND Kriterium3 = ?";

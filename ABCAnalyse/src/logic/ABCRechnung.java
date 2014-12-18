@@ -146,7 +146,7 @@ public class ABCRechnung {
 				}
 			}
 		}
-		System.out.println("Berechnung erledigt nun nur noch ergebnis in Tabelle einf��gen");
+		System.out.println("Berechnung erledigt nun nur noch ergebnis in Tabelle einfügen");
 		insertResultIntoDB();
 		System.out.println("Einfügen erfolgreich");
 

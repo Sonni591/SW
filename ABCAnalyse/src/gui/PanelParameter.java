@@ -161,7 +161,7 @@ public class PanelParameter extends JPanel{
 						rdbtnJahr = new JRadioButton("Jahr:");
 						buttonGroupZeitraum.add(rdbtnJahr);
 						
-						//Dropdown-Box f��r die Jahresauswahl
+						//Dropdown-Box für die Jahresauswahl
 						cboJahr = new JComboBox<Integer>();
 						cboJahr.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {

@@ -238,7 +238,7 @@ public class PanelEinteilung extends JPanel {
 				else
 				{
 					JOptionPane.showMessageDialog(MainWindow.frame,
-							"Speichern wegen ung��ltigen Werten nicht m��glich.",
+							"Speichern wegen ungültigen Werten nicht möglich.",
 							"Speichern fehlgeschlagen", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
@@ -257,7 +257,7 @@ public class PanelEinteilung extends JPanel {
 	}
 
 	/**
-	 * L��dt die Schwellwerte aus der Datenbank und zeigt diese in den
+	 * Lädt die Schwellwerte aus der Datenbank und zeigt diese in den
 	 * Textfeldern an
 	 */
 	private void getABCEinteilung() {
@@ -341,7 +341,7 @@ public class PanelEinteilung extends JPanel {
 				int UmsatzB = Integer.parseInt(txtUmsatzB.getText());
 				if ((UmsatzA + UmsatzB) > 100) {
 					JOptionPane.showMessageDialog(MainWindow.frame,
-							"Die Umsatz Schwellwerte ��bersteigen die 100%",
+							"Die Umsatz Schwellwerte übersteigen die 100%",
 							"Schwellwerte zu hoch", JOptionPane.ERROR_MESSAGE);
 					isSaveable = false;
 				} else {
@@ -358,7 +358,7 @@ public class PanelEinteilung extends JPanel {
 				int MengeB = Integer.parseInt(txtMengeB.getText());
 				if ((MengeA + MengeB) > 100) {
 					JOptionPane.showMessageDialog(null,
-							"Die Mengen Schwellwerte ��bersteigen die 100%",
+							"Die Mengen Schwellwerte übersteigen die 100%",
 							"Schwellwerte zu hoch", JOptionPane.ERROR_MESSAGE);
 					isSaveable = false;
 				} else {
@@ -376,7 +376,7 @@ public class PanelEinteilung extends JPanel {
 					JOptionPane
 							.showMessageDialog(
 									MainWindow.frame,
-									"Die Auftragsanzahl Schwellwerte ��bersteigen die 100%",
+									"Die Auftragsanzahl Schwellwerte übersteigen die 100%",
 									"Schwellwerte zu hoch",
 									JOptionPane.ERROR_MESSAGE);
 					isSaveable = false;
