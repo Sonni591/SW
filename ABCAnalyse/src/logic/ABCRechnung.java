@@ -1,6 +1,5 @@
 package logic;
 
-import gui.MainWindow;
 import interfaces.IABCRepository;
 
 import java.sql.ResultSet;
@@ -233,7 +232,7 @@ public class ABCRechnung {
 		{
 		 criteria = "A";
 		}
-		else if(percent > einteilung.AnteilA && percent < (einteilung.AnteilA + einteilung.AnteilB))
+		else if(percent >= einteilung.AnteilA && percent < (einteilung.AnteilA + einteilung.AnteilB))
 		{
 			criteria = "B";
 		}
@@ -258,33 +257,4 @@ public class ABCRechnung {
 	         repository.insertABCResultTable(result.ArtikelNr, result.LagerNr, result.ABCK1, result.ABCK2, result.ABCK3, result.ABCKZ);
 	        }
 	}
-	
-	/*public int getVertriebsKanal(String VertriebsKanalString) {
-		if (VertriebsKanalString.equals("Lübeck")) {
-			return 20;
-		} else if (VertriebsKanalString.equals("Kiel")) {
-			return 30;
-		} else if (VertriebsKanalString.equals("Flensburg")) {
-			return 10;
-		} else
-			return 0;
-	}
-	
-	public int getWarenGruppe(String Warengruppe){
-		ResultSet daten = null;
-			daten = repository.getResult(CrudBefehle.selectWarengruppen);
-		try {
-			while (daten.next()) {
-				if(daten.getString("Bezeichnung").equals(Warengruppe)){
-					return daten.getInt("WGNr");
-				}
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}*/
-
 }
