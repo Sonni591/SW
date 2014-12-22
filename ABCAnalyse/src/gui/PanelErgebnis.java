@@ -71,7 +71,7 @@ public class PanelErgebnis extends JPanel {
 	private JComboBox<String> cboABCGesamt;
 
 	private JComboBox<String> cboWarengruppe;
-	
+
 	private IABCRepository repository;
 
 	public PanelErgebnis(IABCRepository _repository) {
@@ -162,100 +162,266 @@ public class PanelErgebnis extends JPanel {
 				exportToExcel();
 			}
 		});
-		
+
 		JButton btnBerichte = new JButton("Berichte");
 		btnBerichte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				FrameBerichteParameter BerichteDialog = new FrameBerichteParameter(repository);
+				FrameBerichteParameter BerichteDialog = new FrameBerichteParameter(
+						repository);
 				BerichteDialog.initialize();
 			}
 		});
 
 		GroupLayout gl_panelErgebnisHeader = new GroupLayout(
 				panelErgebnisHeader);
-		gl_panelErgebnisHeader.setHorizontalGroup(
-			gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
-							.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
-									.addComponent(lblArtikel)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtArtikel, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
-								.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
-									.addComponent(lblVertriebskanal, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
-										.addComponent(cboWarengruppe, 0, 63, Short.MAX_VALUE)
-										.addComponent(cboVertriebskanal, 0, 63, Short.MAX_VALUE))))
-							.addGap(18))
-						.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
-							.addComponent(lblWarengruppe)
-							.addPreferredGap(ComponentPlacement.RELATED)))
-					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblGesamt)
-						.addComponent(lblUmsatz)
-						.addComponent(lblAnzahl)
-						.addComponent(lblMenge))
-					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
-							.addGap(20)
-							.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
-								.addComponent(cboABCGesamt, 0, 0, Short.MAX_VALUE)
-								.addComponent(cboABCMenge, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(cboABCAnzahl, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(cboABCUmsatz, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-						.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(cboABCGesamt, 0, 0, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnResetFilter)
-						.addComponent(btnSetzeFilter, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(btnBerichte, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnExportExcel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addContainerGap())
-		);
-		gl_panelErgebnisHeader.setVerticalGroup(
-			gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblArtikel)
-						.addComponent(txtArtikel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblUmsatz)
-						.addComponent(cboABCUmsatz, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSetzeFilter))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
-							.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblAnzahl)
-								.addComponent(cboABCAnzahl, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnResetFilter))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblMenge)
-								.addComponent(cboABCMenge, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnExportExcel)))
-						.addGroup(gl_panelErgebnisHeader.createSequentialGroup()
-							.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblVertriebskanal)
-								.addComponent(cboVertriebskanal, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblWarengruppe)
-								.addComponent(cboWarengruppe, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panelErgebnisHeader.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblGesamt)
-						.addComponent(cboABCGesamt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnBerichte))
-					.addGap(17))
-		);
+		gl_panelErgebnisHeader
+				.setHorizontalGroup(gl_panelErgebnisHeader
+						.createParallelGroup(Alignment.LEADING)
+						.addGroup(
+								gl_panelErgebnisHeader
+										.createSequentialGroup()
+										.addContainerGap()
+										.addGroup(
+												gl_panelErgebnisHeader
+														.createParallelGroup(
+																Alignment.LEADING)
+														.addGroup(
+																gl_panelErgebnisHeader
+																		.createSequentialGroup()
+																		.addGroup(
+																				gl_panelErgebnisHeader
+																						.createParallelGroup(
+																								Alignment.LEADING)
+																						.addGroup(
+																								gl_panelErgebnisHeader
+																										.createSequentialGroup()
+																										.addComponent(
+																												lblArtikel)
+																										.addPreferredGap(
+																												ComponentPlacement.RELATED)
+																										.addComponent(
+																												txtArtikel,
+																												GroupLayout.DEFAULT_SIZE,
+																												111,
+																												Short.MAX_VALUE))
+																						.addGroup(
+																								gl_panelErgebnisHeader
+																										.createSequentialGroup()
+																										.addComponent(
+																												lblVertriebskanal,
+																												GroupLayout.PREFERRED_SIZE,
+																												94,
+																												GroupLayout.PREFERRED_SIZE)
+																										.addPreferredGap(
+																												ComponentPlacement.RELATED)
+																										.addGroup(
+																												gl_panelErgebnisHeader
+																														.createParallelGroup(
+																																Alignment.LEADING)
+																														.addComponent(
+																																cboWarengruppe,
+																																0,
+																																63,
+																																Short.MAX_VALUE)
+																														.addComponent(
+																																cboVertriebskanal,
+																																0,
+																																63,
+																																Short.MAX_VALUE))))
+																		.addGap(18))
+														.addGroup(
+																gl_panelErgebnisHeader
+																		.createSequentialGroup()
+																		.addComponent(
+																				lblWarengruppe)
+																		.addPreferredGap(
+																				ComponentPlacement.RELATED)))
+										.addGroup(
+												gl_panelErgebnisHeader
+														.createParallelGroup(
+																Alignment.LEADING)
+														.addComponent(lblGesamt)
+														.addComponent(lblUmsatz)
+														.addComponent(lblAnzahl)
+														.addComponent(lblMenge))
+										.addGroup(
+												gl_panelErgebnisHeader
+														.createParallelGroup(
+																Alignment.TRAILING)
+														.addGroup(
+																gl_panelErgebnisHeader
+																		.createSequentialGroup()
+																		.addGap(20)
+																		.addGroup(
+																				gl_panelErgebnisHeader
+																						.createParallelGroup(
+																								Alignment.LEADING)
+																						.addComponent(
+																								cboABCGesamt,
+																								0,
+																								0,
+																								Short.MAX_VALUE)
+																						.addComponent(
+																								cboABCMenge,
+																								0,
+																								GroupLayout.DEFAULT_SIZE,
+																								Short.MAX_VALUE)
+																						.addComponent(
+																								cboABCAnzahl,
+																								0,
+																								GroupLayout.DEFAULT_SIZE,
+																								Short.MAX_VALUE)
+																						.addComponent(
+																								cboABCUmsatz,
+																								0,
+																								GroupLayout.DEFAULT_SIZE,
+																								Short.MAX_VALUE)))
+														.addGroup(
+																gl_panelErgebnisHeader
+																		.createSequentialGroup()
+																		.addPreferredGap(
+																				ComponentPlacement.RELATED)
+																		.addComponent(
+																				cboABCGesamt,
+																				0,
+																				0,
+																				Short.MAX_VALUE)))
+										.addPreferredGap(
+												ComponentPlacement.RELATED)
+										.addGroup(
+												gl_panelErgebnisHeader
+														.createParallelGroup(
+																Alignment.LEADING)
+														.addComponent(
+																btnResetFilter)
+														.addComponent(
+																btnSetzeFilter,
+																GroupLayout.PREFERRED_SIZE,
+																128,
+																GroupLayout.PREFERRED_SIZE)
+														.addGroup(
+																gl_panelErgebnisHeader
+																		.createParallelGroup(
+																				Alignment.TRAILING,
+																				false)
+																		.addComponent(
+																				btnBerichte,
+																				Alignment.LEADING,
+																				GroupLayout.DEFAULT_SIZE,
+																				GroupLayout.DEFAULT_SIZE,
+																				Short.MAX_VALUE)
+																		.addComponent(
+																				btnExportExcel,
+																				Alignment.LEADING,
+																				GroupLayout.DEFAULT_SIZE,
+																				GroupLayout.DEFAULT_SIZE,
+																				Short.MAX_VALUE)))
+										.addContainerGap()));
+		gl_panelErgebnisHeader
+				.setVerticalGroup(gl_panelErgebnisHeader
+						.createParallelGroup(Alignment.LEADING)
+						.addGroup(
+								gl_panelErgebnisHeader
+										.createSequentialGroup()
+										.addContainerGap()
+										.addGroup(
+												gl_panelErgebnisHeader
+														.createParallelGroup(
+																Alignment.BASELINE)
+														.addComponent(
+																lblArtikel)
+														.addComponent(
+																txtArtikel,
+																GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(lblUmsatz)
+														.addComponent(
+																cboABCUmsatz,
+																GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(
+																btnSetzeFilter))
+										.addPreferredGap(
+												ComponentPlacement.RELATED)
+										.addGroup(
+												gl_panelErgebnisHeader
+														.createParallelGroup(
+																Alignment.LEADING)
+														.addGroup(
+																gl_panelErgebnisHeader
+																		.createSequentialGroup()
+																		.addGroup(
+																				gl_panelErgebnisHeader
+																						.createParallelGroup(
+																								Alignment.BASELINE)
+																						.addComponent(
+																								lblAnzahl)
+																						.addComponent(
+																								cboABCAnzahl,
+																								GroupLayout.PREFERRED_SIZE,
+																								GroupLayout.DEFAULT_SIZE,
+																								GroupLayout.PREFERRED_SIZE)
+																						.addComponent(
+																								btnResetFilter))
+																		.addPreferredGap(
+																				ComponentPlacement.RELATED)
+																		.addGroup(
+																				gl_panelErgebnisHeader
+																						.createParallelGroup(
+																								Alignment.BASELINE)
+																						.addComponent(
+																								lblMenge)
+																						.addComponent(
+																								cboABCMenge,
+																								GroupLayout.PREFERRED_SIZE,
+																								GroupLayout.DEFAULT_SIZE,
+																								GroupLayout.PREFERRED_SIZE)
+																						.addComponent(
+																								btnExportExcel)))
+														.addGroup(
+																gl_panelErgebnisHeader
+																		.createSequentialGroup()
+																		.addGroup(
+																				gl_panelErgebnisHeader
+																						.createParallelGroup(
+																								Alignment.BASELINE)
+																						.addComponent(
+																								lblVertriebskanal)
+																						.addComponent(
+																								cboVertriebskanal,
+																								GroupLayout.PREFERRED_SIZE,
+																								GroupLayout.DEFAULT_SIZE,
+																								GroupLayout.PREFERRED_SIZE))
+																		.addPreferredGap(
+																				ComponentPlacement.RELATED)
+																		.addGroup(
+																				gl_panelErgebnisHeader
+																						.createParallelGroup(
+																								Alignment.BASELINE)
+																						.addComponent(
+																								lblWarengruppe)
+																						.addComponent(
+																								cboWarengruppe,
+																								GroupLayout.PREFERRED_SIZE,
+																								GroupLayout.DEFAULT_SIZE,
+																								GroupLayout.PREFERRED_SIZE))))
+										.addPreferredGap(
+												ComponentPlacement.RELATED)
+										.addGroup(
+												gl_panelErgebnisHeader
+														.createParallelGroup(
+																Alignment.BASELINE)
+														.addComponent(lblGesamt)
+														.addComponent(
+																cboABCGesamt,
+																GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(
+																btnBerichte))
+										.addGap(17)));
 		panelErgebnisHeader.setLayout(gl_panelErgebnisHeader);
 
 		JPanel panelErgebnisContent = new JPanel();
@@ -264,14 +430,13 @@ public class PanelErgebnis extends JPanel {
 
 		resultTable = new JTable() {
 			private static final long serialVersionUID = 1L;
-	
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
-					// alle Spalten nicht editierbar setzen
-					return false;
-				}
+				// alle Spalten nicht editierbar setzen
+				return false;
+			}
 		};
-		
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(resultTable);
@@ -285,7 +450,7 @@ public class PanelErgebnis extends JPanel {
 		JPanel panelErgebnisFooter = new JPanel();
 		add(panelErgebnisFooter, BorderLayout.SOUTH);
 		panelErgebnisFooter.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-		
+
 		lblCountRows = new JLabel("Zeilen: ");
 		panelErgebnisFooter.add(lblCountRows);
 		// Deaktiviert das verschieben der Spalten
@@ -295,14 +460,14 @@ public class PanelErgebnis extends JPanel {
 
 		// Filtern der Tabelle - Test
 		// enableSorting(resultTable);
-		
+
 	}
-	
 
 	public void setTableData() {
 		ResultSet abcEinteilungResult = null;
 		try {
-			abcEinteilungResult = repository.getResult(CrudBefehle.selectABCResultView);
+			abcEinteilungResult = repository
+					.getResult(CrudBefehle.selectABCResultView);
 
 			resultTable.setModel(buildTableModel(abcEinteilungResult));
 			lblCountRows.setText("Count: " + resultTable.getRowCount());
@@ -356,9 +521,12 @@ public class PanelErgebnis extends JPanel {
 				// einzelne Filter definieren
 				RowFilter<TableModel, Object> rowFilterArtikel = RowFilter
 						.regexFilter(txtArtikel.getText(), 0);
-				 RowFilter<TableModel, Object> rowFilterVertriebskanal = RowFilter.regexFilter(cboVertriebskanal.getSelectedItem().toString(), 2);
-				 RowFilter<TableModel, Object> rowFilterWarengruppe =
-				 RowFilter.regexFilter(cboWarengruppe.getSelectedItem().toString(),1);
+				RowFilter<TableModel, Object> rowFilterVertriebskanal = RowFilter
+						.regexFilter(cboVertriebskanal.getSelectedItem()
+								.toString(), 2);
+				RowFilter<TableModel, Object> rowFilterWarengruppe = RowFilter
+						.regexFilter(cboWarengruppe.getSelectedItem()
+								.toString(), 1);
 				// // TODO
 				RowFilter<TableModel, Object> rowFilterABCUmsatz = RowFilter
 						.regexFilter(cboABCUmsatz.getSelectedItem().toString(),
@@ -382,7 +550,6 @@ public class PanelErgebnis extends JPanel {
 				filters.add(rowFilterABCGesamt);
 
 				compoundRowFilter = RowFilter.andFilter(filters);
-				
 
 			} catch (java.util.regex.PatternSyntaxException e) {
 				return;
@@ -391,7 +558,7 @@ public class PanelErgebnis extends JPanel {
 			sorter.setModel(model);
 
 			sorter.setRowFilter(compoundRowFilter);
-			
+
 			lblCountRows.setText("Zeilen: " + resultTable.getRowCount());
 		} else {
 			// DefaultTableModel ist null!
@@ -423,89 +590,89 @@ public class PanelErgebnis extends JPanel {
 		}
 	}
 
-//	private ArrayList<String> getVertriebskanale() {
-//
-//		ArrayList<String> vkList = new ArrayList<String>();
-//
-//		ResultSet rsVertriebskanale = null;
-//		try {
-//			rsVertriebskanale = repository
-//					.getResult(CrudBefehle.selectVertriebskanaele);
-//
-//			while (rsVertriebskanale.next()) {
-//
-//				String bezeichnung = rsVertriebskanale.getString("Bezeichnung");
-//				vkList.add(bezeichnung);
-//
-//			}
-//			return vkList;
-//
-//		} catch (Exception e) {
-//			System.err.println(e);
-//			e.printStackTrace();
-//			return null;
-//		} finally {
-//			try {
-//				rsVertriebskanale.close();
-//
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//	}
-//
-//	private ArrayList<String> getWarengruppen() {
-//
-//		ArrayList<String> wgList = new ArrayList<String>();
-//
-//		ResultSet rsWarengruppen = null;
-//		try {
-//			rsWarengruppen = repository.getResult(CrudBefehle.selectWarengruppen);
-//
-//			while (rsWarengruppen.next()) {
-//
-//				String bezeichnung = rsWarengruppen.getString("Bezeichnung");
-//				wgList.add(bezeichnung);
-//
-//			}
-//			return wgList;
-//
-//		} catch (Exception e) {
-//			System.err.println(e);
-//			e.printStackTrace();
-//			return null;
-//		} finally {
-//			try {
-//				rsWarengruppen.close();
-//
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//	}
+	// private ArrayList<String> getVertriebskanale() {
+	//
+	// ArrayList<String> vkList = new ArrayList<String>();
+	//
+	// ResultSet rsVertriebskanale = null;
+	// try {
+	// rsVertriebskanale = repository
+	// .getResult(CrudBefehle.selectVertriebskanaele);
+	//
+	// while (rsVertriebskanale.next()) {
+	//
+	// String bezeichnung = rsVertriebskanale.getString("Bezeichnung");
+	// vkList.add(bezeichnung);
+	//
+	// }
+	// return vkList;
+	//
+	// } catch (Exception e) {
+	// System.err.println(e);
+	// e.printStackTrace();
+	// return null;
+	// } finally {
+	// try {
+	// rsVertriebskanale.close();
+	//
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	//
+	// }
+	//
+	// private ArrayList<String> getWarengruppen() {
+	//
+	// ArrayList<String> wgList = new ArrayList<String>();
+	//
+	// ResultSet rsWarengruppen = null;
+	// try {
+	// rsWarengruppen = repository.getResult(CrudBefehle.selectWarengruppen);
+	//
+	// while (rsWarengruppen.next()) {
+	//
+	// String bezeichnung = rsWarengruppen.getString("Bezeichnung");
+	// wgList.add(bezeichnung);
+	//
+	// }
+	// return wgList;
+	//
+	// } catch (Exception e) {
+	// System.err.println(e);
+	// e.printStackTrace();
+	// return null;
+	// } finally {
+	// try {
+	// rsWarengruppen.close();
+	//
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	//
+	// }
 
 	private void exportToExcel() {
 
 		// Create a file chooser
 		final JFileChooser fc;
-		
-        String path = System.getProperty("user.home"); 
-        File file = new File(path.trim()); 
 
-        fc = new JFileChooser(path); 
-        fc.setSelectedFile(new File("ABCExport.xlsx"));;
-        fc.setDialogType(JFileChooser.SAVE_DIALOG);  
-        fc.setDialogTitle("Speichern unter..."); 
+		String path = System.getProperty("user.home");
+		File file = new File(path.trim());
 
-		//fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fc = new JFileChooser(path);
+		fc.setSelectedFile(new File("ABCExport.xlsx"));
+		;
+		fc.setDialogType(JFileChooser.SAVE_DIALOG);
+		fc.setDialogTitle("Speichern unter...");
+
+		// fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		int returnVal = fc.showSaveDialog(this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			path = fc.getSelectedFile().toString();
-			if(!path.endsWith(".xlsx"))
-			{
+			if (!path.endsWith(".xlsx")) {
 				path = path + ".xlsx";
 			}
 			file = new File(path);
@@ -521,7 +688,7 @@ class ExcelThread extends Thread {
 
 	ExcelThread(JTable resultTable, File file) {
 		this.resultTable = resultTable;
-		this.file = file;	
+		this.file = file;
 	}
 
 	public void run() {
@@ -582,7 +749,7 @@ class ExcelThread extends Thread {
 			bos.close();
 			fileOutputStream.close();
 			System.out.println("Finished");
-			 dlg.setVisible(false);
+			dlg.setVisible(false);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

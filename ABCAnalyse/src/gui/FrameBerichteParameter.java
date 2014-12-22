@@ -38,7 +38,7 @@ import java.util.ArrayList;
 
 public class FrameBerichteParameter {
 
-	private JDialog dialogFrame;
+	public static JDialog dialogFrame;
 	private Dimension fixedFrameDimensions;
 
 	public static JComboBox<String> cboWarengruppen;
@@ -85,7 +85,7 @@ public class FrameBerichteParameter {
 		rdbtnChartOption1 = new JRadioButton(
 				"Verteilung von Bestand und Umsatz");
 		rdbtnChartOption2 = new JRadioButton(
-				"Verteilung von Bestand und Abastz");
+				"Verteilung von Bestand und Absatz");
 		rdbtnChartOption3 = new JRadioButton(
 				"Aufteilung der Artikel");
 		rdbtnChartOption1.setSelected(true);
@@ -309,18 +309,11 @@ public class FrameBerichteParameter {
 		btnBerichteAnzeigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ChartTest chart = new ChartTest(repository);
-				chart.createchart();
+				chart.getDataForChart();
+				
 			}
 		});
 		panelFooter.add(btnBerichteAnzeigen);
-		btnBerichteAnzeigen.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-
-				ChartTest chart = new ChartTest(repository);
-				chart.getDataForChart();
-			}
-		});
 
 		JButton btnFrameSchliessen = new JButton("Schlie\u00DFen");
 		btnFrameSchliessen.addActionListener(new ActionListener() {
