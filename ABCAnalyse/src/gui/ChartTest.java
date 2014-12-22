@@ -58,6 +58,7 @@ public class ChartTest extends JPanel{
 		//String Vertriebskanal = (String) FrameBerichteParameter.cboVertriebskanal1.getSelectedItem();
 		//String Warengruppe = (String) FrameBerichteParameter.cboWarengruppen.getSelectedItem();
 		//Dummy Werte für Lager = 10 und Warengruppe = 1
+		FrameBerichteParameter.dialogFrame.dispose();
 		ResultSet ChartData = null;
 		DefaultCategoryDataset ChartDataObjects = null;
 		
@@ -94,7 +95,7 @@ public class ChartTest extends JPanel{
 			}
 		}
 		else if(FrameBerichteParameter.rdbtnChartOption2.isSelected()){
-			selectedOption = FrameBerichteParameter.rdbtnChartOption2.getName();
+			selectedOption = FrameBerichteParameter.rdbtnChartOption2.getLabel();
 			ChartData = repository.selectChartOption2(10, 1);
 			ChartDataObjects = new DefaultCategoryDataset();
 			int AnzahlSum = 0;
@@ -195,6 +196,8 @@ public class ChartTest extends JPanel{
 		//Fenster packen und anzeigen
 		reportFrame.pack();
 		reportFrame.setVisible(true);
+		reportFrame.toFront();
+		reportFrame.requestFocus();
 		
 	}
 	public void setTableData() {
