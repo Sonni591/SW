@@ -49,4 +49,8 @@ public interface IABCRepository {
 	public abstract int getVertriebsKanalID(String vertriebskanal);
 	
 	public abstract int getWarengruppeID(String warengruppe);
+	
+	public abstract ResultSet selectChartOption1(int lagerNr, int wgNr);
+
+	public abstract ResultSet selectChartOption2(int lagerNr, int wgNr);
 }

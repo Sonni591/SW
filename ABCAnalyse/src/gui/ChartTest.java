@@ -54,10 +54,10 @@ public class ChartTest extends JPanel{
 	 * @wbp.parser.entryPoint
 	 */
 	public void getDataForChart(){
-		//TODO: Strings aus der GUI auslesen, die INT Werte dazu aus DB auslesen und übergeben.
+		//TODO: Strings aus der GUI auslesen, die INT Werte dazu aus DB auslesen und ï¿½bergeben.
 		//String Vertriebskanal = (String) FrameBerichteParameter.cboVertriebskanal1.getSelectedItem();
 		//String Warengruppe = (String) FrameBerichteParameter.cboWarengruppen.getSelectedItem();
-		//Dummy Werte für Lager = 10 und Warengruppe = 1
+		//Dummy Werte fï¿½r Lager = 10 und Warengruppe = 1
 		FrameBerichteParameter.dialogFrame.dispose();
 		ResultSet ChartData = null;
 		DefaultCategoryDataset ChartDataObjects = null;
@@ -99,14 +99,14 @@ public class ChartTest extends JPanel{
 			ChartData = repository.selectChartOption2(10, 1);
 			ChartDataObjects = new DefaultCategoryDataset();
 			int AnzahlSum = 0;
-			int BestandStückSum = 0;
+			int BestandStueckSum = 0;
 			int AbsatzSum = 0;
 			try {
 				while(ChartData.next())
 				{
 					if(ChartData.getString(4).equals("SUM")){
 					AnzahlSum = ChartData.getInt(1);
-					BestandStückSum = ChartData.getInt(2);
+					BestandStueckSum = ChartData.getInt(2);
 					AbsatzSum = ChartData.getInt(3);
 					break;
 					}
@@ -116,7 +116,7 @@ public class ChartTest extends JPanel{
 				{
 					if(!ChartData.getString(4).equals("SUM")){
 						ChartDataObjects.addValue((((float)ChartData.getInt(1)/(float)AnzahlSum)*100), ChartData.getString(4), "Anzahl Artikel");
-						ChartDataObjects.addValue((((float)ChartData.getInt(2)/(float)BestandStückSum)*100), ChartData.getString(4), "Bestand in Stück");
+						ChartDataObjects.addValue((((float)ChartData.getInt(2)/(float)BestandStueckSum)*100), ChartData.getString(4), "Bestand in Stï¿½ck");
 						ChartDataObjects.addValue((((float)ChartData.getInt(3)/(float)AbsatzSum)*100), ChartData.getString(4), "Jahres Absatz");
 					}
 				
@@ -175,7 +175,7 @@ public class ChartTest extends JPanel{
 		panel_2.setBorder(new EmptyBorder(15,0,0,0));
 		reportFrame.getContentPane().add(panel_2, BorderLayout.SOUTH);
 		
-		//Table erstellen, konfigurieren und mit Daten befüllen
+		//Table erstellen, konfigurieren und mit Daten befï¿½llen
 		resultTable = new JTable() {
 			private static final long serialVersionUID = 1L;
 
