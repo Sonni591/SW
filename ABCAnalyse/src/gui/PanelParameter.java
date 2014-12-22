@@ -3,6 +3,7 @@ package gui;
 import interfaces.IABCRepository;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -217,6 +218,9 @@ public class PanelParameter extends JPanel{
 			
 			public void actionPerformed(ActionEvent e) {
 				
+				System.out.println("starte generierung der Berichte");
+				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				
 //				int[] vertriebskanaeleIDs;
 //				int[] warengruppenIDs;
 //				
@@ -267,6 +271,7 @@ public class PanelParameter extends JPanel{
 					arrListWarengruppen.add(warengruppe);
 				}
 				
+				
 				// Berichte löschen
 				repository.deleteBerichte();
 				
@@ -279,6 +284,8 @@ public class PanelParameter extends JPanel{
 					}
 				}
 				
+				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				System.out.println("ABC Berichte generiert");
 			}
 			
 		});
@@ -287,6 +294,9 @@ public class PanelParameter extends JPanel{
 		JButton btnBerechnen = new JButton("ABC Analyse berechnen");
 		btnBerechnen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				// Mauszeiger auf Sanduhr setzen
+				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				
 				String vonDatum = "";
 				String bisDatum = "";
@@ -317,6 +327,9 @@ public class PanelParameter extends JPanel{
 						MainWindow.panelErgebnis.setTableData();
 					}
 				}
+			
+				// Mauszeiger Standard
+				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				
 			}
 		});
