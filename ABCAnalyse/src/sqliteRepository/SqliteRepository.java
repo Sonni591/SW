@@ -156,6 +156,7 @@ public class SqliteRepository implements IABCRepository{
 	public void generateBericht(int lagerNr, int wgNr)
 	{
 		PreparedStatement insertStatement = null;
+		PreparedStatement insertStatementSumLine = null;
 		Statement deleteStatement;
 		try {
 			deleteStatement = connection.createStatement();
@@ -167,8 +168,18 @@ public class SqliteRepository implements IABCRepository{
 			insertStatement.setInt(2, wgNr);
 			insertStatement.setInt(3, lagerNr);
 			insertStatement.setInt(4, wgNr);
+			insertStatement.setInt(5, lagerNr);
+			insertStatement.setInt(6, wgNr);
 			insertStatement.executeUpdate();
 			connection.commit();
+			
+			//Summen der einzelnen Kriterien
+			insertStatementSumLine = connection.prepareStatement(CrudBefehle.generateSUMBerichteLine);
+			insertStatementSumLine.setInt(1, lagerNr);
+			insertStatementSumLine.setInt(2, wgNr);
+			insertStatementSumLine.executeUpdate();
+			connection.commit();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

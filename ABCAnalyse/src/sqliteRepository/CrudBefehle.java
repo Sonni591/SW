@@ -17,7 +17,7 @@ public class CrudBefehle {
 	public static String selectWarengruppen = "select * from Warengruppe order by Bezeichnung asc";
 	
 	public static String selectSumOfCriteriaByStorehouseAndWaregroup = "select sum(JahresUmsatz) as SummeUmsatz, sum(JahresMenge) as SummeMenge, sum(JahresAnzahl) as SummeAnzahl from ABC_Input where LagerNr = ? and WGNr = ?";
-	public static String selectABCInputByStorehouseAndWaregroupOrderCriteria = "select * from ABC_Input where LagerNr in (?) and WGNr = ? order by ";
+	public static String selectABCInputByStorehouseAndWaregroupOrderCriteria = "select * from ABC_Input where LagerNr = ? and WGNr = ? order by ";
 	
 	//Bereich Update-Befehle
 	public static String updateEinteilungAnteilA = "update " + "ABCEinteilung set AnteilA = ? where Bezeichnung = ?";
@@ -31,8 +31,8 @@ public class CrudBefehle {
 	
 	//ABC-Berechnung Selects
 	public static String insertABCInputValues = "insert into ABC_Input "
-											    + "select a.artikelnr,"
-												+ "al.lagernr,"
+											    + "select ab.artikelnr,"
+												+ "ab.lagernr,"
 												+ "sum(ab.Umsatz) as JahresUmsatz,"
 												+ "sum(ab.Menge) as JahresMenge,"
 												+ "sum(ab.Anzahl) as JahresAnzahl,"
@@ -40,9 +40,9 @@ public class CrudBefehle {
 												+ "a.wgnr"
 												+ " from Absatz ab"
 												+ " join Artikel a on a.artikelnr = ab.artikelnr"
-												+ " join artikelLager al on al.artikelnr = a.artikelnr"
+												+ " join artikelLager al on al.artikelnr = a.artikelnr and al.LagerNr = ab.LagerNr"
 												+ " where ab.datum between ? and ?"
-												+ " group by a.artikelnr, al.lagernr, a.wgnr"
+												+ " group by ab.artikelnr, ab.lagernr, a.wgnr"
 												+ " order by a.wgnr;";
 	
 	public static String insertWholeCompanyInput = "INSERT INTO ABC_Input (ArtikelNr, LagerNr, JahresUmsatz, JahresMenge, JahresAnzahl, Bestand, WgNr) "
@@ -52,23 +52,46 @@ public class CrudBefehle {
 												 + "group by ArtikelNr,WgNr";
 	
 	public static String generateABCBerichte = "INSERT INTO ABCBerichte "
-			 								 + "select abcR.ABCKZ, abcR.LagerNr, abcI.WgNr, sum(abcI.JahresAnzahl), sum(abcI.JahresUmsatz), sum(abcI.JahresMenge), " 
-											 + "sum(abcI.Bestand), sum(abcI.JahresMenge * a.EKPreis), sum(abcI.Bestand * a.EKPreis) "
-											 + "from ABCResult abcR "
-											 + "join ABC_Input abcI on abcI.ArtikelNr = abcR.ArtikelNr and abcI.LagerNr = abcR.LagerNr "
-											 + "join Artikel a on a.ArtikelNr = abcI.ArtikelNr "
-											 + "where abcI.LagerNr = ? "
-											 + "and abcI.WgNr = ? "
-											 + "group by abcR.ABCKZ, abcR.LagerNr, abcI.WgNr "
+											 + "select abcR.ABCK1 as BerichtKZ, 1 as KriteriumID, abcR.LagerNr as LagerNr, abcI.WgNr as WGNR, count(abcR.ArtikelNr) as ANZAHL,"
+											 + "sum(abcI.JahresUmsatz) as UMSATZ, sum(abcI.JahresMenge) as MENGE, sum(abcI.Bestand) as BESTAND, "
+											 + "sum((abcI.Bestand * a.EKPreis)) as BestandsWert, sum((abcI.JahresMenge * EKPreis)) as MengeWert "
+											 + "from ABC_Input abcI "
+											 + "join ABCResult abcR on abcI.ArtikelNr = abcR.ArtikelNr and abcI.LagerNr = abcR.LagerNr "
+											 + "join Artikel a on a.ArtikelNr = abcR.ArtikelNr "
+											 + "where abcR.LagerNr = ? "
+											 + "  and abcI.WgNr = ?"
+											 + "group by abcR.ABCK1, 1,abcR.LagerNr, abcI.WgNr "
 											 + "UNION "
-											 + "select 'SUM', abcR.LagerNr, abcI.WgNr, sum(abcI.JahresAnzahl), sum(abcI.JahresUmsatz), sum(abcI.JahresMenge), "
-											 + "sum(abcI.Bestand), sum(abcI.JahresMenge * a.EKPreis), sum(abcI.Bestand * a.EKPreis) "
-											 + "from ABCResult abcR "
-											 + "join ABC_Input abcI on abcI.ArtikelNr = abcR.ArtikelNr and abcI.LagerNr = abcR.LagerNr "
-											 + "join Artikel a on a.ArtikelNr = abcI.ArtikelNr "
-											 + "where abcI.LagerNr = ? "
-											 + "and abcI.WgNr = ? "
-											 + "group by abcR.LagerNr, abcI.WgNr;";
+											 + "select abcR.ABCK2 as BerichtKZ, 2 as KriteriumID, abcR.LagerNr as LagerNr, abcI.WgNr as WGNR, count(abcR.ArtikelNr) as ANZAHL, "
+											 + "sum(abcI.JahresUmsatz) as UMSATZ, sum(abcI.JahresMenge) as MENGE, sum(abcI.Bestand) as BESTAND, " 
+											 + "sum((abcI.Bestand * a.EKPreis)) as BestandsWert, sum((abcI.JahresMenge * EKPreis)) as MengeWert "
+											 + "from ABC_Input abcI "
+											 + "join ABCResult abcR on abcI.ArtikelNr = abcR.ArtikelNr and abcI.LagerNr = abcR.LagerNr "
+											 + "join Artikel a on a.ArtikelNr = abcR.ArtikelNr "
+											 + "where abcR.LagerNr = ? "
+											 + "  and abcI.WgNr = ?"
+											 + "group by abcR.ABCK2, 2,abcR.LagerNr, abcI.WgNr "
+											 + "UNION "
+											 + "select abcR.ABCK3 as BerichtKZ, 3 as KriteriumID, abcR.LagerNr as LagerNr, abcI.WgNr as WGNR, count(abcR.ArtikelNr) as ANZAHL, "
+											 + "sum(abcI.JahresUmsatz) as UMSATZ, sum(abcI.JahresMenge) as MENGE, sum(abcI.Bestand) as BESTAND, "
+											 + "sum((abcI.Bestand * a.EKPreis)) as BestandsWert, sum((abcI.JahresMenge * EKPreis)) as MengeWert "
+											 + "from ABC_Input abcI "
+											 + "join ABCResult abcR on abcI.ArtikelNr = abcR.ArtikelNr and abcI.LagerNr = abcR.LagerNr "
+											 + "join Artikel a on a.ArtikelNr = abcR.ArtikelNr "
+											 + "where abcR.LagerNr = ? "
+											 + "  and abcI.WgNr = ?"
+											 + "group by abcR.ABCK3, 3,abcR.LagerNr, abcI.WgNr "
+											 + "order by KriteriumID ";
+	
+	public static String generateSUMBerichteLine = "INSERT INTO ABCBerichte "
+												 + "select 'SUM' as BerichtKZ, abcB.KriteriumID, abcB.LagerNr, abcB.WgNr as WGNR, sum(abcB.AnzahlArtikel) as ANZAHL, " 
+												 + "sum(abcB.JahresUmsatz) as UMSATZ, sum(abcB.JahresMenge) as MENGE, sum(abcB.Bestand) as BESTAND, "
+												 + "sum(abcB.BestandsWert) as BestandsWert, sum(abcB.JahresMengeWert) as MengeWert "
+												 + " from ABCBerichte abcB "
+												 + "where abcB.LagerNr = ? "
+												 + "  and abcB.WgNr = ?"
+												 + "group by abcB.KriteriumID, abcB.LagerNr, abcB.WgNr;";
+
 	
 	//Bereich Delete-Befehle
 	public static String deleteABCInput = "delete from ABC_Input";

@@ -57,33 +57,6 @@ public class ABCRechnung {
 		}
 	}
 	
-	// TODO
-	//
-	/*public void getSelectedGUIItems() {
-		if (PanelParameter.rdbtnAlleVertriebskanaele.isSelected()) {
-			// Funktion wenn alle Kan‰le gw‰hlt wurde
-			System.out.println("Alle Kan‰le");
-			
-			arrListVertriebskanaele = repository.getVertriebskanaeleObjects();
-			
-			arrListWarengruppen = repository.getWarengruppenObjects();
-			
-		} 
-		else {
-			// ausgewählten Vertriebskanal lesen
-			Vertriebskanal vertriebskanal = new Vertriebskanal();
-			vertriebskanal.setBezeichnung((String) PanelParameter.cboVertriebskanal.getSelectedItem());
-			vertriebskanal.setLagerNr(getVertriebsKanal(vertriebskanal.getBezeichnung()));
-			arrListVertriebskanaele.add(vertriebskanal);
-			
-			// ausgewählte Warengruppe lesen
-			Warengruppe warengruppe = new Warengruppe();
-			warengruppe.setBezeichnung((String) PanelParameter.cboWarengruppe.getSelectedItem());
-			warengruppe.setWGNr(getWarenGruppe(warengruppe.getBezeichnung()));
-			arrListWarengruppen.add(warengruppe);
-		}
-
-	}*/
 	
     //Neue Methode welche die ABC-Result-Tabelle berechnet
 	public void CalculateABCResult()
@@ -93,7 +66,6 @@ public class ABCRechnung {
 		arrListVertriebskanaele = repository.getVertriebskanaeleObjects();
 		
 		arrListWarengruppen = repository.getWarengruppenObjects();
-		//getSelectedGUIItems();
 		
 		// Output Test
 		for(Vertriebskanal obj : arrListVertriebskanaele) {
@@ -117,7 +89,7 @@ public class ABCRechnung {
 				//Fuer jedes Kriterium
 				for(int criteria = 1; criteria <= 3; criteria++)
 				{
-					//entsprich Insgesamt 4*9*3=108 Durchlaeufen
+					//entspricht Insgesamt 4*9*3=108 Durchlaeufen
 					try
 					{
 						ResultSet rs = null;
