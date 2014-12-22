@@ -19,6 +19,9 @@ public class CrudBefehle {
 	public static String selectSumOfCriteriaByStorehouseAndWaregroup = "select sum(JahresUmsatz) as SummeUmsatz, sum(JahresMenge) as SummeMenge, sum(JahresAnzahl) as SummeAnzahl from ABC_Input where LagerNr = ? and WGNr = ?";
 	public static String selectABCInputByStorehouseAndWaregroupOrderCriteria = "select * from ABC_Input where LagerNr = ? and WGNr = ? order by ";
 	
+	public static String selectVertriebskanalID = "select LagerNr from Lager where Bezeichnung = ?";
+	public static String selectWarengruppeID = "select WgNr from Warengruppe where Bezeichnung = ?";
+	
 	//Bereich Update-Befehle
 	public static String updateEinteilungAnteilA = "update " + "ABCEinteilung set AnteilA = ? where Bezeichnung = ?";
 	public static String updateEinteilungAnteilB = "update " + "ABCEinteilung set AnteilB = ? where Bezeichnung = ?";
@@ -58,8 +61,8 @@ public class CrudBefehle {
 											 + "from ABC_Input abcI "
 											 + "join ABCResult abcR on abcI.ArtikelNr = abcR.ArtikelNr and abcI.LagerNr = abcR.LagerNr "
 											 + "join Artikel a on a.ArtikelNr = abcR.ArtikelNr "
-											 + "where abcR.LagerNr = ? "
-											 + "  and abcI.WgNr = ?"
+											 + "where abcR.LagerNr in (?) "
+											 + "  and abcI.WgNr in (?)"
 											 + "group by abcR.ABCK1, 1,abcR.LagerNr, abcI.WgNr "
 											 + "UNION "
 											 + "select abcR.ABCK2 as BerichtKZ, 2 as KriteriumID, abcR.LagerNr as LagerNr, abcI.WgNr as WGNR, count(abcR.ArtikelNr) as ANZAHL, "
@@ -68,8 +71,8 @@ public class CrudBefehle {
 											 + "from ABC_Input abcI "
 											 + "join ABCResult abcR on abcI.ArtikelNr = abcR.ArtikelNr and abcI.LagerNr = abcR.LagerNr "
 											 + "join Artikel a on a.ArtikelNr = abcR.ArtikelNr "
-											 + "where abcR.LagerNr = ? "
-											 + "  and abcI.WgNr = ?"
+											 + "where abcR.LagerNr in (?) "
+											 + "  and abcI.WgNr in (?)"
 											 + "group by abcR.ABCK2, 2,abcR.LagerNr, abcI.WgNr "
 											 + "UNION "
 											 + "select abcR.ABCK3 as BerichtKZ, 3 as KriteriumID, abcR.LagerNr as LagerNr, abcI.WgNr as WGNR, count(abcR.ArtikelNr) as ANZAHL, "
@@ -78,8 +81,8 @@ public class CrudBefehle {
 											 + "from ABC_Input abcI "
 											 + "join ABCResult abcR on abcI.ArtikelNr = abcR.ArtikelNr and abcI.LagerNr = abcR.LagerNr "
 											 + "join Artikel a on a.ArtikelNr = abcR.ArtikelNr "
-											 + "where abcR.LagerNr = ? "
-											 + "  and abcI.WgNr = ?"
+											 + "where abcR.LagerNr in (?) "
+											 + "  and abcI.WgNr in (?)"
 											 + "group by abcR.ABCK3, 3,abcR.LagerNr, abcI.WgNr "
 											 + "order by KriteriumID ";
 	
@@ -88,10 +91,9 @@ public class CrudBefehle {
 												 + "sum(abcB.JahresUmsatz) as UMSATZ, sum(abcB.JahresMenge) as MENGE, sum(abcB.Bestand) as BESTAND, "
 												 + "sum(abcB.BestandsWert) as BestandsWert, sum(abcB.JahresMengeWert) as MengeWert "
 												 + " from ABCBerichte abcB "
-												 + "where abcB.LagerNr = ? "
-												 + "  and abcB.WgNr = ?"
+												 + "where abcB.LagerNr in (?) "
+												 + "  and abcB.WgNr in (?)"
 												 + "group by abcB.KriteriumID, abcB.LagerNr, abcB.WgNr;";
-
 	
 	//Bereich Delete-Befehle
 	public static String deleteABCInput = "delete from ABC_Input";

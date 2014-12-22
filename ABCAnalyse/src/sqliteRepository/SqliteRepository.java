@@ -150,17 +150,35 @@ public class SqliteRepository implements IABCRepository{
 	}
 	
 	/* (non-Javadoc)
-	 * @see sqliteRepository.IABCRepository#generateBericht(int, int)
+	 * @see sqliteRepository.IABCRepository#deleteBerichte()
 	 */
 	@Override
-	public void generateBericht(int lagerNr, int wgNr)
+	public void deleteBerichte()
+	{
+		try {
+			connection.setAutoCommit(false);
+			Statement deleteStatement = connection.createStatement();
+			deleteStatement.executeUpdate(CrudBefehle.deleteABCBerichte);
+			connection.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see sqliteRepository.IABCRepository#generateBerichte(int, int)
+	 */
+	@Override
+	public void generateBerichte(int lagerNr, int wgNr)
 	{
 		PreparedStatement insertStatement = null;
 		PreparedStatement insertStatementSumLine = null;
-		Statement deleteStatement;
+//		Statement deleteStatement;
 		try {
-			deleteStatement = connection.createStatement();
-			deleteStatement.executeUpdate(CrudBefehle.deleteABCBerichte);
+//			deleteStatement = connection.createStatement();
+//			deleteStatement.executeUpdate(CrudBefehle.deleteABCBerichte);
 			connection.setAutoCommit(false);
 			//Jetzt kann die Tabelle neu befuellt werden
 			insertStatement = connection.prepareStatement(CrudBefehle.generateABCBerichte);
@@ -440,4 +458,40 @@ public class SqliteRepository implements IABCRepository{
 	}
 	return zuordnungen;
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see sqliteRepository.IABCRepository#getVertriebsKanalID(String)
+	 */
+	@Override
+	public int getVertriebsKanalID(String vertriebskanal) {
+		PreparedStatement selectStatement = null;
+		try{
+			selectStatement = connection.prepareStatement(CrudBefehle.selectVertriebskanalID);
+			selectStatement.setString(1, vertriebskanal);
+			ResultSet rs = selectStatement.executeQuery();	
+			return rs.getInt(1);
+		}catch (SQLException ex){
+			ex.printStackTrace();
+			return -1;
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see sqliteRepository.IABCRepository#getWarengruppeID(String)
+	 */
+	@Override
+	public int getWarengruppeID(String warengruppe) {
+		PreparedStatement selectStatement = null;
+		try{
+			selectStatement = connection.prepareStatement(CrudBefehle.selectWarengruppeID);
+			selectStatement.setString(1, warengruppe);
+			ResultSet rs = selectStatement.executeQuery();	
+			return rs.getInt(1);
+		}catch (SQLException ex){
+			ex.printStackTrace();
+			return -1;
+		}
+	}
+	
 }

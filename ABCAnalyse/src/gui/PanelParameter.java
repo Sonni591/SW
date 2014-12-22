@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -48,6 +49,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
+import objects.Vertriebskanal;
+import objects.Warengruppe;
 import sqliteRepository.CrudBefehle;
 import logic.ABCRechnung;
 
@@ -65,7 +68,7 @@ public class PanelParameter extends JPanel{
 	public static JTextField txtVonDatum;
 	public static JComboBox<Integer> cboJahr;
 	public static JTextField txtBisDatum;
-	public static JComboBox<String> cboVertriebskanal;
+	public static JComboBox<String> cboVertriebskanal;	
 	public static JComboBox<String> cboWarengruppe;
 	public static JRadioButton rdbtnAlleVertriebskanaele;
 	public static JRadioButton rdbtnVertriebskanalEinzel;
@@ -208,9 +211,76 @@ public class PanelParameter extends JPanel{
 		JButton btnBerichte = new JButton("ABC Berichte generiern");
 		btnBerichte.addActionListener(new ActionListener() {
 
+//			public void actionPerformed(ActionEvent e) {
+//				repository.generateBericht(10, 1);
+//			}
+			
 			public void actionPerformed(ActionEvent e) {
-				repository.generateBericht(10, 1);
+				
+//				int[] vertriebskanaeleIDs;
+//				int[] warengruppenIDs;
+//				
+//				if(PanelParameter.rdbtnAlleVertriebskanaele.isSelected()) {
+//					vertriebskanaeleIDs = new int[] {0, 10, 20, 30};
+//				}
+//				else {
+//					vertriebskanaeleIDs = new int[] {10};
+//				}
+//				
+//				if(PanelParameter.rdbtnAlleWarengruppen.isSelected()) {
+//					warengruppenIDs = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9};
+//				}
+//				else {
+//					warengruppenIDs = new int[] {1};
+//				}
+				
+//				// neue Berichte generieren
+//				for(int v : vertriebskanaeleIDs) {
+//					for (int w : warengruppenIDs) {
+//						
+//					}	
+//				}
+				
+				ArrayList<Vertriebskanal> arrListVertriebskanaele = new ArrayList<Vertriebskanal>();
+				ArrayList<Warengruppe> arrListWarengruppen = new ArrayList<Warengruppe>();
+				
+				// Vertriebskanäle
+				if(PanelParameter.rdbtnAlleVertriebskanaele.isSelected()) {
+					arrListVertriebskanaele = repository.getVertriebskanaeleObjects();
+				}
+				else {
+					// ausgewählten Vertriebskanal lesen
+					Vertriebskanal vertriebskanal = new Vertriebskanal();
+					vertriebskanal.setBezeichnung((String) cboVertriebskanal.getSelectedItem());
+					vertriebskanal.setLagerNr(repository.getVertriebsKanalID(vertriebskanal.getBezeichnung()));
+					arrListVertriebskanaele.add(vertriebskanal);
+				}
+				
+				if(PanelParameter.rdbtnAlleVertriebskanaele.isSelected()) {
+					arrListWarengruppen = repository.getWarengruppenObjects();
+				}
+				else {
+					// ausgewählte Warengruppe lesen
+					Warengruppe warengruppe = new Warengruppe();
+					warengruppe.setBezeichnung((String) cboWarengruppe.getSelectedItem());
+					warengruppe.setWGNr(repository.getWarengruppeID(warengruppe.getBezeichnung()));
+					arrListWarengruppen.add(warengruppe);
+				}
+				
+				// Berichte löschen
+				repository.deleteBerichte();
+				
+				for(Vertriebskanal v : arrListVertriebskanaele) {
+					int vertriebskanalID = v.getLagerNr();
+					for (Warengruppe w : arrListWarengruppen) {
+						int warengruppenID = w.getWGNr();
+						// Bericht für Vertriebskanal v und Warengruppe w generieren
+						repository.generateBerichte(vertriebskanalID, warengruppenID);
+					}
+				}
+				
 			}
+			
 		});
 		panelParameterFoot.add(btnBerichte);
 		
@@ -274,7 +344,7 @@ public class PanelParameter extends JPanel{
 		for(String s : vertriebskanaele) {
 				cboVertriebskanal.addItem(s);
 		}
-		
+
 		
 		ChangeListener changeListenerBtnGroupVertriebskanal = new ChangeListener() {
 		      public void stateChanged(ChangeEvent changEvent) {

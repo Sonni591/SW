@@ -25,7 +25,9 @@ public interface IABCRepository {
 
 	public abstract void deleteABCResultTable();
 
-	public abstract void generateBericht(int lagerNr, int wgNr);
+	public abstract void deleteBerichte();
+	
+	public abstract void generateBerichte(int lagerNr, int wgNr);
 
 	public abstract ResultSet selectABCInputByStorehouseAndWaregroup(
 			int lagerNr, int wgNr, String criteria);
@@ -44,4 +46,7 @@ public interface IABCRepository {
 
 	public abstract ArrayList<ABCZuordnung> getZuordnungen();
 
+	public abstract int getVertriebsKanalID(String vertriebskanal);
+	
+	public abstract int getWarengruppeID(String warengruppe);
 }
