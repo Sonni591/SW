@@ -43,5 +43,8 @@ public interface IABCRepository {
 	public abstract ArrayList<Bericht> getBerichte(/*TODO*/);
 
 	public abstract ArrayList<ABCZuordnung> getZuordnungen();
+	
+	public abstract ResultSet selectChartOption1(int lagerNr, int wgNr);
 
+	public abstract ResultSet selectChartOption2(int lagerNr, int wgNr);
 }

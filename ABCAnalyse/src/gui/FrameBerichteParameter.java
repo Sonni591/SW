@@ -309,18 +309,10 @@ public class FrameBerichteParameter {
 		btnBerichteAnzeigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ChartTest chart = new ChartTest(repository);
-				chart.createchart();
-			}
-		});
-		panelFooter.add(btnBerichteAnzeigen);
-		btnBerichteAnzeigen.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-
-				ChartTest chart = new ChartTest(repository);
 				chart.getDataForChart();
 			}
 		});
+		panelFooter.add(btnBerichteAnzeigen);
 
 		JButton btnFrameSchliessen = new JButton("Schlie\u00DFen");
 		btnFrameSchliessen.addActionListener(new ActionListener() {

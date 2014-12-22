@@ -97,4 +97,10 @@ public class CrudBefehle {
 	public static String deleteABCInput = "delete from ABC_Input";
 	public static String deleteABCResult = "delete from ABCResult";
 	public static String deleteABCBerichte = "delete from ABCBerichte";
+	
+	//Bereich Chart-Befehle
+	public static String getChartOption1 = "select AnzahlArtikel, Bestandswert, JahresUmsatz, BerichtKZ, LagerNr, WgNr From ABCBerichte where LagerNr = ? AND WgNr = ?";
+	public static String getChartOption2 = "select AnzahlArtikel, Bestand, JahresMenge, BerichtKZ, LagerNr, WgNr From ABCBerichte where LagerNr = ? AND WgNr = ?";
+	public static String getChartOption3 = "select AnzahlArtikel, Bestandswert, JahresUmsatz, BerichtKZ, LagerNr, WgNr From ABCBerichte where LagerNr = ? AND WgNr = ?";
+	public static String getABCBericht = "select * from ABCBerichte";
 }
