@@ -13,9 +13,9 @@ public class DBConnector {
 	     {  
 	         Class.forName("org.sqlite.JDBC");  
 	         // produktive Datenbank
-//	         connection = DriverManager.getConnection("jdbc:sqlite:SwDB.db"); 
+	         connection = DriverManager.getConnection("jdbc:sqlite:SwDB.db"); 
 	         // Test Datenbank
-	         connection = DriverManager.getConnection("jdbc:sqlite:SwDB_Test.db");  
+//	         connection = DriverManager.getConnection("jdbc:sqlite:SwDB_Test.db");  
 	         return connection;
 	     } 
 	     catch (Exception e) 
