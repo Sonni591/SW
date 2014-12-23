@@ -87,7 +87,9 @@ public class SqliteRepository implements IABCRepository{
 	@Override
 	public void insertABCInputTable(String beginDate, String endDate)
 	{
-			PreparedStatement insertStatement = null, insertStatementWholeC = null;
+		// Datum muss im Format YY.MM.DD hh:mm:ss:xxx vorliegen
+		
+		PreparedStatement insertStatement = null, insertStatementWholeC = null;
 			try {
 				connection.setAutoCommit(false);
 				//Erst Tablleninhalt loeschen

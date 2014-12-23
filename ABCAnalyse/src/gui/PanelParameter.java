@@ -136,7 +136,7 @@ public class PanelParameter extends JPanel{
 				panelZeitraumAuswahl.add(txtBisDatum);
 				txtBisDatum.setEditable(false);
 				txtBisDatum.setColumns(10);
-				txtBisDatum.setText("2012-06-01");
+				txtBisDatum.setText("2012-05-01");
 				
 						JCalendarButton btnBisDatum = new JCalendarButton();
 						btnBisDatum.addPropertyChangeListener(new PropertyChangeListener() {
@@ -322,6 +322,10 @@ public class PanelParameter extends JPanel{
 					ABCRechnung rechnung = new ABCRechnung(repository);
 					if(!vonDatum.equals("") && !bisDatum.equals(""))
 					{
+						// Datum muss im Format YY.MM.DD hh:mm:ss:xxx vorliegen
+						vonDatum = vonDatum + " 00:00:00.000";
+						bisDatum = bisDatum + " 00:00:00.000";
+						
 						repository.insertABCInputTable(vonDatum, bisDatum);
 						rechnung.CalculateABCResult();
 						MainWindow.panelErgebnis.setTableData();
