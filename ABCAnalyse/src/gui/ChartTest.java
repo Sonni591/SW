@@ -40,6 +40,8 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 public class ChartTest extends JPanel{
@@ -192,6 +194,23 @@ public class ChartTest extends JPanel{
 		resultTable.setGridColor(Color.LIGHT_GRAY);
 		resultTable.getTableHeader().setReorderingAllowed(false);
 		setTableData();
+		
+		resultTable.addMouseListener(new MouseAdapter() {
+			   public void mouseClicked(MouseEvent e) {
+			      if (e.getClickCount() == 2) {
+			         JTable target = (JTable)e.getSource();
+			         int row = target.getSelectedRow();
+			         String classValue = resultTable.getValueAt(row, 0).toString();
+			         String kriteriumValue = resultTable.getValueAt(row, 1).toString();
+			         String lagerValue = resultTable.getValueAt(row, 2).toString();
+			         String wgValue = resultTable.getValueAt(row, 3).toString();
+			         System.out.println("Klasse: " + classValue);
+			         System.out.println("Kriterium: " + kriteriumValue);
+			         System.out.println("Lager: " + lagerValue);
+			         System.out.println("Warengruppe: " + wgValue);
+			         }
+			   }
+			});
 		
 		//Fenster packen und anzeigen
 		reportFrame.pack();

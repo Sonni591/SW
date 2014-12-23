@@ -136,7 +136,7 @@ public class PanelParameter extends JPanel{
 				panelZeitraumAuswahl.add(txtBisDatum);
 				txtBisDatum.setEditable(false);
 				txtBisDatum.setColumns(10);
-				txtBisDatum.setText("2012-05-01");
+				txtBisDatum.setText("2012-06-01");
 				
 						JCalendarButton btnBisDatum = new JCalendarButton();
 						btnBisDatum.addPropertyChangeListener(new PropertyChangeListener() {
