@@ -470,7 +470,7 @@ public class PanelErgebnis extends JPanel {
 					.getResult(CrudBefehle.selectABCResultView);
 
 			resultTable.setModel(buildTableModel(abcEinteilungResult));
-			lblCountRows.setText("Count: " + resultTable.getRowCount());
+			lblCountRows.setText("Zeilen: " + resultTable.getRowCount());
 		} catch (Exception e) {
 			System.err.println(e);
 			e.printStackTrace();

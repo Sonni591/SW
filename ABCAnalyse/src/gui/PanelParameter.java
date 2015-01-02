@@ -95,7 +95,7 @@ public class PanelParameter extends JPanel{
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		panelParameterZeitraum.add(panelZeitraumHeader, BorderLayout.NORTH);
 		
-		JLabel lblZeitraum = new JLabel("Zeitraum");
+		JLabel lblZeitraum = new JLabel("Zeitraum:");
 		lblZeitraum.setVerticalAlignment(SwingConstants.BOTTOM);
 		panelZeitraumHeader.add(lblZeitraum);
 		lblZeitraum.setHorizontalAlignment(SwingConstants.CENTER);
@@ -343,7 +343,7 @@ public class PanelParameter extends JPanel{
 		panelParameterVertriebskanal.setBorder(new MatteBorder(0, 0, 1, 1, (Color) new Color(128, 128, 128)));
 		this.add(panelParameterVertriebskanal, BorderLayout.WEST);
 		
-		JLabel lblVertriebskanalHeader = new JLabel("Vertriebskanal");
+		JLabel lblVertriebskanalHeader = new JLabel("Vertriebskanal:");
 		
 		//Edit Timo: Variablen am Anfang der Klasse initialisiert um sie in anderen Klassen sichtbar zu machen.
 		ButtonGroup buttonGroupVertriebskanal = new ButtonGroup();
@@ -359,7 +359,10 @@ public class PanelParameter extends JPanel{
 		cboVertriebskanal = new JComboBox<String>();
 		cboVertriebskanal.setEnabled(false);
 		for(String s : vertriebskanaele) {
+			// Gesamtunternehmen nicht mit auflisten
+			if(!s.equals("Gesamtunternehmen")) { 
 				cboVertriebskanal.addItem(s);
+			}
 		}
 
 		
@@ -412,7 +415,7 @@ public class PanelParameter extends JPanel{
 		
 		ButtonGroup buttonGroupWarengruppe = new ButtonGroup();
 		
-		JLabel lblWarengruppeHeader = new JLabel("Warengruppe");
+		JLabel lblWarengruppeHeader = new JLabel("Warengruppe:");
 		
 		rdbtnAlleWarengruppen = new JRadioButton("Alle Warengruppen");
 		rdbtnAlleWarengruppen.setSelected(true);
