@@ -42,12 +42,19 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.FlowLayout;
 
 
 public class ChartTest extends JPanel{
 	private IABCRepository repository;
 	String selectedOption;
+	String selectedLager;
+	String selectedWg;
+	int selectedLagerId;
+	int selectedWgId;
 	JTable resultTable;
+	ResultSet ChartData = null;
+	int selectedOptionNr;
 
 	public ChartTest(IABCRepository _repository) {
 		repository = _repository;
@@ -56,17 +63,20 @@ public class ChartTest extends JPanel{
 	 * @wbp.parser.entryPoint
 	 */
 	public void getDataForChart(){
-		//TODO: Strings aus der GUI auslesen, die INT Werte dazu aus DB auslesen und �bergeben.
-		//String Vertriebskanal = (String) FrameBerichteParameter.cboVertriebskanal1.getSelectedItem();
-		//String Warengruppe = (String) FrameBerichteParameter.cboWarengruppen.getSelectedItem();
-		//Dummy Werte f�r Lager = 10 und Warengruppe = 1
+
 		FrameBerichteParameter.dialogFrame.dispose();
-		ResultSet ChartData = null;
 		DefaultCategoryDataset ChartDataObjects = null;
 		
+		selectedLager = (String) FrameBerichteParameter.cboVertriebskanal1.getSelectedItem();
+		selectedWg = (String) FrameBerichteParameter.cboWarengruppen.getSelectedItem();
+		
+		selectedLagerId = repository.getVertriebsKanalID(selectedLager);
+		selectedWgId = repository.getWarengruppeID(selectedWg);
+
 		if(FrameBerichteParameter.rdbtnChartOption1.isSelected()){
+			selectedOptionNr = 1;
 			selectedOption = FrameBerichteParameter.rdbtnChartOption1.getLabel();
-			ChartData = repository.selectChartOption1(10, 1);
+			ChartData = repository.selectChartOption1(selectedLagerId, selectedWgId);
 			ChartDataObjects = new DefaultCategoryDataset();
 			int AnzahlSum = 0;
 			int BestandswertSum = 0;
@@ -81,7 +91,7 @@ public class ChartTest extends JPanel{
 					break;
 					}
 				}
-				ChartData = repository.selectChartOption1(10, 1);
+				ChartData = repository.selectChartOption1(selectedLagerId, selectedWgId);
 				while(ChartData.next())
 				{
 					if(!ChartData.getString(4).equals("SUM")){
@@ -97,8 +107,9 @@ public class ChartTest extends JPanel{
 			}
 		}
 		else if(FrameBerichteParameter.rdbtnChartOption2.isSelected()){
+			selectedOptionNr = 2;
 			selectedOption = FrameBerichteParameter.rdbtnChartOption2.getLabel();
-			ChartData = repository.selectChartOption2(10, 1);
+			ChartData = repository.selectChartOption2(selectedLagerId, selectedWgId);
 			ChartDataObjects = new DefaultCategoryDataset();
 			int AnzahlSum = 0;
 			int BestandStueckSum = 0;
@@ -113,7 +124,7 @@ public class ChartTest extends JPanel{
 					break;
 					}
 				}
-				ChartData = repository.selectChartOption2(10, 1);
+				ChartData = repository.selectChartOption2(selectedLagerId,selectedWgId);
 				while(ChartData.next())
 				{
 					if(!ChartData.getString(4).equals("SUM")){
@@ -130,7 +141,37 @@ public class ChartTest extends JPanel{
 		}
 
 		else{
-			System.out.println("Option3");
+			selectedOptionNr = 3;
+			selectedOption = FrameBerichteParameter.rdbtnChartOption3.getLabel();
+			ChartData = repository.selectChartOption3(selectedLagerId, selectedWgId);
+			ChartDataObjects = new DefaultCategoryDataset();
+			int AnzahlSum = 0;
+			int BestandStueckSum = 0;
+			int AbsatzSum = 0;
+			try {
+				while(ChartData.next())
+				{
+					if(ChartData.getString(4).equals("SUM")){
+					AnzahlSum = ChartData.getInt(1);
+					BestandStueckSum = ChartData.getInt(2);
+					AbsatzSum = ChartData.getInt(3);
+					break;
+					}
+				}
+				ChartData = repository.selectChartOption2(selectedLagerId,selectedWgId);
+				while(ChartData.next())
+				{
+					if(!ChartData.getString(4).equals("SUM")){
+						ChartDataObjects.addValue((((float)ChartData.getInt(1)/(float)AnzahlSum)*100), ChartData.getString(4), "Anzahl Artikel");
+						ChartDataObjects.addValue((((float)ChartData.getInt(2)/(float)BestandStueckSum)*100), ChartData.getString(4), "Bestand in St�ck");
+						ChartDataObjects.addValue((((float)ChartData.getInt(3)/(float)AbsatzSum)*100), ChartData.getString(4), "Jahres Absatz");
+					}
+				
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			}
 		createchart(ChartDataObjects);
 	}
@@ -159,8 +200,19 @@ public class ChartTest extends JPanel{
 		
 		//Titel setzen
 		JLabel lblPlatzhalter = new JLabel(selectedOption);
+		lblPlatzhalter.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblPlatzhalter.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel lblwgString = new JLabel(selectedLager);
+		lblwgString.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblwgString.setHorizontalAlignment(SwingConstants.CENTER);
+		//panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		lblPlatzhalter.setFont(new Font("Tahoma", Font.BOLD, 18));
 		panel.add(lblPlatzhalter);
+		panel.add(lblwgString);
+		JLabel lbllagerString = new JLabel(selectedWg);
+		lbllagerString.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(lbllagerString);
 		
 		//Center Panel mit Chart
 		JPanel panel_1 = new JPanel();
@@ -222,8 +274,14 @@ public class ChartTest extends JPanel{
 	public void setTableData() {
 		ResultSet abcBericht = null;
 		try {
-			abcBericht = repository
-					.getResult(CrudBefehle.getABCBericht);
+			if(selectedOptionNr == 1){
+				abcBericht = repository.selectTableOption1(selectedLagerId, selectedWgId);
+			}else if(selectedOptionNr == 2){
+				abcBericht = repository.selectTableOption2(selectedLagerId, selectedWgId);
+			}else if(selectedOptionNr == 3){
+				abcBericht = repository.selectTableOption3(selectedLagerId, selectedWgId);
+				
+			}			
 
 			resultTable.setModel(buildTableModel(abcBericht));
 		} catch (Exception e) {
