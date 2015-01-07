@@ -73,7 +73,7 @@ public class PanelEinteilung extends JPanel {
 		this.add(panelEinteilungHeader, BorderLayout.NORTH);
 		panelEinteilungHeader.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
-		JLabel lblEinteilung = new JLabel("Einteilung");
+		JLabel lblEinteilung = new JLabel("<html>Bitte tragen Sie die prozentualen Grenzen &nbsp&nbsp&nbsp<p/> für die Einteilung in die Kategorien ein.</html>");
 		panelEinteilungHeader.add(lblEinteilung);
 
 		JPanel panelEinteilungContent = new JPanel();

@@ -1,11 +1,18 @@
 package logic;
 
+import gui.MainWindow;
 import interfaces.IABCRepository;
 
+import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 
 import objects.ABCEinteilung;
 import objects.ABCResult;
@@ -15,7 +22,7 @@ import objects.Warengruppe;
 import sqliteRepository.CrudBefehle;
 
 
-public class ABCRechnung {
+public class ABCRechnung extends Thread{
 	IABCRepository repository;
 	Hashtable<String, ABCResult> abcResultTable = new Hashtable<String, ABCResult>();
 	Hashtable<String, String> abcZurdnungTable = new Hashtable<String, String>();
@@ -59,8 +66,23 @@ public class ABCRechnung {
 	
 	
     //Neue Methode welche die ABC-Result-Tabelle berechnet
-	public void CalculateABCResult()
-	{
+	public void run() {
+		try {
+			
+		final JDialog dlg = new JDialog(MainWindow.frame,
+				"Berechne ABC Analyse", false);
+		JProgressBar dpb = new JProgressBar(0, 500);
+		dpb.setMaximum(100);
+		dpb.setValue(0);
+		JLabel lblDpbState = new JLabel("Starte ABC Berechnung");
+		dlg.add(BorderLayout.CENTER, dpb);
+		dlg.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		dlg.setSize(300, 125);
+		dlg.setLocationRelativeTo(null);
+		dlg.setVisible(true);
+		dlg.add(BorderLayout.NORTH, lblDpbState);
+		
+		dlg.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		
 		// Ausgewählte Vertriebskanäle und Warengruppen lesen
 		arrListVertriebskanaele = repository.getVertriebskanaeleObjects();
@@ -74,6 +96,9 @@ public class ABCRechnung {
 		for(Warengruppe obj : arrListWarengruppen){
 			System.out.println(obj.getWGNr() + " " + obj.getBezeichnung());
 		}
+		
+		lblDpbState.setText("Bereche ABC Analyse");
+		dpb.setValue(5);
 		
 		//Fuer jedes Lager
 		for(Vertriebskanal obj : arrListVertriebskanaele)
@@ -117,13 +142,44 @@ public class ABCRechnung {
 				}
 			}
 		}
+		
+		lblDpbState.setText("Daten in Datenbank einfügen");
+		dpb.setValue(30);
+		
 		System.out.println("Berechnung erledigt nun nur noch ergebnis in Tabelle einfügen");
 		insertResultIntoDB();
+		
+		lblDpbState.setText("Daten eingefügt");
+		dpb.setValue(80);
+		
+		// Einträge der D Artikel in Input und Result-Tabelle eintragen
+				repository.insertDArtikel();
+		
+		lblDpbState.setText("<html>D Artikel berechnet </p> - gleich ist die Analyse beendet</html>");
+		dpb.setValue(97);
+		
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
 		System.out.println("Einfügen erfolgreich");
-
+		lblDpbState.setText("Einfügen erfolgreich");
+		dpb.setValue(100);
+		
+		dlg.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		
+		dlg.setVisible(false);
+		dlg.dispose();
+		
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 	}
-	
+
 	//Kumulieren
 	private void accumulate(ResultSet rs, ArrayList<Double> criteriaSumValues, int lagerNr, String description)
 	{
@@ -224,9 +280,12 @@ public class ABCRechnung {
 	{
 		//Erst aktuellen Tabelleninhalt loeschen
 		repository.deleteABCResultTable();
+		
+		// Neue Einträge der ABC Artikel eintragen
 		 for(String key: abcResultTable.keySet()){
 			 ABCResult result = abcResultTable.get(key);
 	         repository.insertABCResultTable(result.ArtikelNr, result.LagerNr, result.ABCK1, result.ABCK2, result.ABCK3, result.ABCKZ);
 	        }
+
 	}
 }

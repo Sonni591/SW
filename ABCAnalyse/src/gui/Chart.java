@@ -127,7 +127,7 @@ public class Chart extends JPanel{
 		//South Panel mit Table
 		JScrollPane panel_2 = new JScrollPane();
 		panel_2.setBackground(Color.WHITE);
-		panel_2.setPreferredSize(new Dimension(600,110));
+		panel_2.setPreferredSize(new Dimension(600,120));
 		panel_2.setBorder(new EmptyBorder(15,0,0,0));
 		reportFrame.getContentPane().add(panel_2, BorderLayout.SOUTH);
 		
@@ -326,12 +326,12 @@ public class Chart extends JPanel{
 		ChartDataObjects = new DefaultCategoryDataset();
 		
 		// Werte der Summen-Zeile
-		double anzahlSum = Double.parseDouble(resultTable.getValueAt(3, 1).toString());
-		double wert2Sum =  Double.parseDouble(resultTable.getValueAt(3, 2).toString());
-		double wert3Sum =  Double.parseDouble(resultTable.getValueAt(3, 3).toString());
+		double anzahlSum = Double.parseDouble(resultTable.getValueAt(4, 1).toString());
+		double wert2Sum =  Double.parseDouble(resultTable.getValueAt(4, 2).toString());
+		double wert3Sum =  Double.parseDouble(resultTable.getValueAt(4, 3).toString());
 		
 		// Für jede Zeile die Balkenanteile für Balken 1, 2, 3 berechnen
-		for(int i=0; i<3; i++) {
+		for(int i=0; i<4; i++) {
 			ChartDataObjects.addValue((Double.parseDouble(resultTable.getValueAt(i, 1).toString())/(double)anzahlSum*100), 
 									   (String) resultTable.getValueAt(i, 0) , 
 									   (String) resultTable.getColumnModel().getColumn(1).getHeaderValue());

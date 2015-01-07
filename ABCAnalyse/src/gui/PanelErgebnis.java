@@ -412,7 +412,7 @@ public class PanelErgebnis extends JPanel {
 		});
 		
 		//Klassifizierung der ABC-Analyse
-		String[] abcKlassfizierung = { "", "A", "B", "C" };
+		String[] abcKlassfizierung = { "", "A", "B", "C", "D" };
 		
 		//Event fuer Artikel-Textbox zur Filterung
 		txtArtikel.addKeyListener(new KeyAdapter() {

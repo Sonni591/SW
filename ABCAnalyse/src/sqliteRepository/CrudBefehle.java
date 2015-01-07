@@ -16,6 +16,14 @@ public class CrudBefehle {
 	public static String selectVertriebskanaele = "select * from Lager order by Bezeichnung asc";
 	public static String selectWarengruppen = "select * from Warengruppe order by Bezeichnung asc";
 	
+	public static String selectVertriebskanaeleBerichte = "select distinct l.Bezeichnung "
+														+ "	from ABCBerichte abcR "
+														+ "join Lager l on abcR.LagerNr = l.LagerNr order by Bezeichnung asc";
+	public static String selectWarengruppenBerichte = "select distinct wg.Bezeichnung "
+													+ "	from ABCBerichte abcR "
+													+ "join Warengruppe wg on abcR.WGNr = wg.WGNr order by Bezeichnung asc";
+	
+	
 	public static String selectSumOfCriteriaByStorehouseAndWaregroup = "select sum(JahresUmsatz) as SummeUmsatz, sum(JahresMenge) as SummeMenge, sum(JahresAnzahl) as SummeAnzahl from ABC_Input where LagerNr = ? and WGNr = ?";
 	public static String selectABCInputByStorehouseAndWaregroupOrderCriteria = "select * from ABC_Input where LagerNr = ? and WGNr = ? order by ";
 	
@@ -53,6 +61,18 @@ public class CrudBefehle {
 												 + "sum(Bestand), WgNr "
 												 + "from ABC_Input "
 												 + "group by ArtikelNr,WgNr";
+	
+	public static String insertDArtikelInput = "insert into ABC_Input (ArtikelNr, LagerNr, JahresUmsatz, JahresMenge, JahresAnzahl, Bestand, WgNr)"
+												+ " select a.ArtikelNr, al.LagerNr, 0, 0, 0, al.Bestand, a.WgNr"
+												+ " from Artikel a"
+												+ " join ArtikelLager al on a.ArtikelNr = al.ArtikelNr"
+												+ " where a.ArtikelNr not in ( select a.ArtikelNr from ABC_Input )";	
+	
+	public static String insertDArtikelResult = "insert into ABCResult (ArtikelNr, LagerNr, ABCK1, ABCK2, ABCK3, ABCKZ)"
+												+ " select a.ArtikelNr, al.LagerNr, 'D', 'D', 'D', 'D'"
+												+ " from Artikel a"
+												+ " join ArtikelLager al on a.ArtikelNr = al.ArtikelNr"
+												+ " where a.ArtikelNr not in ( select a.ArtikelNr from ABC_Input )";
 	
 	public static String generateABCBerichte = "INSERT INTO ABCBerichte "
 											 + "select abcR.ABCK1 as BerichtKZ, 1 as KriteriumID, abcR.LagerNr as LagerNr, abcI.WgNr as WGNR, count(abcR.ArtikelNr) as ANZAHL,"

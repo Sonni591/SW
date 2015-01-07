@@ -431,9 +431,9 @@ public class PanelParameter extends JPanel {
 		// Vertriebskanaele zur DropDown-Box hinzufuegen
 		for (String s : vertriebskanaele) {
 			// Gesamtunternehmen nicht mit auflisten
-			if (!s.equals("Gesamtunternehmen")) {
+//			if (!s.equals("Gesamtunternehmen")) {
 				cboVertriebskanal.addItem(s);
-			}
+//			}
 		}
 
 		// Lesen aller Warengruppen
@@ -534,7 +534,8 @@ public class PanelParameter extends JPanel {
 				bisDatum = bisDatum + " 00:00:00.000";
 
 				repository.insertABCInputTable(vonDatum, bisDatum);
-				rechnung.CalculateABCResult();
+//				rechnung.CalculateABCResult();
+				rechnung.start();
 				MainWindow.panelErgebnis.setTableData();
 			}
 		}

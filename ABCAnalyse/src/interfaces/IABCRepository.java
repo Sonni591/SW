@@ -22,6 +22,8 @@ public interface IABCRepository {
 
 	public abstract void insertABCResultTable(String ArtikelNr, int LagerNr,
 			String abcK1, String abcK2, String abcK3, String abcKz);
+	
+	public abstract void insertDArtikel();
 
 	public abstract void deleteABCResultTable();
 
@@ -37,6 +39,11 @@ public interface IABCRepository {
 	public abstract ArrayList<String> getVertriebskanale();
 
 	public abstract ArrayList<String> getWarengruppen();
+	
+	public abstract ArrayList<String> getVertriebskanaleBerichte();
+
+	public abstract ArrayList<String> getWarengruppenBerichte();
+
 
 	public abstract ArrayList<Warengruppe> getWarengruppenObjects();
 

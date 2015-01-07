@@ -66,9 +66,7 @@ public class FrameBerichteParameter {
 
 		JLabel lblHeaderTxt = new JLabel("Einstellungen der ABC Berichte");
 		lblHeaderTxt.setFont(new Font("Lucida Grande", Font.BOLD, 13));
-		lblHeaderTxt.setHorizontalAlignment(SwingConstants.LEFT);
-
-		JLabel lblLetzteAnalyseTxt = new JLabel("Daten der letzten Analyse:");
+		lblHeaderTxt.setHorizontalAlignment(SwingConstants.CENTER);
 
 		ButtonGroup buttonGroupChartOptions = new ButtonGroup();
 
@@ -85,36 +83,20 @@ public class FrameBerichteParameter {
 		buttonGroupChartOptions.add(rdbtnChartOption3);
 
 		GroupLayout gl_panelHeader = new GroupLayout(panelHeader);
-		gl_panelHeader
-				.setHorizontalGroup(gl_panelHeader
-						.createParallelGroup(Alignment.TRAILING)
-						.addGroup(
-								gl_panelHeader
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_panelHeader
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addComponent(
-																lblHeaderTxt,
-																GroupLayout.PREFERRED_SIZE,
-																386,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																lblLetzteAnalyseTxt))
-										.addContainerGap(8, Short.MAX_VALUE)));
-		gl_panelHeader.setVerticalGroup(gl_panelHeader.createParallelGroup(
-				Alignment.LEADING).addGroup(
-				gl_panelHeader
-						.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(lblHeaderTxt, GroupLayout.PREFERRED_SIZE,
-								25, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(lblLetzteAnalyseTxt)
-						.addPreferredGap(ComponentPlacement.RELATED,
-								GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		gl_panelHeader.setHorizontalGroup(
+			gl_panelHeader.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_panelHeader.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblHeaderTxt, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_panelHeader.setVerticalGroup(
+			gl_panelHeader.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelHeader.createSequentialGroup()
+					.addGap(15)
+					.addComponent(lblHeaderTxt, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(19, Short.MAX_VALUE))
+		);
 		panelHeader.setLayout(gl_panelHeader);
 
 		JPanel panelEinstellungen = new JPanel();
@@ -123,7 +105,7 @@ public class FrameBerichteParameter {
 		JLabel lblWarengruppe = new JLabel("Warengruppe:");
 
 		cboWarengruppen = new JComboBox<String>();
-		ArrayList<String> warengruppenList = repository.getWarengruppen();
+		ArrayList<String> warengruppenList = repository.getWarengruppenBerichte();
 		for (String s : warengruppenList) {
 			cboWarengruppen.addItem(s);
 		}
@@ -131,7 +113,7 @@ public class FrameBerichteParameter {
 		JLabel lblVertriebskanal = new JLabel("Vertriebskanal:");
 
 		ArrayList<String> vertriebskanaeleList = repository
-				.getVertriebskanale();
+				.getVertriebskanaleBerichte();
 
 		cboVertriebskanal1 = new JComboBox<String>();
 		for (String s : vertriebskanaeleList) {

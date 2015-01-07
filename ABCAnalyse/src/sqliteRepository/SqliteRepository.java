@@ -89,21 +89,25 @@ public class SqliteRepository implements IABCRepository{
 	{
 		// Datum muss im Format YY.MM.DD hh:mm:ss:xxx vorliegen
 		
-		PreparedStatement insertStatement = null, insertStatementWholeC = null;
+		PreparedStatement insertStatement = null, insertStatementWholeC = null, insertStatementD = null;
 			try {
 				connection.setAutoCommit(false);
 				//Erst Tablleninhalt loeschen
 				Statement statement = connection.createStatement();
 				statement.executeUpdate(CrudBefehle.deleteABCInput);
+				
 				//Jetzt kann die Tabelle neu befuellt werden
+				// einzelne Filialen
 				insertStatement = connection.prepareStatement(CrudBefehle.insertABCInputValues);
 				insertStatement.setString(1, beginDate);
 				insertStatement.setString(2, endDate);
 				insertStatement.executeUpdate();
 				connection.commit();
+				// Gesamtunternehmen
 				insertStatementWholeC = connection.prepareStatement(CrudBefehle.insertWholeCompanyInput);
 				insertStatementWholeC.executeUpdate();
 				connection.commit();
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -129,6 +133,33 @@ public class SqliteRepository implements IABCRepository{
 			insertStatement.setString(6, abcKz);
 			insertStatement.executeUpdate();
 			connection.commit();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see sqliteRepository.IABCRepository#insertDArtikel
+	 */
+	@Override
+	public void insertDArtikel()
+	{
+		PreparedStatement insertStatementInput = null, insertStatementResult = null;
+		try {
+			connection.setAutoCommit(false);
+			
+			// D Artikel in ABC Result schreiben
+			insertStatementResult = connection.prepareStatement(CrudBefehle.insertDArtikelResult);
+			insertStatementResult.executeUpdate();
+			connection.commit();
+			
+			// D Artikel in ABC Input schreiben
+			insertStatementInput = connection.prepareStatement(CrudBefehle.insertDArtikelInput);
+			insertStatementInput.executeUpdate();
+			connection.commit();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -280,6 +311,41 @@ public class SqliteRepository implements IABCRepository{
 	}
 	
 	/* (non-Javadoc)
+	 * @see sqliteRepository.IABCRepository#getVertriebskanaleBerichte()
+	 */
+	@Override
+	public ArrayList<String> getVertriebskanaleBerichte() {
+
+		ArrayList<String> vkList = new ArrayList<String>();
+
+		ResultSet rsVertriebskanale = null;
+		try {
+			rsVertriebskanale = getResult(CrudBefehle.selectVertriebskanaeleBerichte);
+
+			while (rsVertriebskanale.next()) {
+
+				String bezeichnung = rsVertriebskanale.getString("Bezeichnung");
+				vkList.add(bezeichnung);
+
+			}
+			return vkList;
+
+		} catch (Exception e) {
+			System.err.println(e);
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				rsVertriebskanale.close();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+	
+	/* (non-Javadoc)
 	 * @see sqliteRepository.IABCRepository#getWarengruppen()
 	 */
 	@Override
@@ -351,6 +417,41 @@ public class SqliteRepository implements IABCRepository{
 		}
 	}
 	
+	
+	/* (non-Javadoc)
+	 * @see sqliteRepository.IABCRepository#getWarengruppenBerichte()
+	 */
+	@Override
+	public ArrayList<String> getWarengruppenBerichte() {
+
+		ArrayList<String> wgList = new ArrayList<String>();
+
+		ResultSet rsWarengruppen = null;
+		try {
+			rsWarengruppen = getResult(CrudBefehle.selectWarengruppenBerichte);
+
+			while (rsWarengruppen.next()) {
+
+				String bezeichnung = rsWarengruppen.getString("Bezeichnung");
+				wgList.add(bezeichnung);
+
+			}
+			return wgList;
+
+		} catch (Exception e) {
+			System.err.println(e);
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				rsWarengruppen.close();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
 	
 	
 	/* (non-Javadoc)

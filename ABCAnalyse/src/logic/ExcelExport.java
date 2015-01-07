@@ -90,6 +90,7 @@ public class ExcelExport extends Thread {
 			fileOutputStream.close();
 			System.out.println("Finished");
 			dlg.setVisible(false);
+			dlg.dispose();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
