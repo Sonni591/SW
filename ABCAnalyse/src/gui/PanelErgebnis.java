@@ -5,11 +5,7 @@ import interfaces.IABCRepository;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Frame;
-import java.awt.Panel;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -21,61 +17,50 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JProgressBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import sqliteRepository.CrudBefehle;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import logic.ExcelExport;
+
 public class PanelErgebnis extends JPanel {
 	/**
-		 * 
-		 */
+	* 
+	*/
 	private static final long serialVersionUID = 1L;
 	private JTable resultTable;
-	private JTextField txtArtikel;
 	private JLabel lblCountRows;
 
+	//Felder fuer die Filterung der Tabelle
+	private JTextField txtArtikel;
 	private JComboBox<String> cboVertriebskanal;
-
 	private JComboBox<String> cboABCUmsatz;
-
 	private JComboBox<String> cboABCAnzahl;
-
 	private JComboBox<String> cboABCMenge;
-
 	private JComboBox<String> cboABCGesamt;
-
 	private JComboBox<String> cboWarengruppe;
 
+	//Lokales Repository
 	private IABCRepository repository;
 
 	public PanelErgebnis(IABCRepository _repository) {
 		repository = _repository;
+		
+		//Layout-Optionen  --Start
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelErgebnisHeader = new JPanel();
@@ -85,93 +70,30 @@ public class PanelErgebnis extends JPanel {
 
 		txtArtikel = new JTextField();
 		txtArtikel.setColumns(10);
-		txtArtikel.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				setFilter();
-			}
-		});
 
 		JLabel lblVertriebskanal = new JLabel("Vertriebskanal:");
-
 		JLabel lblUmsatz = new JLabel("Umsatz:");
-
 		JLabel lblAnzahl = new JLabel("Anzahl:");
-
 		JLabel lblMenge = new JLabel("Menge:");
 
-		String[] abcKlassfizierung = { "", "A", "B", "C" };
-
+		//Dropdowns fuer Filterung
 		cboVertriebskanal = new JComboBox<String>();
-		// Vertriebskanäle lesen
-		ArrayList<String> vertriebskanaele = repository.getVertriebskanale();
-		cboVertriebskanal.addItem(""); // leere Auwahl hinzufügen;
-		for (String s : vertriebskanaele) {
-			cboVertriebskanal.addItem(s);
-		}
-
 		cboWarengruppe = new JComboBox<String>();
-		// Warengruppen lesen
-		ArrayList<String> warengruppen = repository.getWarengruppen();
-		cboWarengruppe.addItem(""); // leere Auwahl hinzufügen;
-		for (String s : warengruppen) {
-			cboWarengruppe.addItem(s);
-		}
-
 		cboABCUmsatz = new JComboBox<String>();
-		for (String s : abcKlassfizierung) {
-			cboABCUmsatz.addItem(s);
-		}
-
 		cboABCAnzahl = new JComboBox<String>();
-		for (String s : abcKlassfizierung) {
-			cboABCAnzahl.addItem(s);
-		}
-
 		cboABCMenge = new JComboBox<String>();
-		for (String s : abcKlassfizierung) {
-			cboABCMenge.addItem(s);
-		}
-
 		cboABCGesamt = new JComboBox<String>();
-		for (String s : abcKlassfizierung) {
-			cboABCGesamt.addItem(s);
-		}
-
+		
 		JButton btnSetzeFilter = new JButton("Filter setzen");
-		btnSetzeFilter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setFilter();
-			}
-		});
-
 		JButton btnResetFilter = new JButton("zur\u00FCcksetzen");
-		btnResetFilter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				resetFilter();
-			}
-		});
 
 		JLabel lblGesamt = new JLabel("Gesamt:");
-
 		JLabel lblWarengruppe = new JLabel("Warengruppe:");
 
 		JButton btnExportExcel = new JButton("Excel-Export");
-		btnExportExcel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				exportToExcel();
-			}
-		});
-
 		JButton btnBerichte = new JButton("Berichte");
-		btnBerichte.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				FrameBerichteParameter BerichteDialog = new FrameBerichteParameter(
-						repository);
-				BerichteDialog.initialize();
-			}
-		});
 
+		//GroupLayout
 		GroupLayout gl_panelErgebnisHeader = new GroupLayout(
 				panelErgebnisHeader);
 		gl_panelErgebnisHeader
@@ -428,6 +350,7 @@ public class PanelErgebnis extends JPanel {
 		add(panelErgebnisContent, BorderLayout.CENTER);
 		panelErgebnisContent.setLayout(new BorderLayout(0, 0));
 
+		//Erstellen einer lokalen Tabelle welche nicht bearbeitbar ist
 		resultTable = new JTable() {
 			private static final long serialVersionUID = 1L;
 
@@ -442,6 +365,7 @@ public class PanelErgebnis extends JPanel {
 		scrollPane.setViewportView(resultTable);
 		panelErgebnisContent.add(scrollPane);
 
+		//Optionen fuer die Anzeige der Tabelle
 		resultTable.setShowGrid(true);
 		resultTable.setShowHorizontalLines(true);
 		resultTable.setShowVerticalLines(true);
@@ -455,21 +379,101 @@ public class PanelErgebnis extends JPanel {
 		panelErgebnisFooter.add(lblCountRows);
 		// Deaktiviert das verschieben der Spalten
 		resultTable.getTableHeader().setReorderingAllowed(false);
+		//Layout-Optionen   --End
+		
+		//Event fuer Klick des Filters
+		btnSetzeFilter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setFilter();
+			}
+		});
+		
+		//Event um Filter zurueckzusetzen
+		btnResetFilter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resetFilter();
+			}
+		});
+		
+		//Event fuer den Export des Ergebnisses in Excel
+		btnExportExcel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				exportToExcel();
+			}
+		});
+		
+		//Event zum oeffnen des Berichteframes
+		btnBerichte.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FrameBerichteParameter BerichteDialog = new FrameBerichteParameter(
+						repository);
+				BerichteDialog.initialize();
+			}
+		});
+		
+		//Klassifizierung der ABC-Analyse
+		String[] abcKlassfizierung = { "", "A", "B", "C" };
+		
+		//Event fuer Artikel-Textbox zur Filterung
+		txtArtikel.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				setFilter();
+			}
+		});
+		
+		// Warengruppen lesen
+		ArrayList<String> warengruppen = repository.getWarengruppen();
+		cboWarengruppe.addItem(""); // leere Auwahl hinzufügen;
+		for (String s : warengruppen) {
+			cboWarengruppe.addItem(s);
+		}
+		
+		// Vertriebskanaele lesen
+		ArrayList<String> vertriebskanaele = repository.getVertriebskanale();
+		cboVertriebskanal.addItem(""); // leere Auwahl hinzufügen;
+		for (String s : vertriebskanaele) {
+			cboVertriebskanal.addItem(s);
+		}
+		
+		//Klassifizierungen fuer den Umsatz
+		for (String s : abcKlassfizierung) {
+			cboABCUmsatz.addItem(s);
+		}
+		
+		//Klassifizierung fuer die Anzahl
+		for (String s : abcKlassfizierung) {
+			cboABCAnzahl.addItem(s);
+		}
+		
+		//Klassifizierung fuer die Menge
+		for (String s : abcKlassfizierung) {
+			cboABCMenge.addItem(s);
+		}
+		
+		//Gesamtklassifizierung
+		for (String s : abcKlassfizierung) {
+			cboABCGesamt.addItem(s);
+		}
 
+		//Das Ergebnis der Tabelle setzen
 		setTableData();
-
-		// Filtern der Tabelle - Test
-		// enableSorting(resultTable);
-
 	}
 
+	/**
+	 * Laedt das Ergebnis aus der Tabelle und uebergibt dieses an die Methode, welche die Tabelle modelliert.
+	 */
 	public void setTableData() {
 		ResultSet abcEinteilungResult = null;
 		try {
+			//TODO neue Methode im Repository (getABCResultData liefert ResultSet)
 			abcEinteilungResult = repository
 					.getResult(CrudBefehle.selectABCResultView);
 
+			//Tabelle anhand der Daten modellieren
 			resultTable.setModel(buildTableModel(abcEinteilungResult));
+			
+			//Anzahl der Zeilen setzen
 			lblCountRows.setText("Zeilen: " + resultTable.getRowCount());
 		} catch (Exception e) {
 			System.err.println(e);
@@ -483,19 +487,26 @@ public class PanelErgebnis extends JPanel {
 		}
 	}
 
+	/**
+	 * Modelliert eine Tabelle mit den Spaltennamen anhand eines ResultSets
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
 	public static DefaultTableModel buildTableModel(ResultSet rs)
 			throws SQLException {
 
+		//Laden der Metadaten fuer die Spaltennamen
 		ResultSetMetaData metaData = rs.getMetaData();
 
-		// names of columns
+		//Spaltennamen
 		Vector<String> columnNames = new Vector<String>();
 		int columnCount = metaData.getColumnCount();
 		for (int column = 1; column <= columnCount; column++) {
 			columnNames.add(metaData.getColumnName(column));
 		}
 
-		// data of the table
+		//Zeilen (Daten) der Tabelle
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 		while (rs.next()) {
 			Vector<Object> vector = new Vector<Object>();
@@ -507,6 +518,9 @@ public class PanelErgebnis extends JPanel {
 		return new DefaultTableModel(data, columnNames);
 	}
 
+	/**
+	 * Methode zum Filtern der Ergbnistabelle
+	 */
 	private void setFilter() {
 		DefaultTableModel model = (DefaultTableModel) resultTable.getModel();
 		if (model != null) {
@@ -527,7 +541,6 @@ public class PanelErgebnis extends JPanel {
 				RowFilter<TableModel, Object> rowFilterWarengruppe = RowFilter
 						.regexFilter(cboWarengruppe.getSelectedItem()
 								.toString(), 1);
-				// // TODO
 				RowFilter<TableModel, Object> rowFilterABCUmsatz = RowFilter
 						.regexFilter(cboABCUmsatz.getSelectedItem().toString(),
 								7);
@@ -541,6 +554,7 @@ public class PanelErgebnis extends JPanel {
 						.regexFilter(cboABCGesamt.getSelectedItem().toString(),
 								9);
 
+				//Hinzufuegen aller Filter zur Liste
 				filters.add(rowFilterArtikel);
 				filters.add(rowFilterVertriebskanal);
 				filters.add(rowFilterWarengruppe);
@@ -549,11 +563,14 @@ public class PanelErgebnis extends JPanel {
 				filters.add(rowFilterABCMenge);
 				filters.add(rowFilterABCGesamt);
 
+				//Setzen eine And-Filters fuer die Liste alle Filter
 				compoundRowFilter = RowFilter.andFilter(filters);
 
 			} catch (java.util.regex.PatternSyntaxException e) {
 				return;
 			}
+			
+			//Setzen des zusammengesetzten Filters
 			resultTable.setRowSorter(sorter);
 			sorter.setModel(model);
 
@@ -566,9 +583,12 @@ public class PanelErgebnis extends JPanel {
 		}
 	}
 
+	/**
+	 * Setzt den Filter der Tabelle zurueck
+	 */
 	private void resetFilter() {
 
-		// Filterkriterien zurücksetzten
+		// Filterkriterien Initialisierungswert setzen
 		txtArtikel.setText("");
 		cboVertriebskanal.setSelectedIndex(0);
 		cboWarengruppe.setSelectedIndex(0);
@@ -590,72 +610,13 @@ public class PanelErgebnis extends JPanel {
 		}
 	}
 
-	// private ArrayList<String> getVertriebskanale() {
-	//
-	// ArrayList<String> vkList = new ArrayList<String>();
-	//
-	// ResultSet rsVertriebskanale = null;
-	// try {
-	// rsVertriebskanale = repository
-	// .getResult(CrudBefehle.selectVertriebskanaele);
-	//
-	// while (rsVertriebskanale.next()) {
-	//
-	// String bezeichnung = rsVertriebskanale.getString("Bezeichnung");
-	// vkList.add(bezeichnung);
-	//
-	// }
-	// return vkList;
-	//
-	// } catch (Exception e) {
-	// System.err.println(e);
-	// e.printStackTrace();
-	// return null;
-	// } finally {
-	// try {
-	// rsVertriebskanale.close();
-	//
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-	//
-	// }
-	//
-	// private ArrayList<String> getWarengruppen() {
-	//
-	// ArrayList<String> wgList = new ArrayList<String>();
-	//
-	// ResultSet rsWarengruppen = null;
-	// try {
-	// rsWarengruppen = repository.getResult(CrudBefehle.selectWarengruppen);
-	//
-	// while (rsWarengruppen.next()) {
-	//
-	// String bezeichnung = rsWarengruppen.getString("Bezeichnung");
-	// wgList.add(bezeichnung);
-	//
-	// }
-	// return wgList;
-	//
-	// } catch (Exception e) {
-	// System.err.println(e);
-	// e.printStackTrace();
-	// return null;
-	// } finally {
-	// try {
-	// rsWarengruppen.close();
-	//
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-	//
-	// }
-
+	/**
+	 * Oeffnet einen Dateiauswahl-Dialog zum auswaehlen eines Speicherorts der Excel-Datei
+	 * Ruft eine Klasse in der Logik auf, welche anhand der Tabelle eine Excel-Datei erstellt
+	 */
 	private void exportToExcel() {
 
-		// Create a file chooser
+		//Dateiauswahl-Dialog
 		final JFileChooser fc;
 
 		String path = System.getProperty("user.home");
@@ -667,7 +628,6 @@ public class PanelErgebnis extends JPanel {
 		fc.setDialogType(JFileChooser.SAVE_DIALOG);
 		fc.setDialogTitle("Speichern unter...");
 
-		// fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		int returnVal = fc.showSaveDialog(this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -676,82 +636,9 @@ public class PanelErgebnis extends JPanel {
 				path = path + ".xlsx";
 			}
 			file = new File(path);
-			ExcelThread p = new ExcelThread(resultTable, file);
+			//Logik-Klasse zum Exportieren der Tabelle in eine Excel-Datei
+			ExcelExport p = new ExcelExport(resultTable, file);
 			p.start();
-		}
-	}
-}
-
-class ExcelThread extends Thread {
-	JTable resultTable;
-	File file;
-
-	ExcelThread(JTable resultTable, File file) {
-		this.resultTable = resultTable;
-		this.file = file;
-	}
-
-	public void run() {
-		try {
-			final JDialog dlg = new JDialog();
-			JProgressBar dpb = new JProgressBar(0, 500);
-			dpb.setMaximum(3);
-			dpb.setValue(0);
-			dlg.add(BorderLayout.CENTER, dpb);
-			JLabel lblDpbState = new JLabel("Lade Spaltennamen");
-			dlg.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-			dlg.setSize(300, 125);
-			dlg.setLocationRelativeTo(null);
-			dlg.setVisible(true);
-
-			Workbook fWorkbook = new XSSFWorkbook();
-			Sheet fSheet = fWorkbook.createSheet("newSheet");
-			Font sheetTitleFont = fWorkbook.createFont();
-			CellStyle cellStyle = fWorkbook.createCellStyle();
-
-			sheetTitleFont.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
-			// sheetTitleFont.setColor();
-			TableModel model = resultTable.getModel();
-			dlg.add(BorderLayout.NORTH, lblDpbState);
-			// Spaltennamen
-			TableColumnModel tcm = resultTable.getColumnModel();
-			Row fRow = fSheet.createRow(0);
-			for (int j = 0; j < resultTable.getColumnCount(); j++) {
-				Cell cell = fRow.createCell(j);
-				cell.setCellValue(tcm
-						.getColumn(resultTable.convertColumnIndexToModel(j))
-						.getHeaderValue().toString());
-
-			}
-			lblDpbState.setText("Lade Daten");
-			dpb.setValue(1);
-			// Daten der Tabelle
-			for (int i = 0; i < resultTable.getRowCount(); i++) {
-				fRow = fSheet.createRow(i + 1);
-				for (int j = 0; j < resultTable.getColumnCount(); j++) {
-					Cell cell = fRow.createCell(j);
-					cell.setCellValue(model.getValueAt(
-							resultTable.convertRowIndexToModel(i),
-							resultTable.convertColumnIndexToModel(j))
-							.toString());
-					cell.setCellStyle(cellStyle);
-				}
-			}
-			lblDpbState.setText("Auf Festplatte Schreiben");
-			dpb.setValue(2);
-			FileOutputStream fileOutputStream;
-			fileOutputStream = new FileOutputStream(file);
-			BufferedOutputStream bos = new BufferedOutputStream(
-					fileOutputStream);
-			fWorkbook.write(bos);
-			dpb.setValue(3);
-			Thread.sleep(100);
-			bos.close();
-			fileOutputStream.close();
-			System.out.println("Finished");
-			dlg.setVisible(false);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 	}
 }

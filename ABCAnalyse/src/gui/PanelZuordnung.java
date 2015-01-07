@@ -10,9 +10,6 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -28,16 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 import javax.swing.JButton;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import sqliteRepository.CrudBefehle;
 
@@ -53,6 +41,8 @@ public class PanelZuordnung extends JPanel {
 
 	public PanelZuordnung(IABCRepository _repository) {
 		repository = _repository;
+		
+		//Layout-Optione  --Start
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelZuordnungHeader = new JPanel();
@@ -66,22 +56,6 @@ public class PanelZuordnung extends JPanel {
 		add(panelZuordnungContent, BorderLayout.CENTER);
 		panelZuordnungContent.setLayout(new BorderLayout(0, 0));
 
-		table = new JTable() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				if(column == 0 || column == 1 || column == 2)
-				{
-					return false;
-				}
-				return true;
-			}
-		};
-
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(table);
 		panelZuordnungContent.add(scrollPane);
@@ -91,6 +65,9 @@ public class PanelZuordnung extends JPanel {
 		panelZuordnungFooter.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 
 		JButton btnSpeichern = new JButton("Speichern");
+		//Layout-Optionen  --End
+		
+		//Event fuer das Speichern der Zuordnung
 		btnSpeichern.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -105,12 +82,28 @@ public class PanelZuordnung extends JPanel {
 		});
 		panelZuordnungFooter.add(btnSpeichern);
 
-		
+		//Tabelle erstllen mit nicht editierbaren Spalten
+		table = new JTable() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				if(column == 0 || column == 1 || column == 2)
+				{
+					return false;
+				}
+				return true;
+			}
+		};		
 		setTableData();
 		setTableHeaderText();
 
 		final DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
 
+		//Renderer um den Hintergrund der Tabelle zu gestalten
 		TableCellRenderer cellRenderer = new TableCellRenderer() {
 
 			@Override
@@ -152,6 +145,9 @@ public class PanelZuordnung extends JPanel {
 		table.getTableHeader().setReorderingAllowed(false);
 	}
 
+	/**
+	 * Methode zum setzen der Spaltennamen
+	 */
 	public void setTableHeaderText() {
 		table.getColumnModel().getColumn(0).setHeaderValue("Umsatz");
 		table.getColumnModel().getColumn(1).setHeaderValue("Anzahl");
@@ -159,6 +155,10 @@ public class PanelZuordnung extends JPanel {
 		table.getColumnModel().getColumn(3).setHeaderValue("Zuordnung");
 	}
 	
+	/**
+	 * Methode welche die Tabellendaten aus der Datenbank laedt und lokale Daten einfuegt.
+	 * Danach wird eine Methode zum Modellieren der Tabelle mit den Daten aufgerufen.
+	 */
 	public void setTableData() {
 		JComboBox<String> cboZuordnung = new JComboBox<String>();
 		cboZuordnung.setAlignmentX(CENTER_ALIGNMENT);
@@ -184,19 +184,25 @@ public class PanelZuordnung extends JPanel {
 		}
 	}
 
+	/**
+	 * Methode welche aus einem ResultSet eine Tabelle modelliert.
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
 	public static DefaultTableModel buildTableModel(ResultSet rs)
 			throws SQLException {
-		// test
+		//Metadaten fuer die Spaltennamen
 		ResultSetMetaData metaData = rs.getMetaData();
 
-		// names of columns
+		//Namen der Spalten
 		Vector<String> columnNames = new Vector<String>();
 		int columnCount = metaData.getColumnCount();
 		for (int column = 1; column <= columnCount; column++) {
 			columnNames.add(metaData.getColumnName(column));
 		}
 
-		// data of the table
+		//Daten (Zeilen) der Tabelle
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 		while (rs.next()) {
 			Vector<Object> vector = new Vector<Object>();
@@ -208,6 +214,9 @@ public class PanelZuordnung extends JPanel {
 		return new DefaultTableModel(data, columnNames);
 	}
 
+	/**
+	 * Methode, welche die Daten aus der Tabelle der Oberflaeche liest und den update fuer die Datenbank aufruft
+	 */
 	private void updateABCZuordnung() {
 		for (int row = 0; row < table.getRowCount(); row++) {
 			String zuordnung = table.getModel().getValueAt(row, 3).toString();

@@ -7,24 +7,18 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
-import sqliteRepository.DBConnector;
 import sqliteRepository.SqliteRepository;
-
-import java.sql.Connection;
-
-import logic.ABCRechnung;
-
 
 public class MainWindow {
 
 	public static JFrame frame;
 	private IABCRepository repository;
 
-	//Einzelne Tabpages
-	public static		PanelParameter panelParameter;
-	public static		PanelEinteilung panelEinteilung;
-	public static		PanelZuordnung panelZuordnung;
-	public static		PanelErgebnis panelErgebnis;
+	//Einzelne Register der Anwendung
+	public static	PanelParameter panelParameter;
+	public static	PanelEinteilung panelEinteilung;
+	public static	PanelZuordnung panelZuordnung;
+	public static	PanelErgebnis panelErgebnis;
 	
 	/**
 	 * Launch the application.
@@ -33,8 +27,7 @@ public class MainWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainWindow window = new MainWindow();
-					window.frame.setVisible(true);
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -63,17 +56,17 @@ public class MainWindow {
 		frame.setMinimumSize(new Dimension(700, 400));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		//TabbedPane fuer die einzelnen Tabpages
+		//TabbedPane fuer die einzelnen Register
 		JTabbedPane tabPageContainer = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabPageContainer);
 		
-		//Einzelne Tabpages
+		//Einzelne Register initialisieren und das Repository bereitstellen
 		 panelParameter = new PanelParameter(repository);
 		 panelEinteilung = new PanelEinteilung(repository);
 		 panelZuordnung = new PanelZuordnung(repository);
 		 panelErgebnis = new PanelErgebnis(repository);
 		
-		//Hinzufuegen der einzelnen TabPages
+		//Hinzufuegen der einzelnen Register
 		tabPageContainer.addTab("Parameter", panelParameter);
 		tabPageContainer.addTab("ABC Einteilung", panelEinteilung);
 		tabPageContainer.addTab("ABC Zuordnung", panelZuordnung);

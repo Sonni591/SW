@@ -32,6 +32,7 @@ public class PanelEinteilung extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	//Textfelder mit den Einteilungen
 	private static JFormattedTextField txtUmsatzA;
 	private static JFormattedTextField txtUmsatzB;
 	private static JFormattedTextField txtUmsatzC;
@@ -42,12 +43,15 @@ public class PanelEinteilung extends JPanel {
 	private static JFormattedTextField txtMengeB;
 	private static JFormattedTextField txtMengeC;
 
+	//Repository fuer die Datenbankverbindung
 	private IABCRepository repository;
 	/**
 	 * 
 	 */
 	public PanelEinteilung(IABCRepository _repository) {
 		repository = _repository;
+		
+		//Event fuer das Aufrufen der pruefenden Methode der Einteilung
 		KeyListener keyListener = new KeyListener() {
 		      public void keyPressed(KeyEvent keyEvent) {
 		        
@@ -62,6 +66,7 @@ public class PanelEinteilung extends JPanel {
 		      }
 		};
 
+		//Layout-Optionen   --Start
 		this.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelEinteilungHeader = new JPanel();
@@ -227,6 +232,8 @@ public class PanelEinteilung extends JPanel {
 		this.add(panelEinteilungFoot, BorderLayout.SOUTH);
 		panelEinteilungFoot.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 
+		//Layout-Optionen --Ende
+		
 		JButton btnSpeichern = new JButton("Speichern");
 		btnSpeichern.addActionListener(new ActionListener() {
 
@@ -262,6 +269,7 @@ public class PanelEinteilung extends JPanel {
 	 */
 	private void getABCEinteilung() {
 		try {
+			//TODO spezielle Methode im Repository (getABCEinteilung mit ResultSet als Rueckgabe)
 			ResultSet abcEinteilungResult = repository.getResult(CrudBefehle.selectABCEinteilung);
 
 			while (abcEinteilungResult.next()) {
@@ -302,7 +310,7 @@ public class PanelEinteilung extends JPanel {
 	}
 
 	/**
-	 * Aktualisiert die Schwellwerte der ABC-Einteilung auf der Datenbank
+	 * Aktualisiert die Schwellwerte der ABC-Einteilung in der Datenbank
 	 */
 	private void updateABCEinteilung() {
 		// Umsatz
@@ -332,6 +340,10 @@ public class PanelEinteilung extends JPanel {
 				"Schwellwerte aktualisiert", JOptionPane.INFORMATION_MESSAGE);
 	}
 
+	/**
+	 * Prueft, ob die eingegebenen Werte korrekt sind, bedeutet A & B kleiner als 100
+	 * und die eingegebenen Werte sind Zahlen
+	 */
 	private static boolean proofPercentValues() {
 		boolean isSaveable = true;
 		try {
@@ -395,6 +407,13 @@ public class PanelEinteilung extends JPanel {
 		}
 	}
 
+	/**
+	 * Prueft die Kriterien A & B ob eine Zahl enthalten ist, ansonsten falscher Wert
+	 * @param kriteriumA
+	 * @param kriteriumB
+	 * @param kriteriumsBezeichnung
+	 * @return
+	 */
 	private static boolean validate(String kriteriumA, String kriteriumB, String kriteriumsBezeichnung) {
 		if(!kriteriumA.equals("") && !kriteriumB.equals(""))
 		{
@@ -407,7 +426,7 @@ public class PanelEinteilung extends JPanel {
 				.showMessageDialog(
 						MainWindow.frame,
 						"Bitte geben Sie eine Zahl ein. Zeichen werden nicht akzeptiert! (" + kriteriumsBezeichnung + ")",
-						"Fehlerhafte Eingabea",
+						"Fehlerhafte Eingabe",
 						JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
