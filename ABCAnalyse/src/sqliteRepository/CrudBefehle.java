@@ -101,13 +101,9 @@ public class CrudBefehle {
 	public static String deleteABCBerichte = "delete from ABCBerichte";
 	
 	//Bereich Chart-Befehle
-	public static String getChartOption1 = "select AnzahlArtikel, Bestandswert, JahresUmsatz, BerichtKZ, LagerNr, WgNr From ABCBerichte where LagerNr = ? AND WgNr = ?";
-	public static String getChartOption2 = "select AnzahlArtikel, Bestand, JahresMenge, BerichtKZ, LagerNr, WgNr From ABCBerichte where LagerNr = ? AND WgNr = ?";
-	public static String getChartOption3 = "select AnzahlArtikel, Bestandswert, JahresUmsatz, BerichtKZ, LagerNr, WgNr From ABCBerichte where LagerNr = ? AND WgNr = ?";
-	
-	public static String getTableOption1 = "select BerichtKZ, AnzahlArtikel, Bestandswert, JahresUmsatz From ABCBerichte where LagerNr = ? AND WgNr = ? AND KriteriumID = 1";
-	public static String getTableOption2 = "select BerichtKZ, AnzahlArtikel, Bestand, JahresMenge From ABCBerichte where LagerNr = ? AND WgNr = ? AND KriteriumID = 3";
-	public static String getTableOption3 = "select BerichtKZ, AnzahlArtikel, Bestandswert, JahresUmsatz, BerichtKZ, LagerNr, WgNr From ABCBerichte where LagerNr = ? AND WgNr = ?";
+	public static String getChartData = "select BerichtKZ, KriteriumID, LagerNr, WgNr, AnzahlArtikel, JahresUmsatz, JahresMenge, Bestand, JahresMengeWert, Bestandswert"
+										+ " FROM ABCBerichte"
+										+ " WHERE LagerNr = ? AND WgNr = ? and KriteriumID = ?";
 	
 	public static String getWgId = "select WGNr from Warengruppe where bezeichnung = ?";
 	public static String getLagerId = "select lagernr from lager where bezeichnung = ? "; 

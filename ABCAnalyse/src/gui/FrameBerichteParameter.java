@@ -1,40 +1,29 @@
 package gui;
 
 import interfaces.IABCRepository;
-
 import java.awt.Dimension;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-
 import java.awt.BorderLayout;
-
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
 import java.awt.FlowLayout;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JDialog;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
-
 import java.awt.Font;
-
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
 import javax.swing.border.MatteBorder;
-
-
-
-
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import javax.swing.JSeparator;
 
 public class FrameBerichteParameter {
 
@@ -48,6 +37,8 @@ public class FrameBerichteParameter {
 	public static JRadioButton rdbtnChartOption1;
 	public static JRadioButton rdbtnChartOption2;
 	public static JRadioButton rdbtnChartOption3;
+	public static JRadioButton rdbtnAbsatzInMenge;
+	public static JRadioButton rdbtnAbsatzInWert;
 
 	private IABCRepository repository;
 	public FrameBerichteParameter(IABCRepository _repository) {
@@ -59,7 +50,7 @@ public class FrameBerichteParameter {
 	public void initialize() {
 		// Erstellen des Hauptframes
 
-		fixedFrameDimensions = new Dimension(300, 350);
+		fixedFrameDimensions = new Dimension(300, 430);
 
 		dialogFrame = new JDialog(MainWindow.frame,
 				"Einstellungen der ABC-Berichte", true);
@@ -165,138 +156,104 @@ public class FrameBerichteParameter {
 		for (String s : vertriebskanaeleList) {
 			cboVertriebskanal2.addItem(s);
 		}
+		
+		JLabel lblAbsatzIn = new JLabel("Absatz in:");
+		
+		ButtonGroup buttonGroupAbsatz = new ButtonGroup();
+		
+		rdbtnAbsatzInMenge = new JRadioButton("Menge");
+		rdbtnAbsatzInWert = new JRadioButton("Wert");
+		
+		rdbtnAbsatzInMenge.setSelected(true);
+		
+		buttonGroupAbsatz.add(rdbtnAbsatzInMenge);
+		buttonGroupAbsatz.add(rdbtnAbsatzInWert);
+		
+		JSeparator separator = new JSeparator();
+		
+		JSeparator separator_1 = new JSeparator();
 
 		GroupLayout gl_panelEinstellungen = new GroupLayout(panelEinstellungen);
-		gl_panelEinstellungen
-				.setHorizontalGroup(gl_panelEinstellungen
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_panelEinstellungen
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_panelEinstellungen
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addGroup(
-																gl_panelEinstellungen
-																		.createSequentialGroup()
-																		.addGap(29)
-																		.addComponent(
-																				cboVertriebskanal2,
-																				GroupLayout.PREFERRED_SIZE,
-																				111,
-																				GroupLayout.PREFERRED_SIZE)
-																		.addContainerGap())
-														.addGroup(
-																gl_panelEinstellungen
-																		.createParallelGroup(
-																				Alignment.LEADING)
-																		.addGroup(
-																				gl_panelEinstellungen
-																						.createSequentialGroup()
-																						.addGroup(
-																								gl_panelEinstellungen
-																										.createParallelGroup(
-																												Alignment.LEADING)
-																										.addGroup(
-																												gl_panelEinstellungen
-																														.createSequentialGroup()
-																														.addComponent(
-																																lblWarengruppe)
-																														.addPreferredGap(
-																																ComponentPlacement.UNRELATED)
-																														.addComponent(
-																																cboWarengruppen,
-																																0,
-																																GroupLayout.DEFAULT_SIZE,
-																																Short.MAX_VALUE))
-																										.addGroup(
-																												gl_panelEinstellungen
-																														.createSequentialGroup()
-																														.addComponent(
-																																lblVertriebskanal)
-																														.addPreferredGap(
-																																ComponentPlacement.RELATED)
-																														.addComponent(
-																																cboVertriebskanal1,
-																																GroupLayout.PREFERRED_SIZE,
-																																118,
-																																GroupLayout.PREFERRED_SIZE)))
-																						.addContainerGap(
-																								118,
-																								Short.MAX_VALUE))
-																		
-																		.addGroup(
-																				gl_panelEinstellungen
-																						.createSequentialGroup()
-																						.addComponent(
-																								chckbxVertriebskanal)
-																						.addContainerGap(
-																								123,
-																								Short.MAX_VALUE))
-																		.addGroup(
-																				gl_panelEinstellungen
-																						.createSequentialGroup()
-																						.addComponent(
-																								rdbtnChartOption1)
-																								)
-																		.addGroup(
-																				gl_panelEinstellungen
-																						.createSequentialGroup()
-																						.addComponent(
-																								rdbtnChartOption2)
-																								)	
-																		.addGroup(
-																				gl_panelEinstellungen
-																						.createSequentialGroup()
-																						.addComponent(
-																								rdbtnChartOption3)
-																								)
-																		))));
-		gl_panelEinstellungen
-				.setVerticalGroup(gl_panelEinstellungen
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_panelEinstellungen
-										.createSequentialGroup()
-										.addGap(17)
-										.addGroup(
-												gl_panelEinstellungen
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(
-																cboWarengruppen,
-																GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																lblWarengruppe))
-										.addGap(9)
-										.addGroup(
-												gl_panelEinstellungen
-														.createParallelGroup(
-																Alignment.BASELINE)
-														.addComponent(
-																cboVertriebskanal1,
-																GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																lblVertriebskanal))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(chckbxVertriebskanal)
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(cboVertriebskanal2,
-												GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(rdbtnChartOption1)		
-										.addComponent(rdbtnChartOption2)
-										.addComponent(rdbtnChartOption3)
-										.addGap(14)));
+		gl_panelEinstellungen.setHorizontalGroup(
+			gl_panelEinstellungen.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelEinstellungen.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelEinstellungen.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelEinstellungen.createSequentialGroup()
+							.addComponent(separator, GroupLayout.PREFERRED_SIZE, 287, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())
+						.addGroup(gl_panelEinstellungen.createSequentialGroup()
+							.addGap(29)
+							.addComponent(cboVertriebskanal2, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())
+						.addGroup(gl_panelEinstellungen.createSequentialGroup()
+							.addGroup(gl_panelEinstellungen.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panelEinstellungen.createSequentialGroup()
+									.addComponent(lblWarengruppe)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(cboWarengruppen, 0, 176, Short.MAX_VALUE))
+								.addGroup(gl_panelEinstellungen.createSequentialGroup()
+									.addComponent(lblVertriebskanal)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(cboVertriebskanal1, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)))
+							.addContainerGap(176, Short.MAX_VALUE))
+						.addGroup(gl_panelEinstellungen.createSequentialGroup()
+							.addComponent(chckbxVertriebskanal)
+							.addContainerGap(237, Short.MAX_VALUE))
+						.addGroup(gl_panelEinstellungen.createSequentialGroup()
+							.addComponent(rdbtnAbsatzInMenge)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(rdbtnAbsatzInWert)
+							.addContainerGap())
+						.addGroup(gl_panelEinstellungen.createSequentialGroup()
+							.addComponent(lblAbsatzIn)
+							.addContainerGap(387, Short.MAX_VALUE))
+						.addGroup(gl_panelEinstellungen.createSequentialGroup()
+							.addComponent(rdbtnChartOption1)
+							.addContainerGap(195, Short.MAX_VALUE))
+						.addGroup(gl_panelEinstellungen.createSequentialGroup()
+							.addComponent(rdbtnChartOption2)
+							.addContainerGap(199, Short.MAX_VALUE))
+						.addGroup(gl_panelEinstellungen.createSequentialGroup()
+							.addComponent(rdbtnChartOption3)
+							.addContainerGap(282, Short.MAX_VALUE))
+						.addGroup(gl_panelEinstellungen.createSequentialGroup()
+							.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, 287, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(163, Short.MAX_VALUE))))
+		);
+		gl_panelEinstellungen.setVerticalGroup(
+			gl_panelEinstellungen.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelEinstellungen.createSequentialGroup()
+					.addGap(17)
+					.addGroup(gl_panelEinstellungen.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cboWarengruppen, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblWarengruppe))
+					.addGap(9)
+					.addGroup(gl_panelEinstellungen.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cboVertriebskanal1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblVertriebskanal))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(chckbxVertriebskanal)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cboVertriebskanal2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(2)
+					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(rdbtnChartOption1)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(rdbtnChartOption2)
+					.addGap(3)
+					.addComponent(rdbtnChartOption3)
+					.addGap(4)
+					.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+					.addGap(4)
+					.addComponent(lblAbsatzIn)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelEinstellungen.createParallelGroup(Alignment.BASELINE)
+						.addComponent(rdbtnAbsatzInMenge)
+						.addComponent(rdbtnAbsatzInWert))
+					.addGap(37))
+		);
 		panelEinstellungen.setLayout(gl_panelEinstellungen);
 
 		JPanel panelFooter = new JPanel();
@@ -308,8 +265,8 @@ public class FrameBerichteParameter {
 		JButton btnBerichteAnzeigen = new JButton("Anzeigen");
 		btnBerichteAnzeigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ChartTest chart = new ChartTest(repository);
-				chart.getDataForChart();
+				Chart chart = new Chart(repository);
+				chart.generateChart();
 				
 			}
 		});

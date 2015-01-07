@@ -495,85 +495,19 @@ public class SqliteRepository implements IABCRepository{
 			return -1;
 		}
 	}
+
 	
-	public ResultSet selectChartOption1(int lagerNr, int wgNr)
+	/* (non-Javadoc)
+	 * @see sqliteRepository.IABCRepository#getChartData(int, int, int)
+	 */
+	public ResultSet getChartData(int lagerNr, int wgNr, int kriteriumID)
 	{
 		PreparedStatement selectStatement = null;
 		try{
-			selectStatement = connection.prepareStatement(CrudBefehle.getChartOption1);
+			selectStatement = connection.prepareStatement(CrudBefehle.getChartData);
 			selectStatement.setInt(1, lagerNr);
 			selectStatement.setInt(2, wgNr);
-			ResultSet rs = selectStatement.executeQuery();
-			return rs;
-		}catch (SQLException ex){
-			ex.printStackTrace();
-			return null;
-		}
-	}
-	public ResultSet selectChartOption2(int lagerNr, int wgNr)
-	{
-		PreparedStatement selectStatement = null;
-		try{
-			selectStatement = connection.prepareStatement(CrudBefehle.getChartOption2);
-			selectStatement.setInt(1, lagerNr);
-			selectStatement.setInt(2, wgNr);
-			ResultSet rs = selectStatement.executeQuery();
-			return rs;
-		}catch (SQLException ex){
-			ex.printStackTrace();
-			return null;
-		}
-	}
-	public ResultSet selectChartOption3(int lagerNr, int wgNr)
-	{
-		PreparedStatement selectStatement = null;
-		try{
-			selectStatement = connection.prepareStatement(CrudBefehle.getChartOption2);
-			selectStatement.setInt(1, lagerNr);
-			selectStatement.setInt(2, wgNr);
-			ResultSet rs = selectStatement.executeQuery();
-			return rs;
-		}catch (SQLException ex){
-			ex.printStackTrace();
-			return null;
-		}
-	}
-	
-	public ResultSet selectTableOption1(int lagerNr, int wgNr)
-	{
-		PreparedStatement selectStatement = null;
-		try{
-			selectStatement = connection.prepareStatement(CrudBefehle.getTableOption1);
-			selectStatement.setInt(1, lagerNr);
-			selectStatement.setInt(2, wgNr);
-			ResultSet rs = selectStatement.executeQuery();
-			return rs;
-		}catch (SQLException ex){
-			ex.printStackTrace();
-			return null;
-		}
-	}
-	public ResultSet selectTableOption2(int lagerNr, int wgNr)
-	{
-		PreparedStatement selectStatement = null;
-		try{
-			selectStatement = connection.prepareStatement(CrudBefehle.getTableOption2);
-			selectStatement.setInt(1, lagerNr);
-			selectStatement.setInt(2, wgNr);
-			ResultSet rs = selectStatement.executeQuery();
-			return rs;
-		}catch (SQLException ex){
-			ex.printStackTrace();
-			return null;
-		}
-	}
-	public ResultSet selectTableOption3(int lagerNr, int wgNr)
-	{
-		PreparedStatement selectStatement = null;
-		try{
-			selectStatement = connection.prepareStatement(CrudBefehle.getTableOption2);
-			selectStatement.setInt(1, lagerNr);
-			selectStatement.setInt(2, wgNr);
+			selectStatement.setInt(3, kriteriumID);
 			ResultSet rs = selectStatement.executeQuery();
 			return rs;
 		}catch (SQLException ex){

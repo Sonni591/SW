@@ -50,16 +50,6 @@ public interface IABCRepository {
 	
 	public abstract int getWarengruppeID(String warengruppe);
 	
-	public abstract ResultSet selectChartOption1(int lagerNr, int wgNr);
-
-	public abstract ResultSet selectChartOption2(int lagerNr, int wgNr);
-	
-	public abstract ResultSet selectChartOption3(int lagerNr, int wgNr);
-	
-	public abstract ResultSet selectTableOption1(int lagerNr, int wgNr);
-
-	public abstract ResultSet selectTableOption2(int lagerNr, int wgNr);
-	
-	public abstract ResultSet selectTableOption3(int lagerNr, int wgNr);
+	public abstract ResultSet getChartData(int lagerNr, int wgNr, int kriteriumID);
 	
 }
