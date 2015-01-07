@@ -460,6 +460,30 @@ public class PanelErgebnis extends JPanel {
 		setTableData();
 	}
 
+	// Setter für Filterauswahl von außerhalb
+	
+	public void setVertriebskanal(String vertriebskanal) {
+		cboVertriebskanal.setSelectedItem(vertriebskanal);
+	}
+
+	public void setWarengruppe(String warengruppe) {
+		cboWarengruppe.setSelectedItem(warengruppe);
+	}
+	
+	public void setABCUmsatz(String ABCKz) {
+		cboABCUmsatz.setSelectedItem(ABCKz);
+	}
+
+	public void setABCAnzahl(String ABCKz) {
+		cboABCAnzahl.setSelectedItem(ABCKz);
+	}
+
+	public void setABCMenge(String ABCKz) {
+		cboABCMenge.setSelectedItem(ABCKz);
+	}
+
+	
+	
 	/**
 	 * Laedt das Ergebnis aus der Tabelle und uebergibt dieses an die Methode, welche die Tabelle modelliert.
 	 */
@@ -640,5 +664,13 @@ public class PanelErgebnis extends JPanel {
 			ExcelExport p = new ExcelExport(resultTable, file);
 			p.start();
 		}
+	}
+	
+	public void setFilterFromExternal() {
+		MainWindow.panelErgebnis.setFilter();
+	}
+	
+	public void resetFilterFromExternal() {
+		MainWindow.panelErgebnis.resetFilter();
 	}
 }

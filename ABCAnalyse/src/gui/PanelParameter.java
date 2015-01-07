@@ -152,8 +152,6 @@ public class PanelParameter extends JPanel {
 		// Initial wird der Zeitraum ausgewählt
 		rdbtnVon.setSelected(true);
 
-		cboJahr.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
-
 		// GroupLayout
 		GroupLayout gl_panelJahresAuswahl = new GroupLayout(panelJahresAuswahl);
 		gl_panelJahresAuswahl
@@ -367,6 +365,7 @@ public class PanelParameter extends JPanel {
 		panelParameterWarengruppe.setLayout(gl_panelParameterWarengruppe);
 		// Layout-Options --End
 
+		
 		// Setzen des ausgewaehlten Von-Datum in Textfeld
 		btnVonDatum.addPropertyChangeListener(new PropertyChangeListener() {
 
@@ -409,6 +408,8 @@ public class PanelParameter extends JPanel {
 		for (int year = 2000; year <= 2015; year++) {
 			cboJahr.addItem(year);
 		}
+		
+		cboJahr.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
 
 		// Ruft die Methode zum erzeugen der Berichte nach der Auswahl
 		btnBerichte.addActionListener(new ActionListener() {

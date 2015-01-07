@@ -141,16 +141,7 @@ public class Chart extends JPanel{
 		resultTable.addMouseListener(new MouseAdapter() {
 			   public void mouseClicked(MouseEvent e) {
 			      if (e.getClickCount() == 2) {
-			         JTable target = (JTable)e.getSource();
-			         int row = target.getSelectedRow();
-			         String classValue = resultTable.getValueAt(row, 0).toString();
-			         String kriteriumValue = resultTable.getValueAt(row, 1).toString();
-			         String lagerValue = resultTable.getValueAt(row, 2).toString();
-			         String wgValue = resultTable.getValueAt(row, 3).toString();
-			         System.out.println("Klasse: " + classValue);
-			         System.out.println("Kriterium: " + kriteriumValue);
-			         System.out.println("Lager: " + lagerValue);
-			         System.out.println("Warengruppe: " + wgValue);
+			    	  setFilterErgebnisPanel((JTable)e.getSource());
 			         }
 			   }
 			});
@@ -355,4 +346,39 @@ public class Chart extends JPanel{
 			
 	}
 
+	private void setFilterErgebnisPanel(JTable table) {
+        
+		int row = table.getSelectedRow();
+        
+		// Filter zurücksetzen
+        MainWindow.panelErgebnis.resetFilterFromExternal();
+		
+        // Vertriebskanal setzen
+        MainWindow.panelErgebnis.setVertriebskanal(selectedLager);
+        // Warengruppe setzen
+        MainWindow.panelErgebnis.setWarengruppe(selectedWg);
+        
+        // ABC in Anhängigkeit der ausgewählten Verteilung lesen
+ 		// Auswahl: Verteilung von Bestand und Umsatz
+ 		if(FrameBerichteParameter.rdbtnChartOption1.isSelected()){
+ 			MainWindow.panelErgebnis.setABCUmsatz(resultTable.getValueAt(row, 0).toString());
+ 		}
+ 		// Auswahl: Verteilung von Bestand und Absatz
+ 		else if(FrameBerichteParameter.rdbtnChartOption2.isSelected()){
+ 			MainWindow.panelErgebnis.setABCMenge(resultTable.getValueAt(row, 0).toString());
+ 		}
+ 		// Auswahl: Aufteilung der Artikel
+ 		else if(FrameBerichteParameter.rdbtnChartOption3.isSelected()){
+ 			MainWindow.panelErgebnis.setABCAnzahl(resultTable.getValueAt(row, 0).toString());
+ 		}
+        
+        // Filter setzen
+        MainWindow.panelErgebnis.setFilterFromExternal();
+        
+        // Hauptfenster in den Vordergrund bringen
+		MainWindow.frame.toFront();
+		MainWindow.frame.requestFocus();   
+        
+	}
+	
 }

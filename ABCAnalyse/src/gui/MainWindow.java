@@ -12,7 +12,7 @@ import sqliteRepository.SqliteRepository;
 public class MainWindow {
 
 	public static JFrame frame;
-	private IABCRepository repository;
+	private static IABCRepository repository;
 
 	//Einzelne Register der Anwendung
 	public static	PanelParameter panelParameter;
@@ -27,7 +27,11 @@ public class MainWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame.setVisible(true);
+					//Zuerst zur Datenbank verbinden
+					repository = new SqliteRepository();
+					//Initialisieren aller Komponenten
+					initialize();
+					MainWindow.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -37,19 +41,9 @@ public class MainWindow {
 	}
 
 	/**
-	 * Create the application.
-	 */
-	public MainWindow() {
-		//Zuerst zur Datenbank verbinden
-		repository = new SqliteRepository();
-		//Initialisieren aller Komponenten
-		initialize();
-	}
-
-	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private static void initialize() {
 		//Erstellen des Hauptframes
 		frame = new JFrame();
 		frame.setSize(700, 400);

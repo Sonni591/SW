@@ -55,7 +55,24 @@ public class PanelZuordnung extends JPanel {
 		JPanel panelZuordnungContent = new JPanel();
 		add(panelZuordnungContent, BorderLayout.CENTER);
 		panelZuordnungContent.setLayout(new BorderLayout(0, 0));
+		
+		//Tabelle erstllen mit nicht editierbaren Spalten
+				table = new JTable() {
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
 
+					@Override
+					public boolean isCellEditable(int row, int column) {
+						if(column == 0 || column == 1 || column == 2)
+						{
+							return false;
+						}
+						return true;
+					}
+				};	
+		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(table);
 		panelZuordnungContent.add(scrollPane);
@@ -82,22 +99,6 @@ public class PanelZuordnung extends JPanel {
 		});
 		panelZuordnungFooter.add(btnSpeichern);
 
-		//Tabelle erstllen mit nicht editierbaren Spalten
-		table = new JTable() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				if(column == 0 || column == 1 || column == 2)
-				{
-					return false;
-				}
-				return true;
-			}
-		};		
 		setTableData();
 		setTableHeaderText();
 
