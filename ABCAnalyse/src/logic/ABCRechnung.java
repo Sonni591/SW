@@ -146,10 +146,10 @@ public class ABCRechnung extends Thread{
 		lblDpbState.setText("Daten in Datenbank einfügen");
 		dpb.setValue(30);
 		
-		System.out.println("Berechnung erledigt nun nur noch ergebnis in Tabelle einfügen");
+		System.out.println("Berechnung erledigt nun nur noch Ergebnis in Tabelle einfügen");
 		insertResultIntoDB();
 		
-		lblDpbState.setText("Daten eingefügt");
+		lblDpbState.setText("<html>Daten eingefügt </p> - D Artikel berechnen</html>");
 		dpb.setValue(80);
 		
 		// Einträge der D Artikel in Input und Result-Tabelle eintragen

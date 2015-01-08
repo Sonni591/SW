@@ -42,6 +42,7 @@ public class Chart extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private int frameWidth = 600;
 	private IABCRepository repository;
 	String headerText;
 	String selectedLager;
@@ -54,15 +55,18 @@ public class Chart extends JPanel{
 	int selectedOptionNr;
 	DefaultCategoryDataset ChartDataObjects;
 	JFrame reportFrame;
-	
+	boolean secondChart = false;
 	public Chart(IABCRepository _repository) {
 		repository = _repository;
 	}
 	
 	
-	public void generateChart() {
-		
+	public void generateChart(String warengruppe, String lager, boolean secondChart) {
+			
 		// Parameter aus der Auswahl übernehmen
+		this.secondChart = secondChart;
+		selectedWg = warengruppe;
+		selectedLager = lager;
 		getParameter();
 		// Tabelle mit den Daten aufbauen
 		setTableData();
@@ -96,6 +100,10 @@ public class Chart extends JPanel{
 //		JFrame reportFrame;
 		reportFrame = new JFrame();	
 		reportFrame.getContentPane().setLayout(new BorderLayout(0, 0));
+		if(secondChart) {
+			// Zweites Fenster versetzt anzeigen
+			reportFrame.setLocation(frameWidth+1, 0);
+		}
 		
 		JPanel panel = new JPanel();
 		reportFrame.getContentPane().add(panel, BorderLayout.NORTH);
@@ -120,14 +128,14 @@ public class Chart extends JPanel{
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.GRAY);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
-		panel_1.setPreferredSize(new Dimension(600,400));
+		panel_1.setPreferredSize(new Dimension(frameWidth,400));
 		panel_1.add(chartPanel);
 		reportFrame.getContentPane().add(panel_1, BorderLayout.CENTER);
 		
 		//South Panel mit Table
 		JScrollPane panel_2 = new JScrollPane();
 		panel_2.setBackground(Color.WHITE);
-		panel_2.setPreferredSize(new Dimension(600,120));
+		panel_2.setPreferredSize(new Dimension(frameWidth,120));
 		panel_2.setBorder(new EmptyBorder(15,0,0,0));
 		reportFrame.getContentPane().add(panel_2, BorderLayout.SOUTH);
 		
@@ -155,9 +163,9 @@ public class Chart extends JPanel{
 	}
 	
 	public void getParameter() {
-		// selektierte Lager und Warengruppe übernehmen
-		selectedLager = (String) FrameBerichteParameter.cboVertriebskanal1.getSelectedItem();
-		selectedWg = (String) FrameBerichteParameter.cboWarengruppen.getSelectedItem();
+//		// selektierte Lager und Warengruppe übernehmen
+//		selectedLager = (String) FrameBerichteParameter.cboVertriebskanal1.getSelectedItem();
+//		selectedWg = (String) FrameBerichteParameter.cboWarengruppen.getSelectedItem();
 		
 		// IDs zur gewählten Lager und Warengruppe
 		selectedLagerId = repository.getVertriebsKanalID(selectedLager);

@@ -39,6 +39,9 @@ public class FrameBerichteParameter {
 	public static JRadioButton rdbtnChartOption3;
 	public static JRadioButton rdbtnAbsatzInMenge;
 	public static JRadioButton rdbtnAbsatzInWert;
+	public static String selectedLager;
+	public static String selectedLager2;
+	public static String selectedWarengruppe;
 
 	private IABCRepository repository;
 	public FrameBerichteParameter(IABCRepository _repository) {
@@ -248,8 +251,12 @@ public class FrameBerichteParameter {
 		btnBerichteAnzeigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Chart chart = new Chart(repository);
-				chart.generateChart();
-				
+				parameterForChart();
+				// erstes Chart
+				chart.generateChart(selectedWarengruppe, selectedLager, false);
+				// falls Vergleich mit andererm Vertriebskanal
+				// zweites Chart
+				chart.generateChart(selectedWarengruppe, selectedLager2, true);
 			}
 		});
 		panelFooter.add(btnBerichteAnzeigen);
@@ -265,5 +272,16 @@ public class FrameBerichteParameter {
 		panelFooter.add(btnFrameSchliessen);
 
 		dialogFrame.setVisible(true);
+	}
+	
+	private void parameterForChart() {
+		// selektierte Lager und Warengruppe übernehmen
+		selectedLager = (String) FrameBerichteParameter.cboVertriebskanal1.getSelectedItem();
+		selectedWarengruppe = (String) FrameBerichteParameter.cboWarengruppen.getSelectedItem();
+		
+		// gegebenfalls zweite LagerID für den Vergleich
+		if (chckbxVertriebskanal.isSelected()) {
+			selectedLager2 = (String) FrameBerichteParameter.cboVertriebskanal2.getSelectedItem();
+		}
 	}
 }
