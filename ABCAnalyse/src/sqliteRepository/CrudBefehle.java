@@ -74,12 +74,15 @@ public class CrudBefehle {
 //												+ " join ArtikelLager al on a.ArtikelNr = al.ArtikelNr"
 //												+ " where a.ArtikelNr not in ( select a.ArtikelNr from ABC_Input ai and ai.LagerNr <> 0)";
 	
-	//TODO: Hier steht noch mist (LagerNr 99)
 	public static String insertDArtikelInputGesamtunternehmen = "insert into ABC_Input (ArtikelNr, LagerNr, JahresUmsatz, JahresMenge, JahresAnzahl, Bestand, WgNr)"
-																+ " select ai.ArtikelNr, 99, 0, 0, 0, ai.Bestand, ai.WgNr"
+																+ " select ai.ArtikelNr, 0, 0, 0, 0, ai.Bestand, ai.WgNr"
 																+ " from ABC_Input ai"
 																+ " where JahresUmsatz = 0 and JahresMenge = 0 and JahresAnzahl = 0"
 																+ " and ai.LagerNr <> 0"
+																+ " and not exists  (select ai2.ArtikelNr "
+																+ "						from ABC_Input ai2 "
+																+ "						where ai2.ArtikelNr = ai.ArtikelNr "
+																+ "						and ai2.LagerNr = 0)"
 																+ " group by ai.ArtikelNr"
 																+ " order by ArtikelNr";
 	
@@ -89,11 +92,21 @@ public class CrudBefehle {
 												+ " join ArtikelLager al on a.ArtikelNr = al.ArtikelNr"
 												+ " where a.ArtikelNr not in ( select a.ArtikelNr from ABC_Input  )";
 	
-	public static String insertDArtikelResultGesamtunternehmen = "insert into ABCResult (ArtikelNr, LagerNr, ABCK1, ABCK2, ABCK3, ABCKZ)"
-												+ " select distinct a.ArtikelNr, 0, 'D', 'D', 'D', 'D'"
-												+ " from Artikel a"
-												+ " join ArtikelLager al on a.ArtikelNr = al.ArtikelNr"
-												+ " where a.ArtikelNr not in ( select a.ArtikelNr from ABC_Input ai )";
+//	public static String insertDArtikelResultGesamtunternehmen = "insert into ABCResult (ArtikelNr, LagerNr, ABCK1, ABCK2, ABCK3, ABCKZ)"
+//												+ " select distinct a.ArtikelNr, 0, 'D', 'D', 'D', 'D'"
+//												+ " from Artikel a"
+//												+ " join ArtikelLager al on a.ArtikelNr = al.ArtikelNr"
+//												+ " where a.ArtikelNr not in ( select a.ArtikelNr from ABC_Input ai )";
+	
+	public static String insertDArtikelResultGesamtunternehmen  = "insert into ABCResult (ArtikelNr, LagerNr, ABCK1, ABCK2, ABCK3, ABCKZ)"
+												+ " select ArtikelNr, 0, 'D', 'D', 'D', 'D'" 
+												+ " from ABC_Input ai"
+												+ " where LagerNr = 0 and JahresUmsatz = 0 and JahresMenge = 0 and JahresAnzahl = 0"
+												+ " and not exists  (select ai.ArtikelNr "
+												+ "						from ABCResult ar "
+												+ "						where ai.ArtikelNr = ar.ArtikelNr "
+												+ "						and ar.LagerNr = 0)";
+ 
 	
 	public static String generateABCBerichte = "INSERT INTO ABCBerichte "
 											 + "select abcR.ABCK1 as BerichtKZ, 1 as KriteriumID, abcR.LagerNr as LagerNr, abcI.WgNr as WGNR, count(abcR.ArtikelNr) as ANZAHL,"
@@ -140,7 +153,7 @@ public class CrudBefehle {
 	public static String deleteABCInput = "delete from ABC_Input";
 	public static String deleteABCResult = "delete from ABCResult";
 	public static String deleteABCBerichte = "delete from ABCBerichte";
-	public static String deleteFalscheDArtikel = "delete from ABC_Input where LagerNr = 0 and JahresUmsatz = 0 and JahresMenge = 0 and JahresAnzahl = 0";
+//	public static String deleteFalscheDArtikel = "delete from ABC_Input where LagerNr = 0 and JahresUmsatz = 0 and JahresMenge = 0 and JahresAnzahl = 0";
 	
 	//Bereich Chart-Befehle
 	public static String getChartData = "select BerichtKZ, KriteriumID, LagerNr, WgNr, AnzahlArtikel, JahresUmsatz, JahresMenge, Bestand, JahresMengeWert, Bestandswert"

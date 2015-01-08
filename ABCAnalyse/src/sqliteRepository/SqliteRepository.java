@@ -156,24 +156,20 @@ public class SqliteRepository implements IABCRepository{
 			insertStatementResult.executeUpdate();
 			connection.commit();
 			
-			// D Artikel in ABC Result schreiben (für Gesamtunternehmen)
-			insertStatementResultGesamtunternehmen = connection.prepareStatement(CrudBefehle.insertDArtikelResultGesamtunternehmen);
-			insertStatementResultGesamtunternehmen.executeUpdate();
-			connection.commit();
-			
 			// D Artikel in ABC Input schreiben
 			insertStatementInput = connection.prepareStatement(CrudBefehle.insertDArtikelInput);
 			insertStatementInput.executeUpdate();
 			connection.commit();
-			
-			// Falsche D Artikel des Gesamtunternehmens löschen
-			Statement deleteStatement = connection.createStatement();
-			deleteStatement.executeUpdate(CrudBefehle.deleteFalscheDArtikel);
-			connection.commit();
-			
+
 			// D Artikel in ABC Input schreiben (für Gesamtunternehmen)
 			insertStatementInputGesamtunternehmen = connection.prepareStatement(CrudBefehle.insertDArtikelInputGesamtunternehmen);
 			insertStatementInputGesamtunternehmen.executeUpdate();
+			
+			// D Artikel in ABC Result schreiben (für Gesamtunternehmen)
+			insertStatementResultGesamtunternehmen = connection.prepareStatement(CrudBefehle.insertDArtikelResultGesamtunternehmen);
+			insertStatementResultGesamtunternehmen.executeUpdate();
+			connection.commit();
+						
 			connection.commit();
 			
 		} catch (SQLException e) {

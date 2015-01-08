@@ -256,7 +256,9 @@ public class FrameBerichteParameter {
 				chart.generateChart(selectedWarengruppe, selectedLager, false);
 				// falls Vergleich mit andererm Vertriebskanal
 				// zweites Chart
-				chart.generateChart(selectedWarengruppe, selectedLager2, true);
+				if(chckbxVertriebskanal.isSelected()) {
+					chart.generateChart(selectedWarengruppe, selectedLager2, true);
+				}
 			}
 		});
 		panelFooter.add(btnBerichteAnzeigen);
