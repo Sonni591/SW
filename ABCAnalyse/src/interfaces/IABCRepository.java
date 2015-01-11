@@ -2,19 +2,29 @@ package interfaces;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
 import objects.ABCZuordnung;
 import objects.Bericht;
 import objects.Vertriebskanal;
 import objects.Warengruppe;
+import sqliteRepository.CrudBefehle;
 
+
+/* Schnittstelle für den Zugriff auf die ABC-Berechnungsdaten und Berichte 
+ * 
+ */
 public interface IABCRepository {
-
-	public abstract ResultSet getResult(String selectBefehl);
+	
+	public abstract ResultSet getEinteilungenResult();
+	
+	public abstract ResultSet getZuordnungenResult();
+	
+	public abstract ResultSet getABCResultData();
 
 	public abstract void updateABCEinteilung(String updateBefehl, int prozent,
 			String bezeichnung);
 
-	public abstract void updateABCZuordnung(String updateBefehl,
+	public abstract void updateABCZuordnung(
 			String zuordnung, String kriterium1, String kriterium2,
 			String kriterium3);
 
@@ -49,7 +59,7 @@ public interface IABCRepository {
 
 	public abstract ArrayList<Vertriebskanal> getVertriebskanaeleObjects();
 
-	public abstract ArrayList<Bericht> getBerichte(/*TODO*/);
+	public abstract ArrayList<Bericht> getBerichte();
 
 	public abstract ArrayList<ABCZuordnung> getZuordnungen();
 

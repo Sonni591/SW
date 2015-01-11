@@ -47,7 +47,7 @@ public class ABCRechnung extends Thread{
 	}
 	
 	private void createEinteilungTable(){
-		ResultSet rs = repository.getResult(CrudBefehle.selectABCEinteilung);
+		ResultSet rs = repository.getEinteilungenResult();
 		try {
 			while(rs.next())
 			{

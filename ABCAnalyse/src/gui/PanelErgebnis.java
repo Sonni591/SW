@@ -490,9 +490,7 @@ public class PanelErgebnis extends JPanel {
 	public void setTableData() {
 		ResultSet abcEinteilungResult = null;
 		try {
-			//TODO neue Methode im Repository (getABCResultData liefert ResultSet)
-			abcEinteilungResult = repository
-					.getResult(CrudBefehle.selectABCResultView);
+			abcEinteilungResult = repository.getABCResultData();
 
 			//Tabelle anhand der Daten modellieren
 			resultTable.setModel(buildTableModel(abcEinteilungResult));

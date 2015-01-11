@@ -198,6 +198,7 @@ public class Chart extends JPanel {
 				return false;
 			}
 
+			//Methode zum einfärben der Tabellenzellen je nach Inhalt (Klassifizierung)
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer,
 					int row, int col) {
@@ -385,6 +386,7 @@ public class Chart extends JPanel {
 
 	}
 
+	//Bei Doppelklick wird diese Methode aufgerufen und setzt die richtigen Filter im Ergebnispanel
 	private void setFilterErgebnisPanel(JTable table) {
 
 		int row = table.getSelectedRow();

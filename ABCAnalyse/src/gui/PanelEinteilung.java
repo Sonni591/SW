@@ -270,8 +270,7 @@ public class PanelEinteilung extends JPanel {
 	 */
 	private void getABCEinteilung() {
 		try {
-			//TODO spezielle Methode im Repository (getABCEinteilung mit ResultSet als Rueckgabe)
-			ResultSet abcEinteilungResult = repository.getResult(CrudBefehle.selectABCEinteilung);
+			ResultSet abcEinteilungResult = repository.getEinteilungenResult();
 
 			while (abcEinteilungResult.next()) {
 

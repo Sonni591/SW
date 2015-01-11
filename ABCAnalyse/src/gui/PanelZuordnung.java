@@ -168,7 +168,7 @@ public class PanelZuordnung extends JPanel {
 		cboZuordnung.addItem("C");
 		ResultSet abcEinteilungResult = null;
 		try {
-			abcEinteilungResult = repository.getResult(CrudBefehle.selectABCZuordnung);
+			abcEinteilungResult = repository.getZuordnungenResult();
 			
 			table.setModel(buildTableModel(abcEinteilungResult));
 			table.getColumnModel().getColumn(3)
@@ -225,7 +225,7 @@ public class PanelZuordnung extends JPanel {
 			String kriterium2 = table.getModel().getValueAt(row, 1).toString();
 			String kriterium3 = table.getModel().getValueAt(row, 2).toString();
 
-			repository.updateABCZuordnung(CrudBefehle.updateABCZuordnung, zuordnung, kriterium1,
+			repository.updateABCZuordnung(zuordnung, kriterium1,
 					kriterium2, kriterium3);
 		}
 	}

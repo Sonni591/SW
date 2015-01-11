@@ -16,6 +16,7 @@ import interfaces.IABCRepository;
 public class SqliteRepository implements IABCRepository{
 	private Connection connection = null;
 	
+	//Herstellen der Verbindung zur SQLite Datenbank
 	public SqliteRepository(){
 		connection = DBConnector.connectSqLite();
 	}
@@ -24,19 +25,22 @@ public class SqliteRepository implements IABCRepository{
 	/* (non-Javadoc)
 	 * @see sqliteRepository.IABCRepository#getResult(java.lang.String)
 	 */
+	
 	@Override
-	public ResultSet getResult(String selectBefehl)
-	{
-		Statement statement;
-		try {
-			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery(selectBefehl);
-			return rs;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public ResultSet getABCResultData(){
+		return getResult(CrudBefehle.selectABCResultView);
 	}
+	
+	@Override
+	public ResultSet getZuordnungenResult(){
+		return getResult(CrudBefehle.selectABCZuordnung);
+	}
+	
+	@Override
+	public ResultSet getEinteilungenResult(){
+		return getResult(CrudBefehle.selectABCEinteilung);
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see sqliteRepository.IABCRepository#updateABCEinteilung(java.lang.String, int, java.lang.String)
@@ -62,13 +66,13 @@ public class SqliteRepository implements IABCRepository{
 	 * @see sqliteRepository.IABCRepository#updateABCZuordnung(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void updateABCZuordnung(String updateBefehl, String zuordnung, 
+	public void updateABCZuordnung(String zuordnung, 
 										  String kriterium1, String kriterium2, String kriterium3)
 	{
 		PreparedStatement updateStatement = null;
 		try {
 			connection.setAutoCommit(false);
-			updateStatement = connection.prepareStatement(updateBefehl);
+			updateStatement = connection.prepareStatement(CrudBefehle.updateABCZuordnung);
 			updateStatement.setString(1, zuordnung);
 			updateStatement.setString(2, kriterium1);
 			updateStatement.setString(3, kriterium2);
@@ -625,6 +629,20 @@ public class SqliteRepository implements IABCRepository{
 			return rs;
 		}catch (SQLException ex){
 			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	//Standardfunktion um einen SQL-Befehl and die Datenbank zu schicken und ein ResultSet zu erhalten
+	private ResultSet getResult(String selectBefehl)
+	{
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(selectBefehl);
+			return rs;
+		} catch (SQLException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
