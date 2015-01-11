@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import objects.Strings;
 import sqliteRepository.CrudBefehle;
 
 public class PanelEinteilung extends JPanel {
@@ -73,7 +74,7 @@ public class PanelEinteilung extends JPanel {
 		this.add(panelEinteilungHeader, BorderLayout.NORTH);
 		panelEinteilungHeader.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
-		JLabel lblEinteilung = new JLabel("<html>Bitte tragen Sie die prozentualen Grenzen &nbsp&nbsp&nbsp<p/> für die Einteilung in die Kategorien ein.</html>");
+		JLabel lblEinteilung = new JLabel(Strings.getLbl1str());
 		panelEinteilungHeader.add(lblEinteilung);
 
 		JPanel panelEinteilungContent = new JPanel();
@@ -127,7 +128,7 @@ public class PanelEinteilung extends JPanel {
 		gbc_lblC.gridy = 0;
 		panelEinteilungContent.add(lblC, gbc_lblC);
 
-		JLabel lblUmsatz = new JLabel("Umsatz:");
+		JLabel lblUmsatz = new JLabel(Strings.getUmsatz());
 		GridBagConstraints gbc_lblUmsatz = new GridBagConstraints();
 		gbc_lblUmsatz.fill = GridBagConstraints.BOTH;
 		gbc_lblUmsatz.insets = new Insets(0, 0, 5, 5);
@@ -195,7 +196,7 @@ public class PanelEinteilung extends JPanel {
 		gbc_txtAnzahlC.gridy = 4;
 		panelEinteilungContent.add(txtAnzahlC, gbc_txtAnzahlC);
 
-		JLabel lblMenge = new JLabel("Menge:");
+		JLabel lblMenge = new JLabel(Strings.getMenge());
 		GridBagConstraints gbc_lblMenge = new GridBagConstraints();
 		gbc_lblMenge.fill = GridBagConstraints.BOTH;
 		gbc_lblMenge.insets = new Insets(0, 0, 0, 5);
@@ -234,7 +235,7 @@ public class PanelEinteilung extends JPanel {
 
 		//Layout-Optionen --Ende
 		
-		JButton btnSpeichern = new JButton("Speichern");
+		JButton btnSpeichern = new JButton(Strings.getSpeichern());
 		btnSpeichern.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -245,8 +246,8 @@ public class PanelEinteilung extends JPanel {
 				else
 				{
 					JOptionPane.showMessageDialog(MainWindow.frame,
-							"Speichern wegen ungültigen Werten nicht möglich.",
-							"Speichern fehlgeschlagen", JOptionPane.INFORMATION_MESSAGE);
+							Strings.getMsgError1(),
+						Strings.getMsgError2(), JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
@@ -275,7 +276,7 @@ public class PanelEinteilung extends JPanel {
 			while (abcEinteilungResult.next()) {
 
 				String Bezeichnung = abcEinteilungResult
-						.getString("Bezeichnung");
+						.getString(Strings.getBezeichnung());
 
 				switch (Bezeichnung) {
 				case "Umsatz":
@@ -315,29 +316,29 @@ public class PanelEinteilung extends JPanel {
 	private void updateABCEinteilung() {
 		// Umsatz
 		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilA,
-				Integer.parseInt(txtUmsatzA.getText()), "Umsatz");
+				Integer.parseInt(txtUmsatzA.getText()), Strings.getUmsatz());
 		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilB,
-				Integer.parseInt(txtUmsatzB.getText()), "Umsatz");
+				Integer.parseInt(txtUmsatzB.getText()), Strings.getUmsatz());
 		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilC,
-				Integer.parseInt(txtUmsatzC.getText()), "Umsatz");
+				Integer.parseInt(txtUmsatzC.getText()), Strings.getUmsatz());
 		// Menge
 		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilA,
-				Integer.parseInt(txtMengeA.getText()), "Menge");
+				Integer.parseInt(txtMengeA.getText()), Strings.getMenge());
 		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilB,
-				Integer.parseInt(txtMengeB.getText()), "Menge");
+				Integer.parseInt(txtMengeB.getText()), Strings.getMenge());
 		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilC,
-				Integer.parseInt(txtMengeC.getText()), "Menge");
+				Integer.parseInt(txtMengeC.getText()), Strings.getMenge());
 		// Auftragsanzahl
 		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilA,
-				Integer.parseInt(txtAnzahlA.getText()), "Auftragsanzahl");
+				Integer.parseInt(txtAnzahlA.getText()), Strings.getAuftragsanzahl());
 		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilB,
-				Integer.parseInt(txtAnzahlB.getText()), "Auftragsanzahl");
+				Integer.parseInt(txtAnzahlB.getText()), Strings.getAuftragsanzahl());
 		repository.updateABCEinteilung(CrudBefehle.updateEinteilungAnteilC,
-				Integer.parseInt(txtAnzahlC.getText()), "Auftragsanzahl");
+				Integer.parseInt(txtAnzahlC.getText()), Strings.getAuftragsanzahl());
 
 		JOptionPane.showMessageDialog(MainWindow.frame,
-				"Die ABC Schwellwerte wurden aktualisiert",
-				"Schwellwerte aktualisiert", JOptionPane.INFORMATION_MESSAGE);
+		Strings.getMsgSchwellwertSuccess1(),
+				Strings.getMsgSchwellwertSuccess2(), JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	/**
@@ -348,13 +349,13 @@ public class PanelEinteilung extends JPanel {
 		boolean isSaveable = true;
 		try {
 			// Umsatz
-			if (validate(txtUmsatzA.getText(), txtUmsatzB.getText(), "Umsatz")) {
+			if (validate(txtUmsatzA.getText(), txtUmsatzB.getText(), Strings.getUmsatz())) {
 				int UmsatzA = Integer.parseInt(txtUmsatzA.getText());
 				int UmsatzB = Integer.parseInt(txtUmsatzB.getText());
 				if ((UmsatzA + UmsatzB) > 100) {
 					JOptionPane.showMessageDialog(MainWindow.frame,
-							"Die Umsatz Schwellwerte übersteigen die 100%",
-							"Schwellwerte zu hoch", JOptionPane.ERROR_MESSAGE);
+							Strings.getMsgSchwellwertFail1(),
+							Strings.getMsgSchwellwertFail2(), JOptionPane.ERROR_MESSAGE);
 					isSaveable = false;
 				} else {
 					txtUmsatzC.setText(String
@@ -365,13 +366,13 @@ public class PanelEinteilung extends JPanel {
 				isSaveable = false;
 			}
 			// Menge
-			if (validate(txtMengeA.getText(), txtMengeB.getText(), "Menge")) {
+			if (validate(txtMengeA.getText(), txtMengeB.getText(), Strings.getMenge())) {
 				int MengeA = Integer.parseInt(txtMengeA.getText());
 				int MengeB = Integer.parseInt(txtMengeB.getText());
 				if ((MengeA + MengeB) > 100) {
 					JOptionPane.showMessageDialog(null,
-							"Die Mengen Schwellwerte übersteigen die 100%",
-							"Schwellwerte zu hoch", JOptionPane.ERROR_MESSAGE);
+							Strings.getMsgSchwellwertFail1(),
+							Strings.getMsgSchwellwertFail2(), JOptionPane.ERROR_MESSAGE);
 					isSaveable = false;
 				} else {
 					txtMengeC.setText(String.valueOf(100 - (MengeA + MengeB)));
@@ -381,16 +382,15 @@ public class PanelEinteilung extends JPanel {
 				isSaveable = false;
 			}
 			// Anzahl
-			if (validate(txtAnzahlA.getText(), txtAnzahlB.getText(), "Auftragsanzahl")) {
+			if (validate(txtAnzahlA.getText(), txtAnzahlB.getText(), Strings.getAuftragsanzahl())) {
 				int AnzahlA = Integer.parseInt(txtAnzahlA.getText());
 				int AnzahlB = Integer.parseInt(txtAnzahlB.getText());
 				if ((AnzahlA + AnzahlB) > 100) {
 					JOptionPane
 							.showMessageDialog(
 									MainWindow.frame,
-									"Die Auftragsanzahl Schwellwerte übersteigen die 100%",
-									"Schwellwerte zu hoch",
-									JOptionPane.ERROR_MESSAGE);
+									Strings.getMsgSchwellwertFail1(),
+									Strings.getMsgSchwellwertFail2(), JOptionPane.ERROR_MESSAGE);
 					isSaveable = false;
 				} else {
 					txtAnzahlC.setText(String
@@ -425,8 +425,8 @@ public class PanelEinteilung extends JPanel {
 				JOptionPane
 				.showMessageDialog(
 						MainWindow.frame,
-						"Bitte geben Sie eine Zahl ein. Zeichen werden nicht akzeptiert! (" + kriteriumsBezeichnung + ")",
-						"Fehlerhafte Eingabe",
+						Strings.getMsgInputFail1() +"(" + kriteriumsBezeichnung + ")",
+						Strings.getMsgInputFail2(),
 						JOptionPane.ERROR_MESSAGE);
 				return false;
 			}

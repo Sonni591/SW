@@ -7,6 +7,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
+import objects.Strings;
 import sqliteRepository.SqliteRepository;
 
 public class MainWindow {
@@ -61,9 +62,9 @@ public class MainWindow {
 		 panelErgebnis = new PanelErgebnis(repository);
 		
 		//Hinzufuegen der einzelnen Register
-		tabPageContainer.addTab("Parameter", panelParameter);
-		tabPageContainer.addTab("ABC Einteilung", panelEinteilung);
-		tabPageContainer.addTab("ABC Zuordnung", panelZuordnung);
-		tabPageContainer.addTab("Ergebnis", panelErgebnis);
+		tabPageContainer.addTab(Strings.getParameter(), panelParameter);
+		tabPageContainer.addTab(Strings.getABC_Einteilung(), panelEinteilung);
+		tabPageContainer.addTab(Strings.getABC_Zuordnung(), panelZuordnung);
+		tabPageContainer.addTab(Strings.getErgebnis(), panelErgebnis);
 	}
 }

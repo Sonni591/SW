@@ -37,6 +37,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import objects.Strings;
 import objects.Vertriebskanal;
 import objects.Warengruppe;
 import logic.ABCRechnung;
@@ -103,7 +104,7 @@ public class PanelParameter extends JPanel {
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		panelParameterZeitraum.add(panelZeitraumHeader, BorderLayout.NORTH);
 
-		JLabel lblZeitraum = new JLabel("Zeitraum:");
+		JLabel lblZeitraum = new JLabel(Strings.getZeitraum());
 		lblZeitraum.setVerticalAlignment(SwingConstants.BOTTOM);
 		panelZeitraumHeader.add(lblZeitraum);
 		lblZeitraum.setHorizontalAlignment(SwingConstants.CENTER);
@@ -112,7 +113,7 @@ public class PanelParameter extends JPanel {
 		panelParameterZeitraum.add(panelZeitraumAuswahl, BorderLayout.WEST);
 		panelZeitraumAuswahl.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
-		rdbtnVon = new JRadioButton("Von:");
+		rdbtnVon = new JRadioButton(Strings.getVon());
 		panelZeitraumAuswahl.add(rdbtnVon);
 
 		txtVonDatum = new JTextField();
@@ -124,7 +125,7 @@ public class PanelParameter extends JPanel {
 		JCalendarButton btnVonDatum = new JCalendarButton();
 		panelZeitraumAuswahl.add(btnVonDatum);
 
-		JLabel lblBis = new JLabel("bis:");
+		JLabel lblBis = new JLabel(Strings.getBis());
 		panelZeitraumAuswahl.add(lblBis);
 
 		txtBisDatum = new JTextField();
@@ -143,7 +144,7 @@ public class PanelParameter extends JPanel {
 		JPanel panelJahresAuswahl = new JPanel();
 		panelParameterZeitraum.add(panelJahresAuswahl, BorderLayout.SOUTH);
 
-		rdbtnJahr = new JRadioButton("Jahr:");
+		rdbtnJahr = new JRadioButton(Strings.getJahr());
 		buttonGroupZeitraum.add(rdbtnJahr);
 
 		// Dropdown-Box für die Jahresauswahl
@@ -187,10 +188,10 @@ public class PanelParameter extends JPanel {
 		this.add(panelParameterFoot, BorderLayout.SOUTH);
 		panelParameterFoot.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 
-		JButton btnBerichte = new JButton("ABC Berichte generiern");
+		JButton btnBerichte = new JButton(Strings.getABC_Berichte_generiern());
 		panelParameterFoot.add(btnBerichte);
 
-		JButton btnBerechnen = new JButton("ABC Analyse berechnen");
+		JButton btnBerechnen = new JButton(Strings.getABC_Analyse_berechnen());
 		panelParameterFoot.add(btnBerechnen);
 
 		JPanel panelParameterVertriebskanal = new JPanel();
@@ -198,14 +199,13 @@ public class PanelParameter extends JPanel {
 				(Color) new Color(128, 128, 128)));
 		this.add(panelParameterVertriebskanal, BorderLayout.WEST);
 
-		JLabel lblVertriebskanalHeader = new JLabel("Vertriebskanal:");
+		JLabel lblVertriebskanalHeader = new JLabel(Strings.getVertriebskanal());
 
 		ButtonGroup buttonGroupVertriebskanal = new ButtonGroup();
-		rdbtnAlleVertriebskanaele = new JRadioButton("Alle Vertriebskanäle");
+		rdbtnAlleVertriebskanaele = new JRadioButton(Strings.getAlle_Vertriebskan�le());
 		rdbtnAlleVertriebskanaele.setSelected(true);
 		buttonGroupVertriebskanal.add(rdbtnAlleVertriebskanaele);
-		rdbtnVertriebskanalEinzel = new JRadioButton(
-				"Nur folgenden Vertriebskanal");
+		rdbtnVertriebskanalEinzel = new JRadioButton(Strings.getNur_folgenden_Vertriebskanal());
 		buttonGroupVertriebskanal.add(rdbtnVertriebskanalEinzel);
 
 		cboVertriebskanal = new JComboBox<String>();
@@ -276,12 +276,12 @@ public class PanelParameter extends JPanel {
 
 		ButtonGroup buttonGroupWarengruppe = new ButtonGroup();
 
-		JLabel lblWarengruppeHeader = new JLabel("Warengruppe:");
+		JLabel lblWarengruppeHeader = new JLabel(Strings.getWarengruppe());
 
-		rdbtnAlleWarengruppen = new JRadioButton("Alle Warengruppen");
+		rdbtnAlleWarengruppen = new JRadioButton(Strings.getAlle_Warengruppen());
 		rdbtnAlleWarengruppen.setSelected(true);
 
-		rdbtnWarengruppeEinzel = new JRadioButton("Nur folgende Warengruppe");
+		rdbtnWarengruppeEinzel = new JRadioButton(Strings.getNur_folgende_Warengruppe());
 
 		buttonGroupWarengruppe.add(rdbtnAlleWarengruppen);
 		buttonGroupWarengruppe.add(rdbtnWarengruppeEinzel);
@@ -450,7 +450,7 @@ public class PanelParameter extends JPanel {
 	 * anhand dieser und des repository die Berichte.
 	 */
 	private void generateBerichte() {
-		System.out.println("starte generierung der Berichte");
+		System.out.println(Strings.getStarte_generierung_der_Berichte());
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 		ArrayList<Vertriebskanal> arrListVertriebskanaele = new ArrayList<Vertriebskanal>();
@@ -497,7 +497,7 @@ public class PanelParameter extends JPanel {
 		}
 
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		System.out.println("ABC Berichte generiert");
+		System.out.println(Strings.getABC_Berichte_generiert());
 	}
 
 	/**
@@ -524,8 +524,8 @@ public class PanelParameter extends JPanel {
 		// Berechnung wird nur über einen Zeitraum ausgeführt
 		if (vonDatum.equals("") && bisDatum.equals("")) {
 			JOptionPane.showMessageDialog(MainWindow.frame,
-					"Bitte einen Zeitraum einschränken!",
-					"Fehlerhafter Zeitraum", JOptionPane.INFORMATION_MESSAGE);
+					Strings.getBitte_einen_Zeitraum_einschr�nken(),
+					Strings.getFehlerhafter_Zeitraum(), JOptionPane.INFORMATION_MESSAGE);
 		} else {
 			ABCRechnung rechnung = new ABCRechnung(repository);
 			if (!vonDatum.equals("") && !bisDatum.equals("")) {
