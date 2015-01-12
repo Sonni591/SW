@@ -102,7 +102,7 @@ public class PanelZuordnung extends JPanel {
 		setTableData();
 		setTableHeaderText();
 
-		final DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
+		final DefaultTableCellRenderer defaultRenderer = new DefaultTableCellRenderer();
 
 		//Renderer um den Hintergrund der Tabelle zu gestalten
 		TableCellRenderer cellRenderer = new TableCellRenderer() {
@@ -111,7 +111,7 @@ public class PanelZuordnung extends JPanel {
 			public Component getTableCellRendererComponent(JTable table,
 					Object value, boolean isSelected, boolean hasFocus,
 					int row, int column) {
-				Component c = DEFAULT_RENDERER.getTableCellRendererComponent(
+				Component c = defaultRenderer.getTableCellRendererComponent(
 						table, value, isSelected, hasFocus, row, column);
 
 				if (column == 0 || column == 1 || column == 2) {
@@ -127,7 +127,7 @@ public class PanelZuordnung extends JPanel {
 			}
 
 		};
-		DEFAULT_RENDERER.setHorizontalAlignment(SwingConstants.CENTER);
+		defaultRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) table
 				.getTableHeader().getDefaultRenderer();

@@ -224,12 +224,12 @@ public class SqliteRepository implements IABCRepository{
 	{
 		PreparedStatement insertStatement = null;
 		PreparedStatement insertStatementSumLine = null;
-//		Statement deleteStatement;
+
 		try {
-//			deleteStatement = connection.createStatement();
-//			deleteStatement.executeUpdate(CrudBefehle.deleteABCBerichte);
+
 			connection.setAutoCommit(false);
-			//Jetzt kann die Tabelle neu befuellt werden
+			// ABC Berichte generieren
+			// (noch ohne Warengruppe "alle" und ohne SUM-Zeilen)
 			insertStatement = connection.prepareStatement(CrudBefehle.generateABCBerichte);
 			insertStatement.setInt(1, lagerNr);
 			insertStatement.setInt(2, wgNr);
@@ -240,6 +240,7 @@ public class SqliteRepository implements IABCRepository{
 			insertStatement.executeUpdate();
 			connection.commit();
 			
+			
 			//Summen der einzelnen Kriterien
 			insertStatementSumLine = connection.prepareStatement(CrudBefehle.generateSUMBerichteLine);
 			insertStatementSumLine.setInt(1, lagerNr);
@@ -247,6 +248,29 @@ public class SqliteRepository implements IABCRepository{
 			insertStatementSumLine.executeUpdate();
 			connection.commit();
 			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see sqliteRepository.IABCRepository#generateBerichteWGAlle()
+	 */
+	@Override
+	public void generateBerichteWGAlle()
+	{
+		PreparedStatement insertStatementWGAlle = null;
+		
+		try {
+
+			// Berichte für alle Warengruppen generieren
+			connection.setAutoCommit(false);
+			insertStatementWGAlle = connection.prepareStatement(CrudBefehle.generateABCBerichteWGAlle);
+			insertStatementWGAlle.executeUpdate();
+			connection.commit();
+		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -601,6 +625,13 @@ public class SqliteRepository implements IABCRepository{
 	 */
 	@Override
 	public int getWarengruppeID(String warengruppe) {
+		
+		// Sonderfall: Warengruppe "alle"
+		// (dieser ist nicht in der Datenbank vorhanden)
+		if(warengruppe.equals("alle")) {
+			return 0;
+		}
+		
 		PreparedStatement selectStatement = null;
 		try{
 			selectStatement = connection.prepareStatement(CrudBefehle.selectWarengruppeID);

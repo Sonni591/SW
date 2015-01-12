@@ -108,10 +108,15 @@ public class FrameBerichteParameter {
 		JLabel lblWarengruppe = new JLabel("Warengruppe:");
 
 		cboWarengruppen = new JComboBox<String>();
+		
+		// zusätzliche Warengruppe "alle"
+					cboWarengruppen.addItem("alle");
+					
 		ArrayList<String> warengruppenList = repository.getWarengruppenBerichte();
 		for (String s : warengruppenList) {
 			cboWarengruppen.addItem(s);
 		}
+		
 
 		JLabel lblVertriebskanal = new JLabel("Vertriebskanal:");
 
@@ -251,13 +256,14 @@ public class FrameBerichteParameter {
 		btnBerichteAnzeigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Chart chart = new Chart(repository);
+				Chart chart2 = new Chart(repository);
 				parameterForChart();
 				// erstes Chart
 				chart.generateChart(selectedWarengruppe, selectedLager, false);
 				// falls Vergleich mit andererm Vertriebskanal
 				// zweites Chart
 				if(chckbxVertriebskanal.isSelected()) {
-					chart.generateChart(selectedWarengruppe, selectedLager2, true);
+					chart2.generateChart(selectedWarengruppe, selectedLager2, true);
 				}
 			}
 		});

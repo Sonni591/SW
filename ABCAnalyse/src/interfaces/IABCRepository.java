@@ -40,6 +40,8 @@ public interface IABCRepository {
 	public abstract void deleteBerichte();
 	
 	public abstract void generateBerichte(int lagerNr, int wgNr);
+	
+	public abstract void generateBerichteWGAlle();
 
 	public abstract ResultSet selectABCInputByStorehouseAndWaregroup(
 			int lagerNr, int wgNr, String criteria);

@@ -156,14 +156,19 @@ public class ABCRechnung extends Thread{
 				repository.insertDArtikel();
 		
 		lblDpbState.setText("<html>D Artikel berechnet </p> - gleich ist die Analyse beendet</html>");
+		dpb.setValue(93);
+		
+		lblDpbState.setText("Ergebnisanzeige aktualisieren");
 		dpb.setValue(97);
 		
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		MainWindow.panelErgebnis.setTableData();
+		
+//		try {
+//			Thread.sleep(1500);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 				
 		System.out.println("Einfügen erfolgreich");
 		lblDpbState.setText("Einfügen erfolgreich");

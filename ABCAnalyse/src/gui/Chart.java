@@ -29,6 +29,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -204,20 +205,59 @@ public class Chart extends JPanel {
 					int row, int col) {
 				Component comp = super.prepareRenderer(renderer, row, col);
 				Object value = getModel().getValueAt(row, col);
+				// Textfarbe schwarz setzen
+				comp.setForeground(Color.black);
+				// Hintergrundfarbe der ersten Spalte abhängig vom Kennzeichen setzen
 				if (value.equals("A")) {
-					comp.setBackground(Color.red);
+					comp.setBackground(new Color(255,106,103)); // rot
 				} else if (value.equals("B")) {
-					comp.setBackground(Color.blue);
+					comp.setBackground(new Color(103,100,255)); // blau
 				} else if (value.equals("C")) {
-					comp.setBackground(Color.green);
+					comp.setBackground(new Color(95,255,90)); // grün
 				} else if (value.equals("D")) {
-					comp.setBackground(Color.yellow);
+					comp.setBackground(new Color(255,255,90)); // gelb
 				} else {
 					comp.setBackground(Color.white);
 				}
 				return comp;
 			}
+	
+			
 		};
+		
+//		final DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
+//		
+//		//Renderer um den Hintergrund der Tabelle zu gestalten
+//				TableCellRenderer cellRenderer = new TableCellRenderer() {
+//
+//					@Override
+//					public Component getTableCellRendererComponent(JTable table,
+//							Object value, boolean isSelected, boolean hasFocus,
+//							int row, int column) {
+//						Component c = DEFAULT_RENDERER.getTableCellRendererComponent(
+//								table, value, isSelected, hasFocus, row, column);
+//
+//						
+//						
+//						if (column == 0 || column == 1 || column == 2) {
+//							c.setBackground(new Color(227,227,227));
+//						} else {
+//							c.setBackground(Color.WHITE);
+//						}
+//						// Setzen der Selektions-Farbe
+//						if (isSelected) {
+//							c.setBackground(table.getSelectionBackground());
+//						}
+//						return c;
+//					}
+//
+//				};
+//				
+//				for (int columnIndex = 0; columnIndex < resultTable.getColumnCount(); columnIndex++) {
+//					resultTable.getColumnModel().getColumn(columnIndex)
+//							.setCellRenderer(cellRenderer);
+//				}
+				
 
 		// Tabelle mit Daten befüllen
 		ResultSet berichtsDaten = null;

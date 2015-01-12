@@ -4,11 +4,13 @@ import interfaces.IABCRepository;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -17,7 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JButton;
@@ -27,6 +31,7 @@ import javax.swing.JFileChooser;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.SwingConstants;
 
 import sqliteRepository.CrudBefehle;
 
@@ -364,7 +369,8 @@ public class PanelErgebnis extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(resultTable);
 		panelErgebnisContent.add(scrollPane);
-
+		
+		
 		//Optionen fuer die Anzeige der Tabelle
 		resultTable.setShowGrid(true);
 		resultTable.setShowHorizontalLines(true);
@@ -458,6 +464,7 @@ public class PanelErgebnis extends JPanel {
 
 		//Das Ergebnis der Tabelle setzen
 		setTableData();
+		
 	}
 
 	// Setter für Filterauswahl von außerhalb
@@ -491,9 +498,19 @@ public class PanelErgebnis extends JPanel {
 		ResultSet abcEinteilungResult = null;
 		try {
 			abcEinteilungResult = repository.getABCResultData();
-
+			
 			//Tabelle anhand der Daten modellieren
 			resultTable.setModel(buildTableModel(abcEinteilungResult));
+			
+			// Sorter für die Tabelle setzen gleichzeitig sortierung zurücksetzen
+	        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>();
+			resultTable.setRowSorter(sorter);
+			DefaultTableModel model = (DefaultTableModel) resultTable.getModel();
+			sorter.setModel(model);
+			sorter.setRowFilter(null);
+			
+			// Spalten 4 aufwärts mittig setzen
+			setTableRenderer();
 			
 			//Anzahl der Zeilen setzen
 			lblCountRows.setText("Zeilen: " + resultTable.getRowCount());
@@ -507,6 +524,39 @@ public class PanelErgebnis extends JPanel {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * TableRenderer setzten, welche gewisse Spalten (ab Spalte 4) mittig setzt
+	 */
+	public void setTableRenderer() {
+//		///////////
+		
+		final DefaultTableCellRenderer defaultRenderer = new DefaultTableCellRenderer();
+
+		TableCellRenderer cellRenderer = new TableCellRenderer() {
+	
+			@Override
+			public Component getTableCellRendererComponent(JTable table,
+					Object value, boolean isSelected, boolean hasFocus,
+					int row, int column) {
+				Component c = defaultRenderer.getTableCellRendererComponent(
+						table, value, isSelected, hasFocus, row, column);
+
+				return c;
+				}
+		};
+		defaultRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		for (int columnIndex = 3; columnIndex < resultTable.getColumnCount(); columnIndex++) {
+			resultTable.getColumnModel().getColumn(columnIndex)
+					.setCellRenderer(cellRenderer);
+		}
+		
+//		DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) resultTable.getTableHeader().getDefaultRenderer();
+//		headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+		///////////
 	}
 
 	/**
@@ -537,7 +587,26 @@ public class PanelErgebnis extends JPanel {
 			}
 			data.add(vector);
 		}
-		return new DefaultTableModel(data, columnNames);
+//		return new DefaultTableModel(data, columnNames);
+		return new DefaultTableModel(data, columnNames){
+			// Um ein korrektes sortieren zu ermöglichen, müssen die Typen der Spalten korrekt definiert sein
+            @Override
+            public Class<?> getColumnClass( int column ) {
+                switch( column ){
+                    case 0: return String.class;
+                    case 1: return String.class;
+                    case 2: return String.class;
+                    case 3: return String.class;
+                    case 4: return Integer.class;
+                    case 5: return String.class;
+                    case 6: return Integer.class;
+                    case 7: return String.class;
+                    case 8: return Double.class;
+                    case 9: return String.class;
+                    default: return Object.class;
+                }
+            }
+         };
 	}
 
 	/**
@@ -630,6 +699,8 @@ public class PanelErgebnis extends JPanel {
 			// DefaultTableModel is null!
 			return;
 		}
+		
+		lblCountRows.setText("Zeilen: " + resultTable.getRowCount());
 	}
 
 	/**

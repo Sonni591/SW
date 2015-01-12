@@ -7,7 +7,7 @@ public class CrudBefehle {
 	public static String selectABCZuordnung = "select * from ABCZuordnung order by Kriterium1,Kriterium2,Kriterium3 asc";
 	public static String selectArtikelABCZuordnung = "select Zuordnung from ABCZuordnung where Kriterium1 = ? AND Kriterium2 = ? AND Kriterium3 = ?";
 	public static String selectAbsatz = "select * from Absatz";
-	public static String selectABCResultView = "select abcR.artikelNr, wg.Bezeichnung, l.Bezeichnung, abcR.ABCK3 as 'Auf.Anz.', abcI.JahresAnzahl, abcR.ABCK2 as 'Auf.Mng', abcI.JahresMenge,"
+	public static String selectABCResultView = "select abcR.artikelNr, wg.Bezeichnung as 'Warengruppe', l.Bezeichnung as 'Vertriebskanal', abcR.ABCK3 as 'Auf.Anz.', abcI.JahresAnzahl, abcR.ABCK2 as 'Auf.Mng', abcI.JahresMenge,"
 											 + "abcR.ABCK1 as 'Ums.', abcI.JahresUmsatz, abcR.ABCKZ as 'ABC Zuo.' "
 											 + " from ABCResult abcR"
 											 + " join ABC_Input abcI on abcI.artikelNr = abcR.artikelNr and abcI.lagerNr = abcR.lagerNr"
@@ -148,6 +148,23 @@ public class CrudBefehle {
 												 + "where abcB.LagerNr in (?) "
 												 + "  and abcB.WgNr in (?)"
 												 + "group by abcB.KriteriumID, abcB.LagerNr, abcB.WgNr;";
+	
+	public static String generateABCBerichteWGAlle = "Insert INTO ABCBerichte "
+												+ " select abcB.BerichtKZ, abcB.KriteriumID, abcB.LagerNr, 0 as WGNr, "
+												+ " sum(abcB.AnzahlArtikel), sum(abcB.JahresUmsatz), sum(abcB.JahresMenge), sum(abcB.Bestand), sum(abcB.JahresMengeWert), sum(abcB.BestandsWert) "
+												+ " from ABCBerichte abcB"
+//												+ " where BerichtKZ <> 'SUM' "
+												+ " group by abcB.BerichtKZ, abcB.KriteriumID, abcB.LagerNr ";
+	
+	// TODO: Frage: Summen-Zeilen für die Berichte der Warengruppe "alle" getrennt berechnen oder nicht?
+//	public static String generateSUMBerichteLineWGAlle = "INSERT INTO ABCBerichte "
+//												 + "select 'SUM' as BerichtKZ, abcB.KriteriumID, abcB.LagerNr, 0 as WGNR, sum(abcB.AnzahlArtikel) as ANZAHL, " 
+//												 + "sum(abcB.JahresUmsatz) as UMSATZ, sum(abcB.JahresMenge) as MENGE, sum(abcB.Bestand) as BESTAND, "
+//												 + "sum(abcB.JahresMengeWert) as MengeWert, sum(abcB.BestandsWert) as BestandsWert "
+//												 + "from ABCBerichte abcB "
+//												 + "where abcB.LagerNr in (?) "
+//												 + "  and abcB.WgNr in (?)"
+//												 + "group by abcB.KriteriumID, abcB.LagerNr, abcB.WgNr;";
 	
 	//Bereich Delete-Befehle
 	public static String deleteABCInput = "delete from ABC_Input";

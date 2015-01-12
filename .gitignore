@@ -16,3 +16,11 @@
 #HG Dateien
 #*.hg
 
+
+*.db
+
+*.db
+
+ABCAnalyse/SwDB.db
+
+ABCAnalyse/SwDB.db

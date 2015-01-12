@@ -495,6 +495,8 @@ public class PanelParameter extends JPanel {
 				repository.generateBerichte(vertriebskanalID, warengruppenID);
 			}
 		}
+		// Berichte für Warengruppe 0 "alle" generieren
+		repository.generateBerichteWGAlle();
 
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		System.out.println(Strings.getABC_Berichte_generiert());
