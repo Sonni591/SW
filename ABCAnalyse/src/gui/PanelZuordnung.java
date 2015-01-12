@@ -42,7 +42,7 @@ public class PanelZuordnung extends JPanel {
 	public PanelZuordnung(IABCRepository _repository) {
 		repository = _repository;
 		
-		//Layout-Optione  --Start
+		//Layout-Options  --Start
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelZuordnungHeader = new JPanel();

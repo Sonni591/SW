@@ -236,27 +236,43 @@ public class Chart extends JPanel {
 	public static DefaultTableModel buildTableModel(ResultSet rs)
 			throws SQLException {
 
-		ResultSetMetaData metaData = rs.getMetaData();
+		// Strings für Überschriften und Spaltennamen des Charts
+		String kennzeichenString = "Kennzeichen";
+		String anzahlVerschiedenderArtikelString = "Anzahl versch. Artikel";
+		String bestandWertString = "Bestand in EUR";
+		String bestandMengeString = "Bestand in Stück";
+		String jahresumsatzString = "Jahresumsatz in EUR";
+		String jahresmengeString = "Absatz in Stück";
+		String jahresmengewertString = "Absatz in EUR";
+		
+//		ResultSetMetaData metaData = rs.getMetaData();
 
 		// ///////////////////////////////
 		// Spalten der Berichtstabelle //
 		// ///////////////////////////////
 
 		Vector<String> columnNames = new Vector<String>();
-		columnNames.add(metaData.getColumnName(1)); // BerichtKZ
-		columnNames.add(metaData.getColumnName(5)); // AnzahlArtikel
-
+//		columnNames.add(metaData.getColumnName(1)); // BerichtKZ
+//		columnNames.add(metaData.getColumnName(5)); // AnzahlArtikel
+		columnNames.add(kennzeichenString);
+		columnNames.add(anzahlVerschiedenderArtikelString);
+		
+		
 		// Auswahl: Verteilung von Bestand und Umsatz
 		if (FrameBerichteParameter.rdbtnChartOption1.isSelected()) {
 			// Absatz in Menge
 			if (FrameBerichteParameter.rdbtnAbsatzInMenge.isSelected()) {
-				columnNames.add(metaData.getColumnName(8)); // Bestand
-				columnNames.add(metaData.getColumnName(6)); // Jahresumsatz
+//				columnNames.add(metaData.getColumnName(8)); // Bestand
+//				columnNames.add(metaData.getColumnName(6)); // JahresUmsatz
+				columnNames.add(bestandMengeString);
+				columnNames.add(jahresumsatzString);
 			}
 			// Absatz in Wert
 			else if (FrameBerichteParameter.rdbtnAbsatzInWert.isSelected()) {
-				columnNames.add(metaData.getColumnName(10)); // BestandsWert
-				columnNames.add(metaData.getColumnName(6)); // JahresUmsatz
+//				columnNames.add(metaData.getColumnName(10)); // BestandsWert
+//				columnNames.add(metaData.getColumnName(6)); // JahresUmsatz
+				columnNames.add(bestandWertString);
+				columnNames.add(jahresumsatzString);
 			}
 
 		}
@@ -264,26 +280,34 @@ public class Chart extends JPanel {
 		else if (FrameBerichteParameter.rdbtnChartOption2.isSelected()) {
 			// Absatz in Menge
 			if (FrameBerichteParameter.rdbtnAbsatzInMenge.isSelected()) {
-				columnNames.add(metaData.getColumnName(8)); // Bestand
-				columnNames.add(metaData.getColumnName(7)); // JahresMenge
+//				columnNames.add(metaData.getColumnName(8)); // Bestand
+//				columnNames.add(metaData.getColumnName(7)); // JahresMenge
+				columnNames.add(bestandMengeString);
+				columnNames.add(jahresmengeString);
 			}
 			// Absatz in Wert
 			else if (FrameBerichteParameter.rdbtnAbsatzInWert.isSelected()) {
-				columnNames.add(metaData.getColumnName(10)); // BestandsWert
-				columnNames.add(metaData.getColumnName(9)); // JahresMengeWert
+//				columnNames.add(metaData.getColumnName(10)); // BestandsWert
+//				columnNames.add(metaData.getColumnName(9)); // JahresMengeWert
+				columnNames.add(bestandWertString);
+				columnNames.add(jahresmengewertString);
 			}
 		}
 		// Auswahl: Aufteilung der Artikel
 		else if (FrameBerichteParameter.rdbtnChartOption3.isSelected()) {
 			// Absatz in Menge
 			if (FrameBerichteParameter.rdbtnAbsatzInMenge.isSelected()) {
-				columnNames.add(metaData.getColumnName(8)); // Bestand
-				columnNames.add(metaData.getColumnName(7)); // JahresMenge
+//				columnNames.add(metaData.getColumnName(8)); // Bestand
+//				columnNames.add(metaData.getColumnName(7)); // JahresMenge
+				columnNames.add(bestandMengeString);
+				columnNames.add(jahresmengeString);
 			}
 			// Absatz in Wert
 			else if (FrameBerichteParameter.rdbtnAbsatzInWert.isSelected()) {
-				columnNames.add(metaData.getColumnName(10)); // BestandsWert
-				columnNames.add(metaData.getColumnName(9)); // JahresMengeWert
+//				columnNames.add(metaData.getColumnName(10)); // BestandsWert
+//				columnNames.add(metaData.getColumnName(9)); // JahresMengeWert
+				columnNames.add(bestandWertString);
+				columnNames.add(jahresmengewertString);
 			}
 		}
 
