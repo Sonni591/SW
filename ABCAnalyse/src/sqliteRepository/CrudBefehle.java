@@ -75,7 +75,7 @@ public class CrudBefehle {
 //												+ " where a.ArtikelNr not in ( select a.ArtikelNr from ABC_Input ai and ai.LagerNr <> 0)";
 	
 	public static String insertDArtikelInputGesamtunternehmen = "insert into ABC_Input (ArtikelNr, LagerNr, JahresUmsatz, JahresMenge, JahresAnzahl, Bestand, WgNr)"
-																+ " select ai.ArtikelNr, 0, 0, 0, 0, ai.Bestand, ai.WgNr"
+																+ " select ai.ArtikelNr, 0, 0, 0, 0, sum(ai.Bestand), ai.WgNr"
 																+ " from ABC_Input ai"
 																+ " where JahresUmsatz = 0 and JahresMenge = 0 and JahresAnzahl = 0"
 																+ " and ai.LagerNr <> 0"
@@ -83,14 +83,14 @@ public class CrudBefehle {
 																+ "						from ABC_Input ai2 "
 																+ "						where ai2.ArtikelNr = ai.ArtikelNr "
 																+ "						and ai2.LagerNr = 0)"
-																+ " group by ai.ArtikelNr"
-																+ " order by ArtikelNr";
+																+ " group by ai.ArtikelNr, ai.WgNr"
+																+ " order by ai.ArtikelNr, ai.WgNr";
 	
 	public static String insertDArtikelResult = "insert into ABCResult (ArtikelNr, LagerNr, ABCK1, ABCK2, ABCK3, ABCKZ)"
 												+ " select a.ArtikelNr, al.LagerNr, 'D', 'D', 'D', 'D'"
 												+ " from Artikel a"
 												+ " join ArtikelLager al on a.ArtikelNr = al.ArtikelNr"
-												+ " where a.ArtikelNr not in ( select a.ArtikelNr from ABC_Input  )";
+												+ " where a.ArtikelNr not in ( select a.ArtikelNr from ABC_Input )";
 	
 //	public static String insertDArtikelResultGesamtunternehmen = "insert into ABCResult (ArtikelNr, LagerNr, ABCK1, ABCK2, ABCK3, ABCKZ)"
 //												+ " select distinct a.ArtikelNr, 0, 'D', 'D', 'D', 'D'"

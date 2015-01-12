@@ -22,24 +22,24 @@ public class Strings {
 	private static String ABC_Berichte_generiern = "ABC Berichte generiern";
 	private static String ABC_Analyse_berechnen = "ABC Analyse berechnen";
 	private static String Vertriebskanal = "Vertriebskanal:";
-	private static String Alle_Vertriebskanäle = "Alle Vertriebskanäle";
+	private static String Alle_Vertriebskanaele = "Alle VertriebskanÃ¤le";
 	private static String Nur_folgenden_Vertriebskanal = "Nur folgenden Vertriebskanal";
 	private static String Warengruppe = "Warengruppe:";
 	private static String Alle_Warengruppen = "Alle Warengruppen";
 	private static String Nur_folgende_Warengruppe = "Nur folgende Warengruppe";
 	private static String starte_generierung_der_Berichte = "starte generierung der Berichte";
 	private static String ABC_Berichte_generiert = "ABC Berichte generiert";
-	private static String Bitte_einen_Zeitraum_einschränken = "Bitte einen Zeitraum einschränken!";
+	private static String Bitte_einen_Zeitraum_einschraenken = "Bitte einen Zeitraum einschrÃ¤nken!";
 	private static String Fehlerhafter_Zeitraum = "Fehlerhafter Zeitraum";
 
 	// Strings PanelEinteilung.java
-	private static String lbl1str = "<html>Bitte tragen Sie die prozentualen Grenzen &nbsp&nbsp&nbsp<p/> für die Einteilung in die Kategorien ein.</html>";
+	private static String lbl1str = "<html>Bitte tragen Sie die prozentualen Grenzen &nbsp&nbsp&nbsp<p/> fÃ¼r die Einteilung in die Kategorien ein.</html>";
 	private static String Speichern = "Speichern";
-	private static String MsgError1 = "Speichern wegen ungültigen Werten nicht möglich.";
+	private static String MsgError1 = "Speichern wegen ungÃ¼ltigen Werten nicht mÃ¶glich.";
 	private static String MsgError2 = "Speichern fehlgeschlagen";
 	private static String MsgSchwellwertSuccess1 = "Die ABC Schwellwerte wurden aktualisiert";
 	private static String MsgSchwellwertSuccess2 = "Schwellwerte aktualisiert";
-	private static String MsgSchwellwertFail1 = "Die Umsatz Schwellwerte Übersteigen die 100%";
+	private static String MsgSchwellwertFail1 = "Die Umsatz Schwellwerte Ã¼bersteigen die 100%";
 	private static String MsgSchwellwertFail2 = "Schwellwerte zu hoch";
 	private static String MsgInputFail1 = "Bitte geben Sie eine Zahl ein. Zeichen werden nicht akzeptiert!";
 	private static String MsgInputFail2 = "Fehlerhafte Eingabe";
@@ -141,11 +141,11 @@ public class Strings {
 	public static void setVertriebskanal(String vertriebskanal) {
 		Vertriebskanal = vertriebskanal;
 	}
-	public static String getAlle_Vertriebskanäle() {
-		return Alle_Vertriebskanäle;
+	public static String getAlle_Vertriebskanaele() {
+		return Alle_Vertriebskanaele;
 	}
-	public static void setAlle_Vertriebskanäle(String alle_Vertriebskanäle) {
-		Alle_Vertriebskanäle = alle_Vertriebskanäle;
+	public static void setAlle_Vertriebskanaele(String alle_Vertriebskanaele) {
+		Alle_Vertriebskanaele = alle_Vertriebskanaele;
 	}
 	public static String getNur_folgenden_Vertriebskanal() {
 		return Nur_folgenden_Vertriebskanal;
@@ -185,12 +185,12 @@ public class Strings {
 	public static void setABC_Berichte_generiert(String aBC_Berichte_generiert) {
 		ABC_Berichte_generiert = aBC_Berichte_generiert;
 	}
-	public static String getBitte_einen_Zeitraum_einschränken() {
-		return Bitte_einen_Zeitraum_einschränken;
+	public static String getBitte_einen_Zeitraum_einschraenken() {
+		return Bitte_einen_Zeitraum_einschraenken;
 	}
-	public static void setBitte_einen_Zeitraum_einschränken(
-			String bitte_einen_Zeitraum_einschränken) {
-		Bitte_einen_Zeitraum_einschränken = bitte_einen_Zeitraum_einschränken;
+	public static void setBitte_einen_Zeitraum_einschraenken(
+			String bitte_einen_Zeitraum_einschraenken) {
+		Bitte_einen_Zeitraum_einschraenken = bitte_einen_Zeitraum_einschraenken;
 	}
 	public static String getFehlerhafter_Zeitraum() {
 		return Fehlerhafter_Zeitraum;

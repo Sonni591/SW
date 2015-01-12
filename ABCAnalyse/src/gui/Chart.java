@@ -198,7 +198,7 @@ public class Chart extends JPanel {
 				return false;
 			}
 
-			//Methode zum einf‰rben der Tabellenzellen je nach Inhalt (Klassifizierung)
+			//Methode zum einf√§rben der Tabellenzellen je nach Inhalt (Klassifizierung)
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer,
 					int row, int col) {

@@ -10,7 +10,7 @@ import objects.Warengruppe;
 import sqliteRepository.CrudBefehle;
 
 
-/* Schnittstelle für den Zugriff auf die ABC-Berechnungsdaten und Berichte 
+/* Schnittstelle fÃ¼r den Zugriff auf die ABC-Berechnungsdaten und Berichte 
  * 
  */
 public interface IABCRepository {

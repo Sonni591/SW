@@ -202,7 +202,7 @@ public class PanelParameter extends JPanel {
 		JLabel lblVertriebskanalHeader = new JLabel(Strings.getVertriebskanal());
 
 		ButtonGroup buttonGroupVertriebskanal = new ButtonGroup();
-		rdbtnAlleVertriebskanaele = new JRadioButton(Strings.getAlle_Vertriebskan‰le());
+		rdbtnAlleVertriebskanaele = new JRadioButton(Strings.getAlle_Vertriebskanaele());
 		rdbtnAlleVertriebskanaele.setSelected(true);
 		buttonGroupVertriebskanal.add(rdbtnAlleVertriebskanaele);
 		rdbtnVertriebskanalEinzel = new JRadioButton(Strings.getNur_folgenden_Vertriebskanal());
@@ -524,7 +524,7 @@ public class PanelParameter extends JPanel {
 		// Berechnung wird nur √ºber einen Zeitraum ausgef√ºhrt
 		if (vonDatum.equals("") && bisDatum.equals("")) {
 			JOptionPane.showMessageDialog(MainWindow.frame,
-					Strings.getBitte_einen_Zeitraum_einschr‰nken(),
+					Strings.getBitte_einen_Zeitraum_einschraenken(),
 					Strings.getFehlerhafter_Zeitraum(), JOptionPane.INFORMATION_MESSAGE);
 		} else {
 			ABCRechnung rechnung = new ABCRechnung(repository);
