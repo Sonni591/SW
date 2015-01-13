@@ -603,6 +603,7 @@ public class PanelErgebnis extends JPanel {
                     case 7: return String.class;
                     case 8: return Double.class;
                     case 9: return String.class;
+                    case 10: return Integer.class;
                     default: return Object.class;
                 }
             }
