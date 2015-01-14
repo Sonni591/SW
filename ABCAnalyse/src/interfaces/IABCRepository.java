@@ -4,10 +4,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import objects.ABCZuordnung;
-import objects.Bericht;
 import objects.Vertriebskanal;
 import objects.Warengruppe;
-import sqliteRepository.CrudBefehle;
 
 
 /* Schnittstelle für den Zugriff auf die ABC-Berechnungsdaten und Berichte 
@@ -60,8 +58,6 @@ public interface IABCRepository {
 	public abstract ArrayList<Warengruppe> getWarengruppenObjects();
 
 	public abstract ArrayList<Vertriebskanal> getVertriebskanaeleObjects();
-
-	public abstract ArrayList<Bericht> getBerichte();
 
 	public abstract ArrayList<ABCZuordnung> getZuordnungen();
 

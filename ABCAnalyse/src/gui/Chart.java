@@ -4,7 +4,6 @@ import interfaces.IABCRepository;
 
 import java.awt.Dimension;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 
@@ -29,7 +28,6 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 

@@ -19,7 +19,6 @@ import objects.ABCResult;
 import objects.ABCZuordnung;
 import objects.Vertriebskanal;
 import objects.Warengruppe;
-import sqliteRepository.CrudBefehle;
 
 
 public class ABCRechnung extends Thread{
@@ -162,13 +161,6 @@ public class ABCRechnung extends Thread{
 		dpb.setValue(97);
 		
 		MainWindow.panelErgebnis.setTableData();
-		
-//		try {
-//			Thread.sleep(1500);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 				
 		System.out.println("Einfügen erfolgreich");
 		lblDpbState.setText("Einfügen erfolgreich");

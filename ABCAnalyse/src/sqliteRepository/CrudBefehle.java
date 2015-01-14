@@ -8,7 +8,7 @@ public class CrudBefehle {
 	public static String selectArtikelABCZuordnung = "select Zuordnung from ABCZuordnung where Kriterium1 = ? AND Kriterium2 = ? AND Kriterium3 = ?";
 	public static String selectAbsatz = "select * from Absatz";
 	public static String selectABCResultView = "select abcR.artikelNr, wg.Bezeichnung as 'Warengruppe', l.Bezeichnung as 'Vertriebskanal', abcR.ABCK3 as 'Auf.Anz.', abcI.JahresAnzahl, abcR.ABCK2 as 'Auf.Mng', abcI.JahresMenge,"
-											 + "abcR.ABCK1 as 'Ums.', abcI.JahresUmsatz, abcR.ABCKZ as 'ABC Zuo.' "
+											 + "abcR.ABCK1 as 'Ums.', round(abcI.JahresUmsatz,2), abcR.ABCKZ as 'ABC Zuo.' "
 											 + " from ABCResult abcR"
 											 + " join ABC_Input abcI on abcI.artikelNr = abcR.artikelNr and abcI.lagerNr = abcR.lagerNr"
 											 + " join Warengruppe wg on wg.wgNr = abcI.wgNr"
@@ -156,16 +156,6 @@ public class CrudBefehle {
 //												+ " where BerichtKZ <> 'SUM' "
 												+ " group by abcB.BerichtKZ, abcB.KriteriumID, abcB.LagerNr ";
 	
-	// TODO: Frage: Summen-Zeilen für die Berichte der Warengruppe "alle" getrennt berechnen oder nicht?
-//	public static String generateSUMBerichteLineWGAlle = "INSERT INTO ABCBerichte "
-//												 + "select 'SUM' as BerichtKZ, abcB.KriteriumID, abcB.LagerNr, 0 as WGNR, sum(abcB.AnzahlArtikel) as ANZAHL, " 
-//												 + "sum(abcB.JahresUmsatz) as UMSATZ, sum(abcB.JahresMenge) as MENGE, sum(abcB.Bestand) as BESTAND, "
-//												 + "sum(abcB.JahresMengeWert) as MengeWert, sum(abcB.BestandsWert) as BestandsWert "
-//												 + "from ABCBerichte abcB "
-//												 + "where abcB.LagerNr in (?) "
-//												 + "  and abcB.WgNr in (?)"
-//												 + "group by abcB.KriteriumID, abcB.LagerNr, abcB.WgNr;";
-	
 	//Bereich Delete-Befehle
 	public static String deleteABCInput = "delete from ABC_Input";
 	public static String deleteABCResult = "delete from ABCResult";
@@ -173,13 +163,11 @@ public class CrudBefehle {
 //	public static String deleteFalscheDArtikel = "delete from ABC_Input where LagerNr = 0 and JahresUmsatz = 0 and JahresMenge = 0 and JahresAnzahl = 0";
 	
 	//Bereich Chart-Befehle
-	public static String getChartData = "select BerichtKZ, KriteriumID, LagerNr, WgNr, AnzahlArtikel, JahresUmsatz, JahresMenge, Bestand, JahresMengeWert, Bestandswert"
+	public static String getChartData = "select BerichtKZ, KriteriumID, LagerNr, WgNr, AnzahlArtikel, round(JahresUmsatz,2) as 'JahresUmsatz', JahresMenge, Bestand, JahresMengeWert, Bestandswert"
 										+ " FROM ABCBerichte"
 										+ " WHERE LagerNr = ? AND WgNr = ? and KriteriumID = ?";
 	
 	public static String getWgId = "select WGNr from Warengruppe where bezeichnung = ?";
-	public static String getLagerId = "select lagernr from lager where bezeichnung = ? "; 
-	
-	public static String getABCBericht = "select * from ABCBerichte";
+	public static String getLagerId = "select lagernr from lager where bezeichnung = ? ";
 	
 }

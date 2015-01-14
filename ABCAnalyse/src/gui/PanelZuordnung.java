@@ -27,8 +27,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.JButton;
 
-import sqliteRepository.CrudBefehle;
-
 public class PanelZuordnung extends JPanel {
 
 	/**

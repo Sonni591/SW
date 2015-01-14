@@ -10,7 +10,6 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -32,8 +31,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
-
-import sqliteRepository.CrudBefehle;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -589,6 +586,11 @@ public class PanelErgebnis extends JPanel {
 		}
 //		return new DefaultTableModel(data, columnNames);
 		return new DefaultTableModel(data, columnNames){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			// Um ein korrektes sortieren zu ermöglichen, müssen die Typen der Spalten korrekt definiert sein
             @Override
             public Class<?> getColumnClass( int column ) {

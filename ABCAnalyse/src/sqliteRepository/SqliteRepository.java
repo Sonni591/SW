@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import objects.ABCZuordnung;
-import objects.Bericht;
 import objects.Vertriebskanal;
 import objects.Warengruppe;
 import interfaces.IABCRepository;
@@ -93,7 +92,7 @@ public class SqliteRepository implements IABCRepository{
 	{
 		// Datum muss im Format YY.MM.DD hh:mm:ss:xxx vorliegen
 		
-		PreparedStatement insertStatement = null, insertStatementWholeC = null, insertStatementD = null;
+		PreparedStatement insertStatement = null, insertStatementWholeC = null;
 			try {
 				connection.setAutoCommit(false);
 				//Erst Tablleninhalt loeschen
@@ -529,46 +528,6 @@ public class SqliteRepository implements IABCRepository{
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see sqliteRepository.IABCRepository#getBerichte()
-	 */
-	@Override
-	public ArrayList<Bericht> getBerichte(/*TODO*/){
-		ArrayList<Bericht> berichte = new ArrayList<Bericht>();
-
-		ResultSet rsBerichte = null;
-		try {
-			/*
-			rsBerichte = CrudFunktionen.getResult(MainWindow.DBconnection,
-					CrudBefehle.selectVertriebskanaele);
-
-			while (rsBerichte.next()) {
-
-				Bericht obj = new Bericht();
-				//obj.setLagerNr(rsVertriebskanaele.getInt("LagerNr"));
-				//obj.setBezeichnung(rsVertriebskanaele.getString("Bezeichnung"));
-			
-				berichte.add(obj);
-
-			}
-			*/
-
-		} catch (Exception e) {
-			System.err.println(e);
-			e.printStackTrace();
-			return null;
-		} finally {
-			try {
-				rsBerichte.close();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return berichte;
 	}
 	
 	/* (non-Javadoc)
