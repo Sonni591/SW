@@ -541,8 +541,8 @@ public class SqliteRepository implements IABCRepository{
 		while(rs.next())
 		{
 			ABCZuordnung zuordnung = new ABCZuordnung();
-			zuordnung.key = rs.getString(1) + rs.getString(2) + rs.getString(3);
-			zuordnung.zuordnung = rs.getString(4);
+			zuordnung.setKey(rs.getString(1) + rs.getString(2) + rs.getString(3));
+			zuordnung.setZuordnung(rs.getString(4));
 			zuordnungen.add(zuordnung);
 		}
 	} catch (SQLException e) {

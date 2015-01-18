@@ -40,7 +40,7 @@ public class ABCRechnung extends Thread{
 		ArrayList<ABCZuordnung> abcZ = repository.getZuordnungen();
 		if(abcZ != null){
 			for(ABCZuordnung z : abcZ){
-				abcZurdnungTable.put(z.key, z.zuordnung);
+				abcZurdnungTable.put(z.getKey(), z.getZuordnung());
 			}
 		}
 	}

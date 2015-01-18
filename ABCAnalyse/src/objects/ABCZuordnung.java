@@ -1,8 +1,8 @@
 package objects;
 
 public class ABCZuordnung {
-	public String key;
-	public String zuordnung;
+	private String key;
+	private String zuordnung;
 
 	public String getKey() {
 		return key;
