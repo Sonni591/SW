@@ -628,25 +628,25 @@ public class PanelErgebnis extends JPanel {
 				ArrayList<RowFilter<TableModel, Object>> filters = new ArrayList<RowFilter<TableModel, Object>>();
 				// einzelne Filter definieren
 				RowFilter<TableModel, Object> rowFilterArtikel = RowFilter
-						.regexFilter(txtArtikel.getText(), 0);
+						.regexFilter(txtArtikel.getText(), 0, 1);
 				RowFilter<TableModel, Object> rowFilterVertriebskanal = RowFilter
 						.regexFilter(cboVertriebskanal.getSelectedItem()
-								.toString(), 2);
+								.toString(), 3);
 				RowFilter<TableModel, Object> rowFilterWarengruppe = RowFilter
 						.regexFilter(cboWarengruppe.getSelectedItem()
-								.toString(), 1);
+								.toString(), 2);
 				RowFilter<TableModel, Object> rowFilterABCUmsatz = RowFilter
 						.regexFilter(cboABCUmsatz.getSelectedItem().toString(),
-								7);
+								8);
 				RowFilter<TableModel, Object> rowFilterABCAnzahl = RowFilter
 						.regexFilter(cboABCAnzahl.getSelectedItem().toString(),
-								3);
+								4);
 				RowFilter<TableModel, Object> rowFilterABCMenge = RowFilter
 						.regexFilter(cboABCMenge.getSelectedItem().toString(),
-								5);
+								6);
 				RowFilter<TableModel, Object> rowFilterABCGesamt = RowFilter
 						.regexFilter(cboABCGesamt.getSelectedItem().toString(),
-								9);
+								10);
 
 				//Hinzufuegen aller Filter zur Liste
 				filters.add(rowFilterArtikel);
