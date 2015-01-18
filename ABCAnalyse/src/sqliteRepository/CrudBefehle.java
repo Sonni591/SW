@@ -8,7 +8,7 @@ public class CrudBefehle {
 	public static String selectArtikelABCZuordnung = "select Zuordnung from ABCZuordnung where Kriterium1 = ? AND Kriterium2 = ? AND Kriterium3 = ?";
 	public static String selectAbsatz = "select * from Absatz";
 	public static String selectABCResultView = "select abcR.artikelNr, wg.Bezeichnung as 'Warengruppe', l.Bezeichnung as 'Vertriebskanal', abcR.ABCK3 as 'Auf.Anz.', abcI.JahresAnzahl, abcR.ABCK2 as 'Auf.Mng', abcI.JahresMenge,"
-											 + "abcR.ABCK1 as 'Ums', round(abcI.JahresUmsatz,2) as JahresUmsatz, abcR.ABCKZ as 'ABC Zuo.' "
+											 + "abcR.ABCK1 as 'Ums', round(abcI.JahresUmsatz,2) as JahresUmsatz, abcR.ABCKZ as 'ABC Zuo.', abcI.Bestand as 'Bestand' "
 											 + " from ABCResult abcR"
 											 + " join ABC_Input abcI on abcI.artikelNr = abcR.artikelNr and abcI.lagerNr = abcR.lagerNr"
 											 + " join Warengruppe wg on wg.wgNr = abcI.wgNr"
